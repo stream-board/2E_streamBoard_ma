@@ -19,8 +19,9 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.4",
+    "apollo-cache-inmemory": "^1.1.12",
     "apollo-client": "^2.2.8",
+    "apollo-link-http": "^1.5.3",
     "expo": "^25.0.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",

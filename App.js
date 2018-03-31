@@ -1,86 +1,43 @@
 import React, { Component } from 'react';
-import { AppRegistry, Image, View, ActivityIndicator, StyleSheet } from 'react-native';
-import ApolloClient from 'apollo-boost';
-import gql from 'graphql-tag';
-import { ApolloProvider, createNetworkInterface, graphql } from 'react-apollo';
+import { AppRegistry, StyleSheet, Text, View } from 'react-native';
 
-// Initialize the Apollo Client
-const client = new ApolloClient({
-    uri: 'http://192.168.99.101:5000'
-});
+import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
-// Define query types
-const ChatQuery = gql`
-  query chatMessages {
-    chatMsgByRoomId(id:1) {
-      message,
-      sender
-    }
-  }
-`;
+import Chat from './chat/components/Chat'
+import ChatWebsocket from './chat/components/ChatWebsocket'
 
-class ChatMessage extends Component {
 
-  renderChatMessage = ({message, sender}) => {
-    return (
-      <Text
-        style={styles.messageContainer}
-        >
-        <Text style={styles.message}>{message}</Text>
-        <Text style={styles.sender}>{sender}</Text>
-      </Text>
-    )
+export default class App extends Component {
+  constructor(...args) {
+    super(...args);
+
+    this.client = new ApolloClient({
+      link: new HttpLink({
+        uri: 'http://192.168.0.28:5000/graphql'
+      }),
+      cache: new InMemoryCache()
+    })
   }
 
   render() {
-
-    // Apollo injects the `data` prop, containing the result of our query,
-    // and a loading indicator to tell us when the data is ready.
-    const {data} = this.props
-    const {loading, allChatMessage} = data
-
-    // If we're loading, show a spinner.
-    if (loading) {
-      return <ActivityIndicator />
-    }
-
     return (
-      <View style={styles.feed}>
-        {allChatMessage.map(this.renderChatMessage)}
-      </View>
-    )
+      <ApolloProvider client={this.client}>
+        <View style={styles.container}>
+          <ChatWebsocket roomId={1}/>
+        </View>
+      </ApolloProvider>
+    );
   }
 }
 
 const styles = StyleSheet.create({
-  feed: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent: 'center',
   },
-
-  messageContainer: {
-    backgroundColor: '#00FFFF',
-    padding: 16,
-  },
-
-  message: {
-    color: '#FFFAF0',
-  },
-
-  sender: {
-    color: '#FF1493',
-  },
-})
-
-// Inject query response as `this.props.data`
-const ChatWithData = graphql(ChatQuery)(ChatMessage)
-
-// ApolloProvider lets us use Apollo Client in descendant components
-const App = () => (
-  <ApolloProvider client={client}>
-    <ChatWithData />
-  </ApolloProvider>
-)
-
-AppRegistry.registerComponent('App', () => App)
+});
