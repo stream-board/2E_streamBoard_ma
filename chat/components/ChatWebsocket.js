@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 export default class ChatWebsocket extends Component {
+
   constructor(props) {
     super(props);
 
@@ -21,11 +22,9 @@ export default class ChatWebsocket extends Component {
   }
 
   componentDidMount() {
-
     const { roomId } = this.props;
 
     this.socket.onopen = () => {
-      console.log('Connected to chat socket');
       this.socket.send(
         JSON.stringify({
           'category': 'JOIN-ROOM',
