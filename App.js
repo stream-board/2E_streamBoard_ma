@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
@@ -9,13 +9,15 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import Chat from './chat/components/Chat'
 import ChatWebsocket from './chat/components/ChatWebsocket'
 import ChatCreateRoom from './chat/components/ChatCreateRoom'
+import { ChatRoomCreateMutation } from './chat/TypesDef'
 
+import { Mutation } from 'react-apollo';
 
 export default class App extends Component {
 
   state = {
     chatRoomInput: {
-      id: 100
+      id:1
     }
   }
 
@@ -33,15 +35,48 @@ export default class App extends Component {
   render() {
     const { chatRoomInput } = this.state;
 
+    console.log(chatRoomInput);
+
     return (
       <ApolloProvider client={this.client}>
         <View style={styles.container}>
-          <ChatCreateRoom chatRoomInput={chatRoomInput}/>
+
+          <ChatRoomCreate />
         </View>
       </ApolloProvider>
     );
   }
 }
+
+const ChatRoomCreate = () => {
+
+    let input = {
+      id: 100
+    };
+
+    return (
+      <Mutation mutation={ChatRoomCreateMutation}>
+        {createChatRoom => (
+          <View>
+            <Button
+              onPress={() => {
+                createChatRoom({ variables: { input } })
+              }}
+              title="Create Room with id 100"
+              color="#841584"
+            />
+          </View>
+        )}
+      </Mutation>
+    )
+  }
+
+  state = {
+    chatRoomInput: {
+      id: 100
+    }
+  }
+
 
 const styles = StyleSheet.create({
   container: {
