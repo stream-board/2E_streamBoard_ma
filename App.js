@@ -11,6 +11,8 @@ import ChatWebsocket from './chat/components/ChatWebsocket'
 import ChatCreateRoom from './chat/components/ChatCreateRoom'
 import { ChatRoomCreateMutation } from './chat/TypesDef'
 
+import BoardSocket from './board/components/BoardSocket';
+
 import { Mutation } from 'react-apollo';
 
 export default class App extends Component {
@@ -40,7 +42,7 @@ export default class App extends Component {
     return (
       <ApolloProvider client={this.client}>
         <View style={styles.container}>
-
+          <BoardSocket />
           <ChatRoomCreate />
         </View>
       </ApolloProvider>
@@ -51,16 +53,17 @@ export default class App extends Component {
 const ChatRoomCreate = () => {
 
     let input = {
-      id: 100
+      id: 21
     };
 
     return (
       <Mutation mutation={ChatRoomCreateMutation}>
-        {createChatRoom => (
+        {(createChatRoom, { data }) => (
           <View>
+            {console.log(data)}
             <Button
               onPress={() => {
-                createChatRoom({ variables: { input } })
+                createChatRoom({ variables: { chatRoom: input } })
               }}
               title="Create Room with id 100"
               color="#841584"
