@@ -8,9 +8,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import Chat from './chat/components/Chat'
 import ChatWebsocket from './chat/components/ChatWebsocket'
+import ChatCreateRoom from './chat/components/ChatCreateRoom'
 
 
 export default class App extends Component {
+
+  state = {
+    chatRoomInput: {
+      id: 100
+    }
+  }
+
   constructor(...args) {
     super(...args);
 
@@ -23,10 +31,12 @@ export default class App extends Component {
   }
 
   render() {
+    const { chatRoomInput } = this.state;
+
     return (
       <ApolloProvider client={this.client}>
         <View style={styles.container}>
-          <ChatWebsocket roomId={1}/>
+          <ChatCreateRoom chatRoomInput={chatRoomInput}/>
         </View>
       </ApolloProvider>
     );
