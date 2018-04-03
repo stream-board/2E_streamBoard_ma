@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 
-export const BoardCreateRoomMuation = gql`
+export const BoardCreateRoomMutation = gql`
   mutation createBoardRoom($room: BoardRoomInput!) {
     createBoardRoom(room: $room) {
       id

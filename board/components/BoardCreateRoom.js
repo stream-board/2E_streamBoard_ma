@@ -1,24 +1,25 @@
 import React from 'react';
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
-import { ChatRoomCreateMutation } from './../TypesDef'
+import { BoardCreateRoomMutation } from './../TypesDef'
 import { Mutation } from 'react-apollo';
 
-export const ChatRoomCreate = () => {
+export const BoardRoomCreate = () => {
 
     let input = {
-      id: 59
+      id: 1,
+      admin: 'AdminTest'
     };
 
     return (
-      <Mutation mutation={ChatRoomCreateMutation}>
-        {(createChatRoom, { data }) => (
+      <Mutation mutation={BoardCreateRoomMutation}>
+        {(createBoardRoom, { data }) => (
           <View>
             {console.log(data)}
             <Button
               onPress={() => {
-                createChatRoom({ variables: { chatRoom: input } })
+                createBoardRoom({ variables: { room: input } })
               }}
-              title="Create Room with id 100"
+              title="Create BoardRoom with 59"
               color="#841584"
             />
           </View>

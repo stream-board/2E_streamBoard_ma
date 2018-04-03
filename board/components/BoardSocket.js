@@ -26,20 +26,21 @@ export default class BoardSocket extends Component {
       isPenDown: false
     }
 
-    const url = `http://${serverIp}:${port}?room=1&nick=usertest&id=usertest`;
+    const url = `http://${serverIp}:${port}?room=1&nick=AdminTest&id=AdminTest`;
     console.log(url);
     this.socket = SocketIOClient(url);
 
     this.registerSocketListeners = this.registerSocketListeners.bind(this);
     this.resetPermissions = this.resetPermissions.bind(this);
+    this.onResetBoard = this.onResetBoard.bind(this);
+    this.onLostPermission = this.onLostPermission.bind(this);
 
     this.socket.on('connect', () => {
       console.log('Connected');
       console.log(this.socket);
     });
-    this.socket.on('resetBoard', (data) => {
-      console.log('Hola');
-    });
+    this.socket.on('resetBoard', this.onResetBoard);
+    this.socket.on('lostPermission', this.onLostPermission);
   }
 
   componentDidMount() {
@@ -47,17 +48,19 @@ export default class BoardSocket extends Component {
 
   registerSocketListeners() {
     //TODO
-
-
-
   }
 
-  aksForBoard() {
+  onLostPermission(data) {
+    console.log('se ha reseteado');
+  }
 
+  onResetBoard(data) {
+    console.log('Rset board');
   }
 
   resetPermissions() {
-    console.log(this.socket);
+    console.log('Hola');
+
     this.socket.emit('resetBoard');
   }
 

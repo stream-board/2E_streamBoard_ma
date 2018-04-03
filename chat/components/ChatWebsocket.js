@@ -13,8 +13,10 @@ export default class ChatWebsocket extends Component {
 
     const { roomId } = props;
     this.state = { open: false };
-    this.socket = new WebSocket(`ws:192.168.0.28:4004/chat-room/${roomId}`);
+    this.$socket = new WebSocket(`ws:192.168.0.28:4004/chat-room/${roomId}`);
     this.emit = this.emit.bind(this);
+    this.onMessage = this.onMessage.bind(this);
+    this.onOpen = this.onOpen.bind(this);
   }
 
   emit() {
@@ -23,18 +25,35 @@ export default class ChatWebsocket extends Component {
 
   componentDidMount() {
     const { roomId } = this.props;
+    this.$socket.onmessage = this.onMessage;
+    this.$socket.onopen = this.onOpen;
+  }
 
-    this.socket.onopen = () => {
-      this.socket.send(
-        JSON.stringify({
-          'category': 'JOIN-ROOM',
-          'room_id': roomId,
-          'sender': 'Usertest'
-        })
-      )
+  onMessage({ data }) {
+    if(data.category === 'JOIN-ROOM') {
+      this.joinMessage(data.message);
+    } else {
+      this.mainMessage(data.message, data.user);
     }
+  }
 
-    this.socket.onmessage = ({ data }) => console.log(JSON.parse(data));
+  onOpen() {
+    const { roomId } = this.props;
+    this.$socket.send(
+      JSON.stringify({
+        'category': 'JOIN-ROOM',
+        'room_id': roomId,
+        'sender': 'Usertest'
+      })
+    );
+  };
+
+  joinMessage(message) {
+    //TODO;
+  }
+
+  mainMessage(message, user, room) {
+    //TODO;
   }
 
   render() {
