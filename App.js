@@ -27,7 +27,7 @@ export default class App extends Component {
 
     this.client = new ApolloClient({
       link: new HttpLink({
-        uri: 'http://192.168.0.28:5000/graphql'
+        uri: 'http://192.168.43.160:5000/graphql'
       }),
       cache: new InMemoryCache()
     })
@@ -41,8 +41,8 @@ export default class App extends Component {
     return (
       <ApolloProvider client={this.client}>
         <View style={styles.container}>
+          <Chat />
           <ChatWebsocket roomId={1} />
-          <BoardSocket />
           <BoardRoomCreate />
         </View>
       </ApolloProvider>
