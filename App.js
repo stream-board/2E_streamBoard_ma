@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
 
+import { Container, Header, Content, Spinner } from 'native-base';
+
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { HttpLink } from 'apollo-link-http';
@@ -13,6 +15,9 @@ import { ChatRoomCreate } from './chat/components/ChatCreateRoom'
 
 import BoardSocket from './board/components/BoardSocket';
 import { BoardRoomCreate } from './board/components/BoardCreateRoom'
+
+import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom'
+import RoomsList from './rooms/components/RoomsList'
 
 export default class App extends Component {
 
@@ -40,11 +45,12 @@ export default class App extends Component {
 
     return (
       <ApolloProvider client={this.client}>
-        <View style={styles.container}>
-          <Chat />
-          <ChatWebsocket roomId={1} />
-          <BoardRoomCreate />
-        </View>
+        <Container>
+          <Header />
+          <Content>
+            <RoomsList />
+          </Content>
+        </Container>
       </ApolloProvider>
     );
   }
