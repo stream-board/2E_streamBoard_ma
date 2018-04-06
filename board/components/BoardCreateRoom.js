@@ -6,7 +6,7 @@ import { Mutation } from 'react-apollo';
 export const BoardRoomCreate = () => {
 
     let input = {
-      id: 1,
+      id: 100,
       admin: 'AdminTest'
     };
 

@@ -10,12 +10,28 @@ import {
   Item,
   Input
 } from 'native-base';
+import { connect } from 'react-redux'
 
 import RoomDetail from  './RoomDetail';
 import { ROOMS_CREATE_ROOM_MUTATION, ALL_ROOMS_QUERY } from './../TypesDef'
 
+const mapStateToProps = (state) => ({
+  allRooms: state.allRooms,
+})
 
 export const RoomsCreateRoom = () => {
+    onAddRoom = (room) => {
+      const {dispatch} = this.props
+
+      dispatch(actionCreators.add(room))
+    }
+
+    onRemoveRoom = (index) => {
+      const {dispatch} = this.props
+
+      dispatch(actionCreators.remove(index))
+    }
+    
     let input = {
       idOwner: 1,
       nameRoom: 'Sala creada desde mobile'
@@ -26,8 +42,7 @@ export const RoomsCreateRoom = () => {
     let descriptionRoom;
 
     return (
-      <Mutation
-        mutation={ROOMS_CREATE_ROOM_MUTATION}
+      <Mutation mutation={ROOMS_CREATE_ROOM_MUTATION}
         update={(cache, { data: { createRoom }}) => {
           const { allRooms } = cache.readQuery({ query: ALL_ROOMS_QUERY });
           cache.writeQuery({
@@ -36,41 +51,41 @@ export const RoomsCreateRoom = () => {
           });
         }}
       >
-        {(createRoom, { data }) => {
-          <Container>
-            <Header />
-            <Content>
-              <Item>
-                <Input
-                  placeholder='Room name'
-                  ref={ name => { nameRoom = name } }
+        {createRoom => (
+            <View>
+              <Content>
+                <Item>
+                  <Input
+                    placeholder='Room name'
+                    ref={ name => { nameRoom = name } }
+                  />
+                </Item>
+                <Item>
+                  <Input
+                    placeholder='Description'
+                    ref={ description => { descriptionRoom = description } }
+                  />
+                </Item>
+                <Button
+                  onPress={() => {
+                    createRoom({
+                      variables: {
+                        room: {
+                            idOwner: 1,
+                            nameRoom: nameRoom,
+                            descriptionRoom: descriptionRoom
+                        }
+                      }
+                    })
+                  }}
+                  title="Create room"
+                  color="#841584"
                 />
-              </Item>
-              <Item>
-                <Input
-                  placeholder='Description'
-                  ref={ description => { descriptionRoom = description } }
-                />
-              </Item>
-            </Content>
-            <Button
-              onPress={() => {
-                createBoardRoom({
-                  variables: {
-                    room: {
-                        idOwner: 1,
-                        nameRoom: nameRoom,
-                        descriptionRoom: descriptionRoom
-                    }
-                  }
-                })
-              }}
-              title="Create BoardRoom with 59"
-              color="#841584"
-            />
-          </Container>
-        }}
-
+              </Content>
+            </View>
+            )}
       </Mutation>
     )
   }
+
+  export default connect(mapStateToProps)(RoomsCreateRoom)

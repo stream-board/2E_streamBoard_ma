@@ -4,9 +4,8 @@ import { ChatRoomCreateMutation } from './../TypesDef'
 import { Mutation } from 'react-apollo';
 
 export const ChatRoomCreate = () => {
-
     let input = {
-      id: 59
+      id: 69
     };
 
     return (

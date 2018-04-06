@@ -18,6 +18,7 @@ import {
 
 import { Query } from 'react-apollo';
 import { ALL_ROOMS_QUERY } from './../TypesDef';
+import { RoomsCreateRoom } from './RoomsCreateRoom';
 
 
 export default () => (

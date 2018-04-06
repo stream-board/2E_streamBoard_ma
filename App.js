@@ -8,7 +8,9 @@ import { ApolloProvider } from 'react-apollo';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import Chat from './chat/components/Chat'
+import { Provider } from 'react-redux';
+
+import Chat from './chat/components/Chat';
 import ChatWebsocket from './chat/components/ChatWebsocket'
 import { ChatRoomCreate } from './chat/components/ChatCreateRoom'
 //import { ChatRoomCreateMutation } from './chat/TypesDef'
@@ -16,8 +18,10 @@ import { ChatRoomCreate } from './chat/components/ChatCreateRoom'
 import BoardSocket from './board/components/BoardSocket';
 import { BoardRoomCreate } from './board/components/BoardCreateRoom'
 
-import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom'
+import RoomCreate, { RoomCreateRoom } from './rooms/components/TestPor'
 import RoomsList from './rooms/components/RoomsList'
+
+import Store from './reduxConfig';
 
 export default class App extends Component {
 
@@ -27,12 +31,13 @@ export default class App extends Component {
     }
   }
 
+  
   constructor(...args) {
     super(...args);
-
+    
     this.client = new ApolloClient({
       link: new HttpLink({
-        uri: 'http://192.168.43.160:5000/graphql'
+        uri: 'http://192.168.0.28:5000/graphql'
       }),
       cache: new InMemoryCache()
     })
@@ -45,12 +50,17 @@ export default class App extends Component {
 
     return (
       <ApolloProvider client={this.client}>
-        <Container>
-          <Header />
-          <Content>
-            <RoomsList />
-          </Content>
-        </Container>
+        <Provider store={Store}>
+          <Container>
+            <Header />
+            <Content>
+              <View>
+                <RoomCreate key={0}/>
+                <RoomsList />
+              </View>
+            </Content>
+          </Container>
+        </Provider>
       </ApolloProvider>
     );
   }
