@@ -9,7 +9,7 @@ import {
 import Client from './../../apolloConfig';
 import Store from './../../reduxConfig';
 import { connect } from 'react-redux';
-import { actionsCreators } from './../../rooms/roomsRedux';
+import { actionCreators } from './../../rooms/roomsRedux';
 import { serverIp, port, entryPoint } from './../Server';
 import { CHAT_MESSAGE_LIST_QUERY } from './../TypesDef';
 
@@ -29,6 +29,7 @@ export class ChatWebsocket extends Component {
     this.emit = this.emit.bind(this);
     this.onMessage = this.onMessage.bind(this);
     this.onOpen = this.onOpen.bind(this);
+    this.onClose = this.onOpen.bind(this);
   }
 
   emit() {
@@ -73,13 +74,17 @@ export class ChatWebsocket extends Component {
       userId: chatData.user_id,
       message: chatData.message
     }
-    Store.dispatch(actionsCreators.addChatMessage(messageObj));
+    Store.dispatch(actionCreators.addChatMessage(messageObj));
+  }
+
+  componentWillUnmount() {
+    this.$socket.close();
   }
 
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#FFFF00'}}>
-        <Text>{'Hola'}</Text>
+        <Text>Hola</Text>
       </View>
     )
   }

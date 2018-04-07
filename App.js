@@ -15,6 +15,7 @@ import RoomsList from './rooms/components/RoomsList';
 import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom';
 import RoomsDetail from './rooms/components/RoomsDetail';
 import ChatMessageList from './chat/components/ChatMessageList';
+import ChatWebsocket from './chat/components/ChatWebsocket';
 
 
 export default class App extends Component {  
@@ -28,9 +29,9 @@ export default class App extends Component {
         <Provider store={Store}>
           <Container>
             <Header />
-              <View>
+              <Content>
                 <RoomsDetail roomId={1} />
-              </View>
+              </Content>
           </Container>
         </Provider>
       </ApolloProvider>

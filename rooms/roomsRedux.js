@@ -65,16 +65,11 @@ const chatMessageListReducer = (state = initialState.chatMessageList, action) =>
 
     switch (type) {
         case types.ADD_CHAT_MESSAGE: {
-            return {
-                ...state,
-                chatMessageList: [...state.chatMessageList, payload]
-            }
+            return [...state, payload]
         }
 
         case types.ADD_CHAT_LIST: {
-            let messageList = state.concat(payload);
-            console.log(messageList);
-            return messageList;
+            return payload;
         }
     }
 

@@ -13,8 +13,6 @@ export default class Chat extends Component {
       <View style={styles.chatContainer}>
         <Text>{`Chat Room ${roomId}`}</Text>
         <ChatMessageList roomId={roomId} />
-        <ChatList />
-        <ChatWebsocket roomId={roomId}/>
       </View>
     );
   }
