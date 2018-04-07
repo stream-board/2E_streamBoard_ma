@@ -73,7 +73,7 @@ export class ChatWebsocket extends Component {
   onAddMessage(chatData) {
     let messageObj = {
       id: chatData.id,
-      userId: chatData.user_id,
+      user_id: chatData.user_id,
       message: chatData.message
     }
     Store.dispatch(actionCreators.addChatMessage(messageObj));
