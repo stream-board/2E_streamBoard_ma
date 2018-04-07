@@ -4,8 +4,8 @@ import gql from 'graphql-tag';
 export const ALL_ROOMS_QUERY = gql`
   query allRooms {
     allRooms {
-      nameRoom,
       idRoom,
+      nameRoom,
       owner {
         name,
         nickname
@@ -29,7 +29,12 @@ export const ROOM_BY_ID_QUERY = gql`
 export const ROOMS_CREATE_ROOM_MUTATION = gql`
   mutation createRoom($room: CreateRoomInput!) {
     createRoom(room: $room) {
-      id
+      idRoom,
+      nameRoom,
+      owner {
+        name,
+        nickname
+      }
     }
   }
 `;

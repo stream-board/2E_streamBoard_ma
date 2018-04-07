@@ -1,15 +1,13 @@
 import React, { Component }from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-import ChatMessageList from './ChatMessageList'
+import ChatMessageList from './ChatMessageList';
+import ChatWebsocket from './ChatWebsocket';
+import ChatList from './ChatList';
 
 export default class Chat extends Component {
-  state = {
-    roomId: 1
-  };
-
   render() {
-    const { roomId } = this.state;
+    const { roomId } = this.props;
 
     return (
       <View style={styles.chatContainer}>
