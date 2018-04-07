@@ -5,31 +5,42 @@ import {
   StyleSheet,
   Text
 } from 'react-native';
-
+import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
-import { ChatMessageListQuery } from './../TypesDef';
+import { CHAT_MESSAGE_LIST_QUERY } from './../TypesDef';
+import Store from './../../reduxConfig';
+import { actionCreators } from './../../rooms/roomsRedux';
+import ChatList from './ChatList';
 
+const mapStateToProps = (state) => ({
+  chatMessageList: state.chatMessageList,
+});
 
-export default ({ roomId: currentId }) => (
-  <Query query={ChatMessageListQuery} variables={{ id: currentId }}>
-    { ({ loading, error, data }) => {
-        if (loading) return <ActivityIndicator />;
-        if (error) return <Text>{`Error: ${error}`}</Text>;
-        return (
-          <View>
-            {data.chatMsgByRoomId.map(({ message, sender }, index) => (
-              <View key={index} style={styles.messageContainer}>
-                <Text style={styles.message}>{message}</Text>
-                <Text style={styles.sender}>{sender}</Text>
-              </View>
-            ))}
-          </View>
-        )
+class chatMessageList extends Component {
+  componentWillMount() {
+  } 
+
+  render() {
+    return (
+    <Query query={CHAT_MESSAGE_LIST_QUERY} variables={{ id: this.props.roomId }}>
+      { ({ loading, error, data }) => {
+          if (loading) return <ActivityIndicator />;
+          if (error) return <Text>{`Error: ${error}`}</Text>;
+          if(data){
+            Store.dispatch(actionCreators.addChatMessageList(data.chatMsgByRoomId));
+          }
+          
+          return (
+            <View>
+            </View>
+          )
+        }
       }
-    }
-  </Query>
-);
-
+    </Query>
+    )
+  }
+}
+//export default connect(mapStateToProps)(ChatMessageList)
 const styles = StyleSheet.create({
   messageContainer: {
     backgroundColor: '#00FFFF',

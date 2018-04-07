@@ -6,14 +6,26 @@ import {
   Buttom
 } from 'react-native';
 
-export default class ChatWebsocket extends Component {
+import Client from './../../apolloConfig';
+import Store from './../../reduxConfig';
+import { connect } from 'react-redux';
+import { actionsCreators } from './../../rooms/roomsRedux';
+import { serverIp, port, entryPoint } from './../Server';
+import { CHAT_MESSAGE_LIST_QUERY } from './../TypesDef';
+
+
+const mapStateToProps = (state) => ({
+  chatMessageList: state.chatMessageList,
+});
+
+export class ChatWebsocket extends Component {
 
   constructor(props) {
     super(props);
 
     const { roomId } = props;
     this.state = { open: false };
-    this.$socket = new WebSocket(`ws:192.168.0.28:4004/chat-room/${roomId}`);
+    this.$socket = new WebSocket(`ws:${serverIp}:${port}/${entryPoint}/${roomId}`);
     this.emit = this.emit.bind(this);
     this.onMessage = this.onMessage.bind(this);
     this.onOpen = this.onOpen.bind(this);
@@ -30,30 +42,38 @@ export default class ChatWebsocket extends Component {
   }
 
   onMessage({ data }) {
-    if(data.category === 'JOIN-ROOM') {
-      this.joinMessage(data.message);
+    let chatData = JSON.parse(data);
+
+    if(chatData.category === 'JOIN-ROOM') {
+      this.joinMessage(chatData.message);
     } else {
-      this.mainMessage(data.message, data.user);
+      this.onAddMessage(chatData);
     }
   }
 
   onOpen() {
     const { roomId } = this.props;
+    console.log('Connected');
     this.$socket.send(
       JSON.stringify({
         'category': 'JOIN-ROOM',
         'room_id': roomId,
-        'sender': 'Usertest'
+        'user_id': '1'
       })
     );
   };
 
   joinMessage(message) {
-    //TODO;
+    console.log(message);
   }
 
-  mainMessage(message, user, room) {
-    //TODO;
+  onAddMessage(chatData) {
+    let messageObj = {
+      id: chatData.id,
+      userId: chatData.user_id,
+      message: chatData.message
+    }
+    Store.dispatch(actionsCreators.addChatMessage(messageObj));
   }
 
   render() {
@@ -64,3 +84,5 @@ export default class ChatWebsocket extends Component {
     )
   }
 }
+
+export default connect(mapStateToProps)(ChatWebsocket);

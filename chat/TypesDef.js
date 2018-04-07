@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 
 
-export const ChatMessageListQuery = gql`
+export const CHAT_MESSAGE_LIST_QUERY = gql`
   query chatMsgByRoomId($id: Int!) {
     chatMsgByRoomId(id: $id) {
+      id,
       message,
-      sender
+      user_id
     }
 }
 `;

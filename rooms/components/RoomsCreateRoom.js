@@ -1,6 +1,9 @@
 import React from 'react';
-import { Mutation } from 'react-apollo';
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
+import { ROOMS_CREATE_ROOM_MUTATION } from './../TypesDef'
+import { ALL_ROOMS_QUERY } from './../TypesDef'
+import { Mutation } from 'react-apollo';
+import Store from './../../reduxConfig';
 import {
   Spinner,
   Container,
@@ -10,13 +13,10 @@ import {
   Item,
   Input
 } from 'native-base';
-import { connect } from 'react-redux'
-
-import RoomDetail from  './RoomDetail';
-import { ROOMS_CREATE_ROOM_MUTATION, ALL_ROOMS_QUERY } from './../TypesDef'
+import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => ({
-  allRooms: state.allRooms,
+  queryParams: state.queryParams,
 })
 
 export const RoomsCreateRoom = () => {
@@ -32,60 +32,78 @@ export const RoomsCreateRoom = () => {
       dispatch(actionCreators.remove(index))
     }
     
-    let input = {
-      idOwner: 1,
-      nameRoom: 'Sala creada desde mobile'
+    onForm = (createRoom) => {
+      return (
+        <View>
+          <Input
+          placeholder='Room name'
+          onChangeText= {(text)=>{
+            Store.dispatch( { type:'addRoomName', payload: text })
+          }}
+          />
+          <Input
+            placeholder='Description'
+            onChangeText= {(text)=>{
+              Store.dispatch( { type:'addRoomDescription', payload: text })
+            }}
+          />
+          <Input
+            placeholder='ID OWNER'
+            onChangeText= {(text)=>{
+              Store.dispatch( { type:'addRoomOwner', payload: Number(text) })
+            }}
+          />
+          <Button
+            onPress={() => {
+              createRoom({ 
+                variables: { 
+                  room: Store.getState().roomCreateParams 
+                }
+              })
+            }}
+            title="Create Room"
+            color="#841584"
+          />
+        </View>
+      )
     };
 
-    let userNick;
-    let nameRoom;
-    let descriptionRoom;
+    onCreateRoom = (data) => {
+      console.log(data);
+      return (
+        <View>
+          <Text>Redirección RoomDetail</Text>
+        </View>
+      )
+    };
+
 
     return (
-      <Mutation mutation={ROOMS_CREATE_ROOM_MUTATION}
-        update={(cache, { data: { createRoom }}) => {
-          const { allRooms } = cache.readQuery({ query: ALL_ROOMS_QUERY });
+      <Mutation 
+        mutation={ROOMS_CREATE_ROOM_MUTATION}
+        update={(cache, { data: data })=>{
+          let newRoom = data.createRoom;
+
+          const dataList = cache.readQuery({
+            query: ALL_ROOMS_QUERY
+          });
           cache.writeQuery({
             query: ALL_ROOMS_QUERY,
-            allRooms: { allRooms: allRooms.concat([createRoom]) }
-          });
-        }}
+            data: {
+              allRooms: [...dataList.allRooms, newRoom],
+            },
+          })
+        }}  
       >
-        {createRoom => (
-            <View>
-              <Content>
-                <Item>
-                  <Input
-                    placeholder='Room name'
-                    ref={ name => { nameRoom = name } }
-                  />
-                </Item>
-                <Item>
-                  <Input
-                    placeholder='Description'
-                    ref={ description => { descriptionRoom = description } }
-                  />
-                </Item>
-                <Button
-                  onPress={() => {
-                    createRoom({
-                      variables: {
-                        room: {
-                            idOwner: 1,
-                            nameRoom: nameRoom,
-                            descriptionRoom: descriptionRoom
-                        }
-                      }
-                    })
-                  }}
-                  title="Create room"
-                  color="#841584"
-                />
-              </Content>
-            </View>
-            )}
+        {(createRoom, { loading, error, data }) => (
+          <View>
+          {(data ? onCreateRoom(data) : onForm(createRoom))}  
+          {loading && <Spinner />}
+          {error && <Text> Error: ${error}</Text>}  
+          </View>
+        )}
       </Mutation>
     )
   }
 
-  export default connect(mapStateToProps)(RoomsCreateRoom)
+export default connect(mapStateToProps)(RoomsCreateRoom)
