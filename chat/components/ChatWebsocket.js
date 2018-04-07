@@ -3,8 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  Buttom
+  Button,
+  TextInput
 } from 'react-native';
+import { Container, Header, Content, Form, Item, Input } from 'native-base';
 
 import Client from './../../apolloConfig';
 import Store from './../../reduxConfig';
@@ -24,7 +26,7 @@ export class ChatWebsocket extends Component {
     super(props);
 
     const { roomId } = props;
-    this.state = { open: false };
+    this.state = { open: false, text: '' };
     this.$socket = new WebSocket(`ws:${serverIp}:${port}/${entryPoint}/${roomId}`);
     this.emit = this.emit.bind(this);
     this.onMessage = this.onMessage.bind(this);
@@ -81,10 +83,26 @@ export class ChatWebsocket extends Component {
     this.$socket.close();
   }
 
+  sendMessage(message) {
+    this.$socket.send(JSON.stringify({
+      'category': 'NEW-MESSAGE',
+      'room_id': this.props.roomId,
+      'user_id': 1,
+      'message': message
+    }))
+    this.setState({text: ''});
+  }
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#FFFF00'}}>
-        <Text>Hola</Text>
+        <TextInput
+          onChangeText={(text) => { this.setState({ text: text })}}
+          value={this.state.text}
+        />
+        <Button
+          onPress={() => this.sendMessage(this.state.text)}
+          title="Enviar"
+        />
       </View>
     )
   }
