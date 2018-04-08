@@ -25,13 +25,13 @@ export default () => (
     {({ loading, error, data }) => {
         if (loading) return <Spinner />;
         if (error) return <Text>{`Error: ${error}`}</Text>;
-         return (
+        return (
           <View>
             {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
               <View key={index} style={styles.messageContainer}>
                 <Text style={styles.message}>{idRoom}</Text>
                 <Text style={styles.sender}>{nameRoom}</Text>
-                <Text style={styles.sender}>{owner.name}</Text>
+                <Text style={styles.sender}>{owner && (owner.name)}</Text>
               </View>
             ))}
           </View>

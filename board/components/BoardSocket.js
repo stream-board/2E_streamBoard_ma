@@ -26,7 +26,9 @@ export default class BoardSocket extends Component {
       isPenDown: false
     }
 
-    const url = `http://${serverIp}:${port}?room=1&nick=AdminTest&id=AdminTest`;
+    const { roomId, userNick, userId } = this.props;
+
+    const url = `http://${serverIp}:${port}?room=${roomId}&nick=${userNick}&id=${userId}`;
     console.log(url);
     this.socket = SocketIOClient(url);
 
