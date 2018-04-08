@@ -16,7 +16,7 @@ import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom';
 import RoomsDetail from './rooms/components/RoomsDetail';
 import ChatMessageList from './chat/components/ChatMessageList';
 import ChatWebsocket from './chat/components/ChatWebsocket';
-
+import Streaming from './streaming/components/Streaming';
 
 export default class App extends Component {  
   constructor(...args) {
@@ -30,7 +30,7 @@ export default class App extends Component {
           <Container>
             <Header />
               <Content>
-                <RoomsDetail roomId={1} />
+                <Streaming />
               </Content>
           </Container>
         </Provider>
