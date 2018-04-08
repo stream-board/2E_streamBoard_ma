@@ -30,7 +30,7 @@ export default class App extends Component {
           <Container>
             <Header />
               <Content>
-                <RoomsCreateRoom /> 
+                <RoomsCreateRoom />
                 <RoomsList />
               </Content>
           </Container>
