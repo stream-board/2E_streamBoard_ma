@@ -12,14 +12,9 @@ import { Provider } from 'react-redux';
 import Store from './reduxConfig';
 import Client from './apolloConfig';
 
-import Login from "./routes/Login/index.js";
-import AAA from "./routes/Login/Login.js";
 import Expo from "expo";
-
-//los que debo cargar en /Room
-import RoomsDetail from './rooms/components/RoomsDetail';
-import ChatMessageList from './chat/components/ChatMessageList';
-import ChatWebsocket from './chat/components/ChatWebsocket';
+import CreateRoomPage from './rooms/components/RoomsCreateRoom.js';
+import { StackNavigator } from "react-navigation";
 
 export default class App extends Component {  
   constructor(...args) {
@@ -47,7 +42,7 @@ export default class App extends Component {
           <Container>
             <Header />
               <Content>
-                <AAA />
+                <RootStack />
               </Content>
           </Container>
         </Provider>
@@ -64,3 +59,88 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+const RootStack = StackNavigator(
+  {
+    Login: { screen: LoginPage },
+    MainMenu: { screen: MainMenuPage },
+    JoinRoom: { screen: JoinRoomPage },
+
+    CreateRoom: { screen: CreateRoomPage },
+  },
+  {
+    initialRouteName: "Login",
+  }
+);
+
+
+class LoginPage extends Component {
+  render() {
+    return (
+      <Container>
+      <Header>
+        <Body>
+          <Title>Stream Board</Title>
+        </Body>
+      </Header>
+        <Content>
+          <Text>INICIAR SESION</Text>
+          <Input />
+          <Button primary onPress={() => this.props.navigation.navigate(MainMenu)}>
+            <Text>INGRESAR</Text>
+          </Button>
+        </Content>
+      </Container>
+    );
+  }
+}
+
+class MainMenuPage extends Component {
+  render() {
+    return (
+      <Container>
+      <Header>
+        <Body>
+          <Title>Stream Board</Title>
+        </Body>
+      </Header>
+        <Content>
+          <Button primary onPress={() => this.props.navigation.navigate("CreateRoom")}>
+            <Text>Crear sala</Text>
+          </Button>
+          <Button primary onPress={() => this.props.navigation.navigate("JoinRoom")}>
+            <Text>Unirse a sala</Text>
+          </Button>
+          <Button primary onPress={() => this.props.navigation.goBack() }>
+            <Text>Cerrar Sesion</Text>
+          </Button>
+        </Content>
+      </Container>
+    );
+  }
+}
+
+class JoinRoomPage extends Component {
+  render() {
+    return (
+      <Container>
+      <Header>
+        <Text>Join Room</Text>
+      </Header>
+      <Content>
+        <Tabs locked={true} tabBarPosition={"overlayTop"}>
+          <Tab heading="Buscar" tabBarPosition={"overlayTop"}>
+            <Text>Digite Id de la Sala</Text>
+          </Tab>
+          <Tab heading="Rooms">
+            <Spinner />
+          </Tab>
+        </Tabs>
+      </Content>
+      </Container>
+    );
+  }
+}
+
+AppRegistry.registerComponent('App', () => RootStack);
