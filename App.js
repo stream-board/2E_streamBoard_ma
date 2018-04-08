@@ -39,7 +39,13 @@ export default class App extends Component {
     return (
       <ApolloProvider client={Client}>
         <Provider store={Store}>
-          <RootStack />
+          <Container>
+            <Header />
+              <Content>
+                <RoomsCreateRoom />
+                <RoomsList />
+              </Content>
+          </Container>
         </Provider>
       </ApolloProvider>
     );

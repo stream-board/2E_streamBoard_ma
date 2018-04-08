@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
+import { chatMessageListReducer } from './chat/chatRedux';
 
 export const types = {
     addRoomName: 'addRoomName',
     addRoomDescription: 'addRoomDescription',
     addRoomOwner: 'addRoomOwner',
-    addRoomCategory: 'addRoomCategory',
     ADD_CHAT_MESSAGE: 'ADD_CHAT_MESSAGE',
     ADD_CHAT_LIST: 'ADD_CHAT_LIST'
 };
@@ -55,28 +55,6 @@ const roomCreateReducer = (state = initialState.roomCreateParams, action) => {
                 ...state,
                 idOwner: payload
             }
-        }
-        case types.addRoomCategory: {
-            return {
-                ...state,
-                categoryRoom: payload
-            }
-        }
-    }
-
-    return state;
-}
-
-const chatMessageListReducer = (state = initialState.chatMessageList, action) => {
-    const { type, payload } = action;
-
-    switch (type) {
-        case types.ADD_CHAT_MESSAGE: {
-            return [...state, payload]
-        }
-
-        case types.ADD_CHAT_LIST: {
-            return payload;
         }
     }
 
