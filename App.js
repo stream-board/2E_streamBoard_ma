@@ -97,6 +97,7 @@ class LoginPage extends Component {
 }
 
 class MainMenuPage extends Component {
+  let self = this;
   render() {
     return (
       <Container>
@@ -106,13 +107,13 @@ class MainMenuPage extends Component {
         </Body>
       </Header>
         <Content>
-          <Button primary onPress={() => this.props.navigation.navigate("CreateRoom")}>
+          <Button primary onPress={() => self.props.navigation.navigate("CreateRoom")}>
             <Text>Crear sala</Text>
           </Button>
-          <Button primary onPress={() => this.props.navigation.navigate("JoinRoom")}>
+          <Button primary onPress={() => self.props.navigation.navigate("JoinRoom")}>
             <Text>Unirse a sala</Text>
           </Button>
-          <Button primary onPress={() => this.props.navigation.goBack() }>
+          <Button primary onPress={() => selfZ.props.navigation.goBack() }>
             <Text>Cerrar Sesion</Text>
           </Button>
         </Content>
