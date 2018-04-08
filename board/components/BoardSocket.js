@@ -17,7 +17,6 @@ import {
 
 
 export default class BoardSocket extends Component {
-
   constructor(props) {
     super(props);
 
@@ -29,41 +28,60 @@ export default class BoardSocket extends Component {
     const { roomId, userNick, userId } = this.props;
 
     const url = `http://${serverIp}:${port}?room=${roomId}&nick=${userNick}&id=${userId}`;
-    console.log(url);
-    this.socket = SocketIOClient(url);
+    this.$socket = SocketIOClient(url);
 
-    this.registerSocketListeners = this.registerSocketListeners.bind(this);
     this.resetPermissions = this.resetPermissions.bind(this);
     this.onResetBoard = this.onResetBoard.bind(this);
     this.onLostPermission = this.onLostPermission.bind(this);
+    this.onSetAdmin = this.onSetAdmin.bind(this);
+    this.onAskForBoard = this.onAskForBoard.bind(this);
+    this.onAnswerForBoard = this.onAnswerForBoard.bind(this);
+    this.onHostLeft = this.onHostLeft.bind(this);
+    this.onDraw = this.onDraw.bind(this);
 
-    this.socket.on('connect', () => {
+    this.$socket.on('connect', () => {
       console.log('Connected');
       console.log(this.socket);
     });
-    this.socket.on('resetBoard', this.onResetBoard);
-    this.socket.on('lostPermission', this.onLostPermission);
+    this.$socket.on('resetBoard', this.onResetBoard);
+    this.$socket.on('lostPermission', this.onLostPermission);
+    this.$socket.on('admin', this.onSetAdmin);
+    this.$socket.on('askForBoard', this.onAskForBoard);
+    this.$socket.on('answerForBoard', this.onAnswerForBoard);
+    this.$socket.on('hostLeft', this.onHostLeft);
+    this.$socket.on('draw', this.onDraw);
   }
 
   componentDidMount() {
   }
 
-  registerSocketListeners() {
-    //TODO
-  }
-
   onLostPermission(data) {
     console.log('se ha reseteado');
+    //Modals
   }
 
   onResetBoard(data) {
     console.log('Rset board');
+    //Modals
+  }
+
+  onSetAdmin(data) {
+    //hide actions
+    this.setState({isAllowed: true});
+  }
+
+  onAskForBoard(data) {
+    //modal 
+  }
+
+  onAnswerForBoard(data) {
+    if(data) {
+      this.setState({isAllowed: false})
+    }
   }
 
   resetPermissions() {
-    console.log('Hola');
-
-    this.socket.emit('resetBoard');
+    this.$socket.emit('resetBoard');
   }
 
   render() {
