@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
-import { Container, Header, Content, Spinner } from 'native-base';
+import { AppRegistry, StyleSheet, View } from 'react-native';
+import { Container, Header, Content, Spinner, Button, Body, Tabs, Tab, Text, Title, Input } from 'native-base';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
@@ -39,55 +39,22 @@ export default class App extends Component {
     return (
       <ApolloProvider client={Client}>
         <Provider store={Store}>
-          <Container>
-            <Header />
-              <Content>
-                <RootStack />
-              </Content>
-          </Container>
+          <RootStack />
         </Provider>
       </ApolloProvider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-
-const RootStack = StackNavigator(
-  {
-    Login: { screen: LoginPage },
-    MainMenu: { screen: MainMenuPage },
-    JoinRoom: { screen: JoinRoomPage },
-
-    CreateRoom: { screen: CreateRoomPage },
-  },
-  {
-    initialRouteName: "Login",
-  }
-);
-
 
 class LoginPage extends Component {
   render() {
     return (
       <Container>
-      <Header>
-        <Body>
-          <Title>Stream Board</Title>
-        </Body>
-      </Header>
         <Content>
           <Text>INICIAR SESION</Text>
           <Input />
-          <Button primary onPress={() => this.props.navigation.navigate(MainMenu)}>
+          <Button primary onPress={() => this.props.navigation.navigate('MainMenu')}>
             <Text>INGRESAR</Text>
           </Button>
         </Content>
@@ -97,7 +64,6 @@ class LoginPage extends Component {
 }
 
 class MainMenuPage extends Component {
-  let self = this;
   render() {
     return (
       <Container>
@@ -107,13 +73,13 @@ class MainMenuPage extends Component {
         </Body>
       </Header>
         <Content>
-          <Button primary onPress={() => self.props.navigation.navigate("CreateRoom")}>
+          <Button primary onPress={() => this.props.navigation.navigate('CreateRoom')}>
             <Text>Crear sala</Text>
           </Button>
-          <Button primary onPress={() => self.props.navigation.navigate("JoinRoom")}>
+          <Button primary onPress={() => this.props.navigation.navigate('JoinRoom')}>
             <Text>Unirse a sala</Text>
           </Button>
-          <Button primary onPress={() => selfZ.props.navigation.goBack() }>
+          <Button primary onPress={() => this.props.navigation.goBack() }>
             <Text>Cerrar Sesion</Text>
           </Button>
         </Content>
@@ -143,5 +109,29 @@ class JoinRoomPage extends Component {
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+
+const RootStack = StackNavigator(
+  {
+    Login: { screen: LoginPage },
+    MainMenu: { screen: MainMenuPage },
+    JoinRoom: { screen: JoinRoomPage },
+
+    CreateRoom: { screen: CreateRoomPage },
+  },
+  {
+    initialRouteName: "Login",
+  }
+);
 
 AppRegistry.registerComponent('App', () => RootStack);
