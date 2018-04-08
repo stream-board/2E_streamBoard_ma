@@ -11,27 +11,43 @@ import { Provider } from 'react-redux';
 
 import Store from './reduxConfig';
 import Client from './apolloConfig';
-import RoomsList from './rooms/components/RoomsList';
-import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom';
+
+import Login from "./routes/Login/index.js";
+import AAA from "./routes/Login/Login.js";
+import Expo from "expo";
+
+//los que debo cargar en /Room
 import RoomsDetail from './rooms/components/RoomsDetail';
 import ChatMessageList from './chat/components/ChatMessageList';
 import ChatWebsocket from './chat/components/ChatWebsocket';
 
-
 export default class App extends Component {  
   constructor(...args) {
     super(...args);
+    this.state = {
+      isReady: false
+    };
+  }
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("native-base/Fonts/Ionicons.ttf")
+    });
+    this.setState({ isReady: true });
   }
 
   render() {
+    if (!this.state.isReady) {
+      return <Expo.AppLoading />;
+    }
     return (
       <ApolloProvider client={Client}>
         <Provider store={Store}>
           <Container>
             <Header />
               <Content>
-                <RoomsCreateRoom /> 
-                <RoomsList />
+                <AAA />
               </Content>
           </Container>
         </Provider>
