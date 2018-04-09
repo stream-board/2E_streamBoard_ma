@@ -22,8 +22,8 @@ export const ValidateSessionQuery = gql`
 `;
 
 export const SessionCreateMutation = gql`
-  mutation createSession($headersSession: Headers!) {
-    createSession(headersSession: $headersSession) {
+  mutation createSession($session: SessionInput!) {
+    createSession(session: $session) {
       id,
       email,
       nickname,

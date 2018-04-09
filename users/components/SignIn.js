@@ -19,17 +19,11 @@ const mapStateToProps = (state) => ({
 })
 
 export const SignIn = () => {
-    onAddUser = (session) => {
+    onAddSession = (session) => {
       const {dispatch} = this.props
 
       dispatch(actionCreators.add(session))
     }
-
-    /*onRemoveRoom = (index) => {
-      const {dispatch} = this.props
-
-      dispatch(actionCreators.remove(index))
-    }*/
     
     onForm = (createSession) => {
       return (
@@ -61,7 +55,7 @@ export const SignIn = () => {
       )
     };
 
-    onCreateUser = (data) => {
+    onCreateSession = (data) => {
       console.log(data);
       return (
         <View>
@@ -75,12 +69,12 @@ export const SignIn = () => {
       <Mutation 
         mutation={SessionCreateMutation}
         update={(cache, { data: data })=>{
-          let newUser = data.createSession;
+          let newSession = data.createSession;
         }}  
       >
-        {(createUser, { loading, error, data }) => (
+        {(createSession, { loading, error, data }) => (
           <View>
-          {(data ? onCreateUser(data) : onForm(createUser))}  
+          {(data ? onCreateSession(data) : onForm(createSession))}  
           {loading && <Spinner />}
           {error && <Text> Error: ${error}</Text>}  
           </View>
