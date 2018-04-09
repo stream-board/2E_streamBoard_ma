@@ -31,10 +31,12 @@ export default () => (
           <Container>
           <List>
             {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
-              <ListItem key={index} style={styles.roomContainer}>
-                <Title>{nameRoom}</Title>
-                <Subtitle>{idRoom}</Subtitle>
-                <Text>{owner && (owner.name)}</Text>
+              <ListItem 
+                key={index} style={styles.roomContainer}
+                title={ {nameRoom} }
+                subtitle=  {owner.name}
+              >
+                <Text>IdRoom: {idRoom}</Text>
               </ListItem>
             ))}
           </List>
