@@ -1,12 +1,10 @@
 import { combineReducers } from "redux";
+import { chatMessageListReducer } from './chat/chatRedux';
 
 export const types = {
     addRoomName: 'addRoomName',
     addRoomDescription: 'addRoomDescription',
     addRoomOwner: 'addRoomOwner',
-    addRoomCategory: 'addRoomCategory',
-    addUserEmail: 'addUserEmail',
-    addUserPassword: 'addUserPassword',
     ADD_CHAT_MESSAGE: 'ADD_CHAT_MESSAGE',
     ADD_CHAT_LIST: 'ADD_CHAT_LIST'
 };
@@ -32,7 +30,6 @@ export const actionCreators = {
 
 const initialState = {
  roomCreateParams:{},
- sessionCreateParams:{},
  chatMessageList: []
 };
 
@@ -59,50 +56,6 @@ const roomCreateReducer = (state = initialState.roomCreateParams, action) => {
                 idOwner: payload
             }
         }
-        case types.addRoomCategory: {
-            return {
-                ...state,
-                categoryRoom: payload
-            }
-        }
-    }
-
-    return state;
-}
-
-const sessionCreateReducer = (state = initialState.sessionCreateParams, action) => {
-
-    const { type, payload } = action;
-
-    switch (type) {
-        case types.addUserEmail: {
-            return {
-                ...state,
-                email: payload
-            }
-        }
-        case types.addUserPassword: {
-            return {
-                ...state,
-                password: payload
-            }
-        }
-    }
-
-    return state;
-}
-
-const chatMessageListReducer = (state = initialState.chatMessageList, action) => {
-    const { type, payload } = action;
-
-    switch (type) {
-        case types.ADD_CHAT_MESSAGE: {
-            return [...state, payload]
-        }
-
-        case types.ADD_CHAT_LIST: {
-            return payload;
-        }
     }
 
     return state;
@@ -110,6 +63,5 @@ const chatMessageListReducer = (state = initialState.chatMessageList, action) =>
 
 export default combineReducers({
     roomCreateParams: roomCreateReducer,
-    sessionCreateParams: sessionCreateReducer,
     chatMessageList: chatMessageListReducer,
 })

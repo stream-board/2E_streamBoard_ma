@@ -47,6 +47,12 @@ export const RoomsCreateRoom = () => {
               Store.dispatch( { type:'addRoomDescription', payload: text })
             }}
           />
+           <Input
+            placeholder='Category'
+            onChangeText= {(text)=>{
+              Store.dispatch( { type:'addRoomCategory', payload: text })
+            }}
+          />
           <Input
             placeholder='ID OWNER'
             onChangeText= {(text)=>{
