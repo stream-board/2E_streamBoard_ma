@@ -16,6 +16,7 @@ import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom';
 import RoomsDetail from './rooms/components/RoomsDetail';
 import ChatMessageList from './chat/components/ChatMessageList';
 import ChatWebsocket from './chat/components/ChatWebsocket';
+import Board from './board/components/Board';
 
 
 export default class App extends Component {  
@@ -30,8 +31,7 @@ export default class App extends Component {
           <Container>
             <Header />
               <Content>
-                <RoomsCreateRoom />
-                <RoomsList />
+                <Board roomId={27} userNick={'lacardenasv'} userId={1}/>
               </Content>
           </Container>
         </Provider>

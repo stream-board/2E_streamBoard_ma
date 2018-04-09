@@ -4,7 +4,8 @@ import {
   ActivityIndicator,
   StyleSheet,
   Text,
-  Button
+  Button,
+  PanResponder
 } from 'react-native';
 
 import SocketIOClient from 'socket.io-client';
@@ -15,21 +16,31 @@ import {
   entryPoint
 } from './../Server';
 
+import Canvas from 'react-native-canvas';
+
 
 export default class BoardSocket extends Component {
   constructor(props) {
     super(props);
 
+    const defaultLineColor = '#000000';
+    const defaultLineThickness = 3;
+
     this.state = {
       isAllowed: false,
-      isPenDown: false
+      isPenDown: false,
+      selectedColor: defaultLineColor,
+      selectedThinckness: defaultLineThickness,
+      context: '',
+      hasTouch: false,
+      localPen: {}
     }
 
     const { roomId, userNick, userId } = this.props;
 
     const url = `http://${serverIp}:${port}?room=${roomId}&nick=${userNick}&id=${userId}`;
     this.$socket = SocketIOClient(url);
-
+    this.$canvas = { height: 700, width: 320 };
     this.resetPermissions = this.resetPermissions.bind(this);
     this.onResetBoard = this.onResetBoard.bind(this);
     this.onLostPermission = this.onLostPermission.bind(this);
@@ -38,6 +49,12 @@ export default class BoardSocket extends Component {
     this.onAnswerForBoard = this.onAnswerForBoard.bind(this);
     this.onHostLeft = this.onHostLeft.bind(this);
     this.onDraw = this.onDraw.bind(this);
+
+    this.penDown = this.penDown.bind(this);
+    this.penMove = this.penMove.bind(this);
+    this.penUp = this.penUp.bind(this);
+
+    this.drawPath = this.drawPath.bind(this);
 
     this.$socket.on('connect', () => {
       console.log('Connected');
@@ -52,7 +69,51 @@ export default class BoardSocket extends Component {
     this.$socket.on('draw', this.onDraw);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    this._panResponder = PanResponder.create({
+      // Ask to be the responder:
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+
+      onPanResponderGrant: (evt, gestureState) => {
+        // The gesture has started. Show visual feedback so the user knows
+        // what is happening!
+
+        console.log(this.$canvas);
+        let touchX = gestureState.x0 - this.$canvas.offsetLeft;
+        let touchY = gestureState.y0 - this.$canvas.offsetTop;
+        if(!this.state.isPenDown) {
+          this.penDown(touchX, touchY);
+        }
+        // gestureState.d{x,y} will be set to zero now
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        this.penMove();
+        // The most recent move distance is gestureState.move{X,Y}
+        //console.log(gestureState);
+        
+        // The accumulated gesture distance since becoming responder is
+        // gestureState.d{x,y}
+      },
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderRelease: (evt, gestureState) => {
+        console.log(gestureState);
+        this.penUp();
+        // The user has released all touches while this view is the
+        // responder. This typically means a gesture has succeeded
+      },
+      onPanResponderTerminate: (evt, gestureState) => {
+        // Another component has become the responder, so this gesture
+        // should be cancelled
+      },
+      onShouldBlockNativeResponder: (evt, gestureState) => {
+        // Returns whether this component should block native components from becoming the JS
+        // responder. Returns true by default. Is currently only supported on android.
+        return true;
+      },
+    });
   }
 
   onLostPermission(data) {
@@ -74,6 +135,10 @@ export default class BoardSocket extends Component {
     //modal 
   }
 
+  onDraw() {
+
+  }
+  
   onAnswerForBoard(data) {
     if(data) {
       this.setState({isAllowed: false})
@@ -84,32 +149,70 @@ export default class BoardSocket extends Component {
     this.$socket.emit('resetBoard');
   }
 
-  render() {
-    const { isAllowed, isPenDown } = this.state;
+  askForTurn() {
+    this.$socket.emit('aksForBoard');
+  }
 
+  onHostLeft() {
+  }
+
+  initCanvas = (canvas) => {
+    console.log(canvas);
+    const context = canvas.getContext('2d');
+    context.lineCap = 'round';
+    context.fillStyle = "blue";
+    canvas = Object.assign(canvas, this.$canvas);
+    this.$canvas = Object.assign({}, canvas);;
+    
+  }
+
+  penDown(x, y) {
+    this.drawPath(this.state.selectedColor, this.state.selectedThinckness, 'start', x, y);
+  }
+
+  penMove(x, y) {
+
+  }
+
+  penUp(x, y) {
+
+  }
+
+  drawPath(color, thinckness, type, x, y) {
+    context = this.state.context;
+    context.strokeStyle = color;
+    context.lineWidth = thinckness;
+
+    switch (type) {
+      case 'start':
+        context.beginPath();
+        context.moveTo(x, y);
+        break
+      case 'move':
+        context.lineTo(x, y);
+        context.stroke();
+        break
+      case 'end':
+        context.closePath();
+        break
+    }
+    this.setState({ context: context });
+  }
+
+  render() {
     return (
-      <View>
-        <Button
-          onPress={this.resetPermissions}
-          title="Reset permissions"
-        />
+      <View style={styles.container} {...this._panResponder.panHandlers}>
+        <Canvas ref={this.initCanvas} />
       </View>
-    )
+    );
   }
 
 }
 
 const styles = StyleSheet.create({
-  messageContainer: {
+  container: {
     backgroundColor: '#00FFFF',
     padding: 16,
-  },
-
-  message: {
-    color: '#FFFAF0',
-  },
-
-  sender: {
-    color: '#FF1493',
-  },
+    flex: 1
+  }
 })

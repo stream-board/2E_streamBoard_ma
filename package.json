@@ -19,6 +19,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@terrylinla/react-native-sketch-canvas": "^0.3.1",
     "apollo-cache-inmemory": "^1.1.12",
     "apollo-client": "^2.2.8",
     "apollo-link-http": "^1.5.3",
@@ -29,6 +30,7 @@
     "react": "16.2.0",
     "react-apollo": "^2.1.1",
     "react-native": "0.52.0",
+    "react-native-canvas": "^0.1.20",
     "react-navigation": "^1.5.11",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
