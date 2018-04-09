@@ -53,32 +53,31 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Content >
-          <Text>INICIAR SESION</Text>
-          <Form>
-              <Item floatingLabel>
-                <Label>User Name</Label>
-                <Input
-                onChangeText= {(text)=>{
-                  Store.dispatch( { type:'addRoomName', payload: text })
-                }}
-                />
-              </Item>
-              <Item floatingLabel>
-                <Label>Password</Label>
-                <Input
-                  secureTextEntry={true}
-                  onChangeText= {(text)=>{
-                    Store.dispatch( { type:'addRoomDescription', payload: text })
-                  }}
-                />
-              </Item>
-          </Form>
-          <Button rounded success onPress={() => this.props.navigation.navigate('MainMenu')}>
+      <Container style={styles.container} >
+          <Text style={styles.titleElement}>INICIAR SESION</Text>
+          <Item floatingLabel style={styles.formElement}>
+            <Label>Email</Label>
+            <Input
+            onChangeText= {(text)=>{
+              Store.dispatch( { type:'addRoomName', payload: text })
+            }}
+            />
+          </Item>
+          
+          <Item floatingLabel style={styles.formElement}>
+            <Label>Password</Label>
+            <Input
+              secureTextEntry={true}
+              onChangeText= {(text)=>{
+                Store.dispatch( { type:'addRoomDescription', payload: text })
+              }}
+            />
+          </Item>
+        
+          <Button style={styles.buttonLogin} rounded success onPress={() => this.props.navigation.navigate('MainMenu')}>
             <Text>INGRESAR</Text>
           </Button>
-        </Content>
+
       </Container>
     );
   }
@@ -115,10 +114,10 @@ class JoinRoomPage extends Component {
     return (
       <Container style={styles.container}>
 
-        <Tabs locked={true} tabBarPosition={"overlayTop"}>
+        <Tabs locked={true} tabBarPosition={"overlayTop"} >
           <Tab heading="Buscar" tabBarPosition={"overlayTop"}>
           <Form>
-            <Item floatingLabel>
+            <Item floatingLabel >
                 <Label>Id Room</Label>
                 <Input onChangeText= {(text)=> this.setState({roomId:text})}
                   />
@@ -141,14 +140,30 @@ class JoinRoomPage extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2FFD2',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 4,
-  },
-  buttonsMainMenu: {
-    margin: 10,
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'center',
+
+  },
+
+  titleElement: {
+    margin: 20,
+    backgroundColor: 'skyblue',
+    alignSelf: 'center',
+  },
+
+  formElement: {
+    backgroundColor: 'skyblue',
+    alignSelf: 'center',
+    width: 300,
+    margin: 20,
+
+  },
+
+  buttonLogin:{
+    marginTop: 30,
+    backgroundColor: 'blue',
+    alignSelf: 'center',
 
   }
 });
