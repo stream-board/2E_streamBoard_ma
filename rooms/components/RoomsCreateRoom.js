@@ -11,7 +11,10 @@ import {
   Content,
   Form,
   Item,
-  Input
+  Input,
+  Label,
+  Body,
+  Title
 } from 'native-base';
 import { connect } from 'react-redux';
 
@@ -20,6 +23,7 @@ const mapStateToProps = (state) => ({
 })
 
 export const RoomsCreateRoom = () => {
+
     onAddRoom = (room) => {
       const {dispatch} = this.props
 
@@ -34,43 +38,51 @@ export const RoomsCreateRoom = () => {
     
     onForm = (createRoom) => {
       return (
-        <View>
-          <Input
-          placeholder='Room name'
-          onChangeText= {(text)=>{
-            Store.dispatch( { type:'addRoomName', payload: text })
-          }}
-          />
-          <Input
-            placeholder='Description'
-            onChangeText= {(text)=>{
-              Store.dispatch( { type:'addRoomDescription', payload: text })
-            }}
-          />
-           <Input
-            placeholder='Category'
-            onChangeText= {(text)=>{
-              Store.dispatch( { type:'addRoomCategory', payload: text })
-            }}
-          />
-          <Input
-            placeholder='ID OWNER'
-            onChangeText= {(text)=>{
-              Store.dispatch( { type:'addRoomOwner', payload: Number(text) })
-            }}
-          />
-          <Button
-            onPress={() => {
-              createRoom({ 
-                variables: { 
-                  room: Store.getState().roomCreateParams 
-                }
-              })
-            }}
-            title="Create Room"
-            color="#841584"
-          />
-        </View>
+            <Form>
+              <Item floatingLabel>
+                <Label>Room name</Label>
+                <Input
+                onChangeText= {(text)=>{
+                  Store.dispatch( { type:'addRoomName', payload: text })
+                }}
+                />
+              </Item>
+              <Item floatingLabel>
+                <Label>Description</Label>
+                <Input
+                  onChangeText= {(text)=>{
+                    Store.dispatch( { type:'addRoomDescription', payload: text })
+                  }}
+                />
+              </Item>
+              <Item floatingLabel>
+              <Label>Category</Label>
+                 <Input
+                  onChangeText= {(text)=>{
+                    Store.dispatch( { type:'addRoomCategory', payload: text })
+                  }}
+                />
+              </Item>
+              <Item floatingLabel>
+              <Label>IdOWner</Label>
+                <Input
+                  onChangeText= {(text)=>{
+                    Store.dispatch( { type:'addRoomOwner', payload: Number(text) })
+                  }}
+                />
+              </Item>
+              <Button
+                onPress={() => {
+                  createRoom({ 
+                    variables: { 
+                      room: Store.getState().roomCreateParams 
+                    }
+                  })
+                }}
+                title="Create Room"
+                color="#841584"
+              />
+            </Form>
       )
     };
 

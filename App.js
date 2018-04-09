@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, View } from 'react-native';
-import { Container, Header, Content, Spinner, Button, Body, Tabs, Tab, Text, Title, Input } from 'native-base';
+import { Container, Header, Content, Spinner, Button, Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon } from 'native-base';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
@@ -14,6 +14,8 @@ import Client from './apolloConfig';
 
 import Expo from "expo";
 import CreateRoomPage from './rooms/components/RoomsCreateRoom.js';
+import RoomsList from './rooms/components/RoomsList.js';
+import RoomsDetail from './rooms/components/RoomsDetail.js';
 import { StackNavigator } from "react-navigation";
 
 export default class App extends Component {  
@@ -39,13 +41,7 @@ export default class App extends Component {
     return (
       <ApolloProvider client={Client}>
         <Provider store={Store}>
-          <Container>
-            <Header />
-              <Content>
-                <RoomsCreateRoom />
-                <RoomsList />
-              </Content>
-          </Container>
+          <RootStack />
         </Provider>
       </ApolloProvider>
     );
@@ -54,13 +50,32 @@ export default class App extends Component {
 
 
 class LoginPage extends Component {
+
   render() {
     return (
-      <Container>
-        <Content>
+      <Container style={styles.container}>
+        <Content >
           <Text>INICIAR SESION</Text>
-          <Input />
-          <Button primary onPress={() => this.props.navigation.navigate('MainMenu')}>
+          <Form>
+              <Item floatingLabel>
+                <Label>User Name</Label>
+                <Input
+                onChangeText= {(text)=>{
+                  Store.dispatch( { type:'addRoomName', payload: text })
+                }}
+                />
+              </Item>
+              <Item floatingLabel>
+                <Label>Password</Label>
+                <Input
+                  secureTextEntry={true}
+                  onChangeText= {(text)=>{
+                    Store.dispatch( { type:'addRoomDescription', payload: text })
+                  }}
+                />
+              </Item>
+          </Form>
+          <Button rounded success onPress={() => this.props.navigation.navigate('MainMenu')}>
             <Text>INGRESAR</Text>
           </Button>
         </Content>
@@ -72,20 +87,15 @@ class LoginPage extends Component {
 class MainMenuPage extends Component {
   render() {
     return (
-      <Container>
-      <Header>
-        <Body>
-          <Title>Stream Board</Title>
-        </Body>
-      </Header>
-        <Content>
-          <Button primary onPress={() => this.props.navigation.navigate('CreateRoom')}>
+      <Container style={styles.container}>
+        <Content style={styles.buttonsMainMenu}>
+          <Button rounded primary onPress={() => this.props.navigation.navigate('CreateRoom')}>
             <Text>Crear sala</Text>
           </Button>
-          <Button primary onPress={() => this.props.navigation.navigate('JoinRoom')}>
+          <Button rounded primary onPress={() => this.props.navigation.navigate('JoinRoom')}>
             <Text>Unirse a sala</Text>
           </Button>
-          <Button primary onPress={() => this.props.navigation.goBack() }>
+          <Button rounded primary onPress={() => this.props.navigation.goBack() }>
             <Text>Cerrar Sesion</Text>
           </Button>
         </Content>
@@ -95,22 +105,33 @@ class MainMenuPage extends Component {
 }
 
 class JoinRoomPage extends Component {
+  constructor(...args){
+    super(...args);
+    this.state = {
+      roomId: 27
+    };
+  }
   render() {
     return (
-      <Container>
-      <Header>
-        <Text>Join Room</Text>
-      </Header>
-      <Content>
+      <Container style={styles.container}>
+
         <Tabs locked={true} tabBarPosition={"overlayTop"}>
           <Tab heading="Buscar" tabBarPosition={"overlayTop"}>
-            <Text>Digite Id de la Sala</Text>
+          <Form>
+            <Item floatingLabel>
+                <Label>Id Room</Label>
+                <Input onChangeText= {(text)=> this.setState({roomId:text})}
+                  />
+            </Item>
+          </Form>
+          <Button onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: this.state.roomId })}>
+            <Text>Buscar</Text>
+          </Button>
           </Tab>
           <Tab heading="Rooms">
-            <Spinner />
+            <RoomsList />
           </Tab>
         </Tabs>
-      </Content>
       </Container>
     );
   }
@@ -119,11 +140,17 @@ class JoinRoomPage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F2FFD2',
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 4,
   },
+  buttonsMainMenu: {
+    margin: 10,
+    flex: 1,
+    flexDirection: 'column',
+
+  }
 });
 
 
@@ -133,7 +160,9 @@ const RootStack = StackNavigator(
     MainMenu: { screen: MainMenuPage },
     JoinRoom: { screen: JoinRoomPage },
 
+    RoomsList: {screen: RoomsList},
     CreateRoom: { screen: CreateRoomPage },
+    RoomsDetail: { screen: RoomsDetail},
   },
   {
     initialRouteName: "Login",

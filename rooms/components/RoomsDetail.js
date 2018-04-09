@@ -6,18 +6,30 @@ import {
     Content,
     Form,
     Item,
-    Input
+    Input,
+    Text,
+    Tabs,
+    Tab,
   } from 'native-base';
 
 import Chat from './../../chat/components/Chat';
 
 export default class RoomsDetail extends Component {
+
     render() {
-        const roomId = this.props.roomId;
+        const roomId = this.props.navigation.state.params.roomId;
         return (
-            <Content>
-                <Chat roomId={roomId}/>
-            </Content>
+                <Tabs locked={true} >
+                    <Tab heading="Chat">
+                        <Chat roomId={roomId}/>
+                    </Tab>
+                    <Tab heading="Board">
+                        <Spinner />
+                    </Tab>
+                    <Tab heading="Video">
+                        <Spinner />
+                    </Tab>
+                </Tabs>
         )
     }
 }

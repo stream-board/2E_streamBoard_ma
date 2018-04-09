@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Text
 } from 'react-native';
+import { Container, Content, Footer} from "native-base"
+
 import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
 import { CHAT_MESSAGE_LIST_QUERY } from './../TypesDef';
@@ -26,10 +28,14 @@ export default ({ roomId: currentId }) => (
           Store.dispatch(actionCreators.addChatMessageList(data.chatMsgByRoomId));
         }
         return (
-          <View>
+          <Container>
+          <Content>
             <ChatList />
+          </Content>
+          <Footer>
             <ChatWebsocket roomId={currentId}/>
-          </View>
+          </Footer>
+          </Container>
         )
       }
     }
@@ -50,4 +56,5 @@ const styles = StyleSheet.create({
   sender: {
     color: '#FF1493',
   },
+
 })
