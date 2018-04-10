@@ -1,6 +1,6 @@
 import CreateRoomPage from './rooms/components/RoomsCreateRoom.js';
 import RoomsDetail from './rooms/components/RoomsDetail.js';
-import LoginPage from './routes/Login/Login.js';
+import LoginPage from './sessions/components/SignIn.js';
 import MainMenuPage from './routes/MainMenu/MainMenu.js';
 import JoinRoomPage from './routes/MainMenu/JoinRoom.js';
 
