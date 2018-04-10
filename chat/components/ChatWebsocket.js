@@ -11,7 +11,7 @@ import { Container, Header, Content, Form, Item, Input } from 'native-base';
 import Client from './../../apolloConfig';
 import Store from './../../reduxConfig';
 import { connect } from 'react-redux';
-import { actionCreators } from './../../rooms/roomsRedux';
+import { chatActionsCreators } from './../chatRedux';
 import { serverIp, port, entryPoint } from './../Server';
 import { CHAT_MESSAGE_LIST_QUERY } from './../TypesDef';
 
@@ -76,7 +76,7 @@ export class ChatWebsocket extends Component {
       user_id: chatData.user_id,
       message: chatData.message
     }
-    Store.dispatch(actionCreators.addChatMessage(messageObj));
+    Store.dispatch(chatActionsCreators.addChatMessage(messageObj));
   }
 
   componentWillUnmount() {

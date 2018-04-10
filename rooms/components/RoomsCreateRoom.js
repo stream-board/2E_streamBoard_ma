@@ -17,74 +17,54 @@ import {
   Title
 } from 'native-base';
 import { connect } from 'react-redux';
+import { roomActionCreators } from "./../roomsRedux";
 
 const mapStateToProps = (state) => ({
   queryParams: state.queryParams,
 })
 
 export const RoomsCreateRoom = () => {
-
-    onAddRoom = (room) => {
-      const {dispatch} = this.props
-
-      dispatch(actionCreators.add(room))
-    }
-
-    onRemoveRoom = (index) => {
-      const {dispatch} = this.props
-
-      dispatch(actionCreators.remove(index))
-    }
-    
-    onForm = (createRoom) => {
-      return (
-            <Form>
-              <Item floatingLabel>
-                <Label>Room name</Label>
-                <Input
-                onChangeText= {(text)=>{
-                  Store.dispatch( { type:'addRoomName', payload: text })
-                }}
-                />
-              </Item>
-              <Item floatingLabel>
-                <Label>Description</Label>
-                <Input
-                  onChangeText= {(text)=>{
-                    Store.dispatch( { type:'addRoomDescription', payload: text })
-                  }}
-                />
-              </Item>
-              <Item floatingLabel>
-              <Label>Category</Label>
-                 <Input
-                  onChangeText= {(text)=>{
-                    Store.dispatch( { type:'addRoomCategory', payload: text })
-                  }}
-                />
-              </Item>
-              <Item floatingLabel>
-              <Label>IdOWner</Label>
-                <Input
-                  onChangeText= {(text)=>{
-                    Store.dispatch( { type:'addRoomOwner', payload: Number(text) })
-                  }}
-                />
-              </Item>
-              <Button
-                onPress={() => {
-                  createRoom({ 
-                    variables: { 
-                      room: Store.getState().roomCreateParams 
-                    }
-                  })
-                }}
-                title="Create Room"
-                color="#841584"
-              />
-            </Form>
-      )
-    };
+  onForm = (createRoom) => {
+    return (
+      <View>
+        <Input
+        placeholder='Room name'
+        onChangeText= {(text)=>{
+          Store.dispatch(roomActionCreators.addRoomName(text));
+        }}
+        />
+        <Input
+          placeholder='Description'
+          onChangeText= {(text)=>{
+            Store.dispatch(roomActionCreators.addRoomDescription(text));
+          }}
+        />
+          <Input
+          placeholder='Category'
+          onChangeText= {(text)=>{
+            Store.dispatch(roomActionCreators.addRoomCategory(text));
+          }}
+        />
+        <Input
+          placeholder='ID OWNER'
+          onChangeText= {(userId)=>{
+            Store.dispatch(roomActionCreators.addRoomOwner(userId));
+          }}
+        />
+        <Button
+          onPress={() => {
+            createRoom({ 
+              variables: { 
+                room: Store.getState().roomCreateParams 
+              }
+            })
+          }}
+          title="Create Room"
+          color="#841584"
+        />
+      </View>
+    )
+  };
 
     onCreateRoom = (data) => {
       console.log(data);
