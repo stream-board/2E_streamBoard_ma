@@ -16,7 +16,6 @@ import {
 import { Query } from 'react-apollo';
 import { CHAT_MESSAGE_LIST_QUERY } from './../TypesDef';
 import Store from './../../reduxConfig';
-import { actionsCreators } from './../../rooms/roomsRedux';
 import { connect } from 'react-redux';
 
 

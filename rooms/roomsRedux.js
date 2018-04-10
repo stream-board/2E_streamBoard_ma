@@ -1,65 +1,58 @@
 import { combineReducers } from "redux";
 
 export const types = {
-    addRoomName: 'addRoomName',
-    addRoomDescription: 'addRoomDescription',
-    addRoomOwner: 'addRoomOwner',
-    addRoomCategory: 'addRoomCategory',
+    ADD_ROOM_NAME: 'ADD_ROOM_NAME',
+    ADD_ROOM_DESCRIPTION: 'ADD_ROOM_DESCRIPTION',
+    ADD_ROOM_OWNER: 'ADD_ROOM_OWNER',
+    ADD__ROOM_CATEGORY: 'ADD__ROOM_CATEGORY',
     addUserEmail: 'addUserEmail',
     addUserPassword: 'addUserPassword',
-    ADD_CHAT_MESSAGE: 'ADD_CHAT_MESSAGE',
-    ADD_CHAT_LIST: 'ADD_CHAT_LIST'
 };
 
-export const actionCreators = {
-    add: (item) => {
-        return { type: types.ADD, payload: item };
+export const roomActionCreators = {
+    addRoomName: (text) => {
+        return { type: types.ADD_ROOM_NAME, payload: text };
     },
-    
-    remove: (index) => {
-        return { type: types.REMOVE, payload: index }
+    addRoomDescription: (text) => {
+        return { type: types.ADD_ROOM_DESCRIPTION, payload: text }
     },
-
-    addChatMessage: (item) => {
-        console.log(item);
-        return { type: types.ADD_CHAT_MESSAGE, payload: item };
+    addRoomOwner: (userId) => {
+        return { type: types.ADD_ROOM_OWNER, payload: userId }
     },
-
-    addChatMessageList: (list) => {
-        return { type: types.ADD_CHAT_LIST, payload: list };
+    addRoomCategory: (text) => {
+        return { type: types.ADD__ROOM_CATEGORY, payload: text }
     }
 }
 
+const roomCreateParams = {};
 const initialState = {
- roomCreateParams:{},
  sessionCreateParams:{},
- chatMessageList: []
 };
 
-const roomCreateReducer = (state = initialState.roomCreateParams, action) => {
+export const roomCreateReducer = (state = roomCreateParams, action) => {
 
     const { type, payload } = action;
 
     switch (type) {
-        case types.addRoomName: {
+        case types.ADD_ROOM_NAME: {
             return {
                 ...state,
                 nameRoom: payload
             }
         }
-        case types.addRoomDescription: {
+        case types.ADD_ROOM_DESCRIPTION: {
             return {
                 ...state,
                 descriptionRoom: payload
             }
         }
-        case types.addRoomOwner: {
+        case types.ADD_ROOM_OWNER: {
             return {
                 ...state,
                 idOwner: payload
             }
         }
-        case types.addRoomCategory: {
+        case types.ADD__ROOM_CATEGORY: {
             return {
                 ...state,
                 categoryRoom: payload
@@ -91,25 +84,3 @@ const sessionCreateReducer = (state = initialState.sessionCreateParams, action) 
 
     return state;
 }
-
-const chatMessageListReducer = (state = initialState.chatMessageList, action) => {
-    const { type, payload } = action;
-
-    switch (type) {
-        case types.ADD_CHAT_MESSAGE: {
-            return [...state, payload]
-        }
-
-        case types.ADD_CHAT_LIST: {
-            return payload;
-        }
-    }
-
-    return state;
-}
-
-export default combineReducers({
-    roomCreateParams: roomCreateReducer,
-    sessionCreateParams: sessionCreateReducer,
-    chatMessageList: chatMessageListReducer,
-})

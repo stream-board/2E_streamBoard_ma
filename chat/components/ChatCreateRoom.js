@@ -2,7 +2,7 @@ import React from 'react';
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
 import { ChatRoomCreateMutation } from './../TypesDef'
 import { Mutation } from 'react-apollo';
-
+/* DEPRECATED */
 export const ChatRoomCreate = () => {
     let input = {
       id: 69
