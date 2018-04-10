@@ -26,7 +26,6 @@ export class SignIn extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: false, text: '' };
     this.onForm = this.onForm.bind(this);
     this.onCreateSession = this.onCreateSession.bind(this);
   }
@@ -70,8 +69,10 @@ export class SignIn extends Component {
   onCreateSession(data){
     console.log(data);
     console.log(this.props.navigation);
-    Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
-    return this.props.navigation.navigate('MainMenu')
+    if(data){
+      Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
+    }
+    return this.props.navigation.navigate('MainMenu');
   };
 
   render(){
