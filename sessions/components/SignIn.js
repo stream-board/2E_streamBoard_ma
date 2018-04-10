@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View} from 'react-native';
 import { SessionCreateMutation } from './../TypesDef'
 import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
@@ -10,7 +10,10 @@ import {
   Content,
   Form,
   Item,
-  Input
+  Input,
+  Button,
+  Title,
+  Label
 } from 'native-base';
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
@@ -22,20 +25,28 @@ const mapStateToProps = (state) => ({
 export const SignIn = () => {
     onForm = (createSession) => {
       return (
-        <View>
-          <Input
-          placeholder='E-mail'
-          onChangeText= {(text)=>{
-            Store.dispatch( sessionActionCreators.addUserEmail(text));
-          }}
-          />
+        <Container>
+          <Title style={styles.titleElement}>HLA</Title>
+
+          <Item style={styles.formElement}>
+            <Label>Email</Label>
+            <Input
+            onChangeText= {(text)=>{
+              Store.dispatch( sessionActionCreators.addUserEmail(text));
+            }}
+            />
+          </Item>
+
+          <Item style={styles.formElement}>
           <Input
             placeholder='Password'
             onChangeText= {(text)=>{
               Store.dispatch( sessionActionCreators.addUserPassword(text));
             }}
           />
-          <Button
+          </Item>
+
+          <Button style={styles.buttonStyle} rounded success
             onPress={() => {
               createSession({ 
                 variables: { 
@@ -43,16 +54,15 @@ export const SignIn = () => {
                 }
               })
             }}
-            title="Sign In"
-            color="#841584"
-          />
-        </View>
+          ><Text>INGRESAR</Text></Button>
+        </Container>
       )
     };
 
     onCreateSession = (data) => {
       console.log(data);
       Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
+      //console.log(this.props.navigation.navigate('MainMenu'))
       return (
         <View>
           <Text>{Store.getState().currentUser.name}</Text>
@@ -77,3 +87,24 @@ export const SignIn = () => {
   }
 
 export default connect(mapStateToProps)(SignIn)
+
+const styles = StyleSheet.create({
+  container: {
+    
+
+  },
+
+  titleElement: {
+    margin: 20,
+    backgroundColor: 'skyblue',
+    alignSelf: 'center',
+
+  },
+
+  formElement: {
+    height: 70,
+  },
+
+  buttonStyle:{
+  }
+});
