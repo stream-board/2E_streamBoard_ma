@@ -4,6 +4,7 @@ export const types = {
     ADD_USER_EMAIL: 'ADD_USER_EMAIL',
     ADD_USER_PASSWORD: 'ADD_USER_PASSWORD',
     ADD_CURRENT_USER: 'ADD_CURRENT_USER',
+    DELETE_CURRENT_USER: 'DELETE_CURRENT_USER',
 };
 
 export const sessionActionCreators = {
@@ -15,6 +16,9 @@ export const sessionActionCreators = {
     },
     addCurrentUser: (object) => {
         return { type: types.ADD_CURRENT_USER, payload: object }
+    },
+    deleteCurrentUser: () => {
+        return { type: types.DELETE_CURRENT_USER, payload: {} }
     }
 }
 
@@ -49,6 +53,9 @@ export const currentUserReducer = (state = currrentUser, action) => {
 
     switch (type) {
         case types.ADD_CURRENT_USER:
+            return payload;
+        break
+        case types.DELETE_CURRENT_USER:
             return payload;
         break
     }

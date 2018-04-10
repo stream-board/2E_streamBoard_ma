@@ -1,6 +1,7 @@
 import CreateRoomPage from './rooms/components/RoomsCreateRoom.js';
 import RoomsDetail from './rooms/components/RoomsDetail.js';
 import SignInPage from './sessions/components/SignIn.js';
+import SignOutPage from './sessions/components/SignOut.js';
 import MainMenuPage from './routes/MainMenu/MainMenu.js';
 import JoinRoomPage from './routes/MainMenu/JoinRoom.js';
 
@@ -14,9 +15,10 @@ export const RootStack = StackNavigator(
     JoinRoom: { screen: JoinRoomPage },
     CreateRoom: { screen: CreateRoomPage },
     RoomsDetail: { screen: RoomsDetail},
+    SignOut: { screen: SignOutPage},
   },
   {
-    initialRouteName: "SignIn",
+    initialRouteName: "SignOut",
   }
 );
 
