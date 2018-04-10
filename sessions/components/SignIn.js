@@ -71,7 +71,7 @@ export class SignIn extends Component {
     console.log(data);
     console.log(this.props.navigation);
     Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
-    return this.props.navigation.navigate('MainMenu')
+    return this.props.navigation.navigate('Lobby');
   };
 
   render(){
