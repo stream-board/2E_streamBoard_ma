@@ -74,7 +74,7 @@ class LoginPage extends Component {
             />
           </Item>
         
-          <Button style={styles.buttonLogin} rounded success onPress={() => this.props.navigation.navigate('MainMenu')}>
+          <Button style={styles.buttonStyle} rounded success onPress={() => this.props.navigation.navigate('MainMenu')}>
             <Text>INGRESAR</Text>
           </Button>
 
@@ -87,17 +87,16 @@ class MainMenuPage extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <Content style={styles.buttonsMainMenu}>
-          <Button rounded primary onPress={() => this.props.navigation.navigate('CreateRoom')}>
+          <Title style={ styles.titleElement }>Bienvenido de nuevo $USER</Title>
+          <Button rounded primary style={ styles.buttonStyle } onPress={() => this.props.navigation.navigate('CreateRoom')}>
             <Text>Crear sala</Text>
           </Button>
-          <Button rounded primary onPress={() => this.props.navigation.navigate('JoinRoom')}>
+          <Button rounded primary style={ styles.buttonStyle } onPress={() => this.props.navigation.navigate('JoinRoom')}>
             <Text>Unirse a sala</Text>
           </Button>
-          <Button rounded primary onPress={() => this.props.navigation.goBack() }>
+          <Button rounded primary style={ styles.buttonStyle } onPress={() => this.props.navigation.goBack() }>
             <Text>Cerrar Sesion</Text>
           </Button>
-        </Content>
       </Container>
     );
   }
@@ -150,6 +149,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'skyblue',
     alignSelf: 'center',
+
   },
 
   formElement: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
 
   },
 
-  buttonLogin:{
+  buttonStyle:{
     marginTop: 30,
     backgroundColor: 'blue',
     alignSelf: 'center',
