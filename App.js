@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
-import { Container, Header, Content, Spinner } from 'native-base';
+import { AppRegistry, StyleSheet, View } from 'react-native';
+import { Container, Header, Content, Spinner, Button, Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon } from 'native-base';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
@@ -11,39 +11,38 @@ import { Provider } from 'react-redux';
 
 import Store from './reduxConfig';
 import Client from './apolloConfig';
-import RoomsList from './rooms/components/RoomsList';
-import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom';
-import RoomsDetail from './rooms/components/RoomsDetail';
-import ChatMessageList from './chat/components/ChatMessageList';
-import ChatWebsocket from './chat/components/ChatWebsocket';
-import SignIn from './sessions/components/SignIn';
+
+import Expo from "expo";
+import { RootStack } from './RootStack.js';
 
 export default class App extends Component {  
   constructor(...args) {
     super(...args);
+    this.state = {
+      isReady: false
+    };
+  }
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("native-base/Fonts/Ionicons.ttf")
+    });
+    this.setState({ isReady: true });
   }
 
   render() {
+    if (!this.state.isReady) {
+      return <Expo.AppLoading />;
+    }
     return (
       <ApolloProvider client={Client}>
         <Provider store={Store}>
-          <Container>
-            <Header />
-              <Content>
-                <RoomsDetail roomId={43} />
-              </Content>
-          </Container>
+          <RootStack />
         </Provider>
       </ApolloProvider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+AppRegistry.registerComponent('App', () => RootStack);

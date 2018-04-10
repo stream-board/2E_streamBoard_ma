@@ -13,7 +13,9 @@ import {
   Content,
   Form,
   List,
-  ListItem
+  ListItem,
+  Title,
+  Subtitle
 } from 'native-base';
 
 import { Query } from 'react-apollo';
@@ -26,15 +28,19 @@ export default () => (
         if (loading) return <Spinner />;
         if (error) return <Text>{`Error: ${error}`}</Text>;
         return (
-          <View>
+          <Container>
+          <List>
             {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
-              <View key={index} style={styles.messageContainer}>
-                <Text style={styles.message}>{idRoom}</Text>
-                <Text style={styles.sender}>{nameRoom}</Text>
-                <Text style={styles.sender}>{owner && (owner.name)}</Text>
-              </View>
+              <ListItem 
+                key={index} style={styles.roomContainer}
+                title={ {nameRoom} }
+                subtitle=  {owner.name}
+              >
+                <Text>IdRoom: {idRoom}</Text>
+              </ListItem>
             ))}
-          </View>
+          </List>
+          </Container>
         )
       }
     }
@@ -42,16 +48,10 @@ export default () => (
 );
 
 const styles = StyleSheet.create({
-  messageContainer: {
-    backgroundColor: '#00FFFF',
-    padding: 16,
-  },
-
-  message: {
-    color: '#FFFAF0',
-  },
-
-  sender: {
-    color: '#FF1493',
+  roomContainer: {
+    marginTop: 5,
+    marginBottom: 5,
+    flex: 1,
+    backgroundColor: '#0DEBFF'
   },
 })

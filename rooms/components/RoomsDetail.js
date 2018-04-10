@@ -7,7 +7,10 @@ import {
     Content,
     Form,
     Item,
-    Input
+    Input,
+    Text,
+    Tabs,
+    Tab,
   } from 'native-base';
 
 import Chat from './../../chat/components/Chat';
@@ -47,7 +50,7 @@ const RoomDetail = ({ loading, error, room }) => {
     )
 }
 
-export default class RoomsDetail extends Component{
+export default class RoomsDetail extends Component {
     constructor(props) {
         super(props);
     }

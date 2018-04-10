@@ -3,14 +3,14 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  Text
 } from 'react-native';
 import { 
     Container, 
     Header, 
     Content, 
     List, 
-    ListItem 
+    ListItem,
+    Text
 } from 'native-base';
 
 import { Query } from 'react-apollo';
@@ -24,19 +24,30 @@ const mapStateToProps = (state) => ({
 });
 
 export class ChatList extends Component {
-    render() {
-        const { chatMessageList } = this.props;
-        return (
-            <View>
-                {chatMessageList.map(({ id, message, user_id}, index) => (
-                    <View key={index}>
-                        <Text>{message}</Text>
-                        <Text>{user_id}</Text>
-                    </View>
-                ))}
+  render() {
+    const { chatMessageList } = this.props;
+    return (
+      <View>
+        {chatMessageList.map(({ id, message, user_id}, index) => (
+            <View key={index} style={styles.messageOwn}>
+              <Text>User: {user_id}</Text>
+              <Text>Msg: {message}</Text>
             </View>
-        )
-    }
+          ))}
+      </View>
+    )
+  }
 }
 
 export default connect(mapStateToProps)(ChatList);
+
+const styles = StyleSheet.create({
+  messageOwn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0CE882',
+    width: 320,
+    margin: 5,
+    borderRadius: 10,
+  },
+})

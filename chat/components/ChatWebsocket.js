@@ -99,7 +99,7 @@ export class ChatWebsocket extends Component {
           onChangeText={(text) => { this.setState({ text: text })}}
           value={this.state.text}
         />
-        <Button
+        <Button success
           onPress={() => this.sendMessage(this.state.text)}
           title="Enviar"
         />
