@@ -1,5 +1,6 @@
 import React, { Component }from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import {Container, Header, Content, Footer} from "native-base"
 
 import ChatMessageList from './ChatMessageList';
 import ChatWebsocket from './ChatWebsocket';
@@ -8,21 +9,17 @@ import ChatList from './ChatList';
 export default class Chat extends Component {
   render() {
     const { roomId } = this.props;
-
     return (
-      <View style={styles.chatContainer}>
+      <Container>
         <Text>{`Chat Room ${roomId}`}</Text>
         <ChatMessageList roomId={roomId} />
-      </View>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  chatContainer: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
+  chatContent: {
     backgroundColor: '#287b97'
   }
 })

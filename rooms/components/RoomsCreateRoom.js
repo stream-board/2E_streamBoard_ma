@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { Component }from 'react';
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
 import { ROOMS_CREATE_ROOM_MUTATION } from './../TypesDef'
 import { ALL_ROOMS_QUERY } from './../TypesDef'
@@ -11,79 +11,77 @@ import {
   Content,
   Form,
   Item,
-  Input
+  Input,
+  Label,
+  Body,
+  Title
 } from 'native-base';
 import { connect } from 'react-redux';
+import { roomActionCreators } from "./../roomsRedux";
 
 const mapStateToProps = (state) => ({
   queryParams: state.queryParams,
 })
 
-export const RoomsCreateRoom = () => {
-    onAddRoom = (room) => {
-      const {dispatch} = this.props
+export class RoomsCreateRoom extends Component{
+  constructor(props){
+    super(props);
+    this.onForm = this.onForm.bind(this);
+    this.onCreateRoom = this.onCreateRoom.bind(this);
+  }
 
-      dispatch(actionCreators.add(room))
-    }
-
-    onRemoveRoom = (index) => {
-      const {dispatch} = this.props
-
-      dispatch(actionCreators.remove(index))
-    }
-    
-    onForm = (createRoom) => {
-      return (
-        <View>
-          <Input
-          placeholder='Room name'
+  onForm(createRoom){
+    return (
+      <View>
+        <Input
+        placeholder='Room name'
+        onChangeText= {(text)=>{
+          Store.dispatch(roomActionCreators.addRoomName(text));
+        }}
+        />
+        <Input
+          placeholder='Description'
           onChangeText= {(text)=>{
-            Store.dispatch( { type:'addRoomName', payload: text })
+            Store.dispatch(roomActionCreators.addRoomDescription(text));
           }}
-          />
+        />
           <Input
-            placeholder='Description'
-            onChangeText= {(text)=>{
-              Store.dispatch( { type:'addRoomDescription', payload: text })
-            }}
-          />
-           <Input
-            placeholder='Category'
-            onChangeText= {(text)=>{
-              Store.dispatch( { type:'addRoomCategory', payload: text })
-            }}
-          />
-          <Input
-            placeholder='ID OWNER'
-            onChangeText= {(text)=>{
-              Store.dispatch( { type:'addRoomOwner', payload: Number(text) })
-            }}
-          />
-          <Button
-            onPress={() => {
-              createRoom({ 
-                variables: { 
-                  room: Store.getState().roomCreateParams 
-                }
-              })
-            }}
-            title="Create Room"
-            color="#841584"
-          />
-        </View>
-      )
-    };
+          placeholder='Category'
+          onChangeText= {(text)=>{
+            Store.dispatch(roomActionCreators.addRoomCategory(text));
+          }}
+        />
+        <Input
+          placeholder='ID OWNER'
+          onChangeText= {(userId)=>{
+            Store.dispatch(roomActionCreators.addRoomOwner(userId));
+          }}
+        />
+        <Button
+          onPress={() => {
+            createRoom({ 
+              variables: { 
+                room: Store.getState().roomCreateParams 
+              }
+            })
+          }}
+          title="Create Room"
+          color="#841584"
+        />
+      </View>
+    )
+  };
 
-    onCreateRoom = (data) => {
-      console.log(data);
-      return (
-        <View>
-          <Text>Redirección RoomDetail</Text>
-        </View>
-      )
-    };
+  onCreateRoom(data){
+    console.log(data);
+    return (
+      <View>
+        <Text>Redirección RoomDetail</Text>
+      </View>
+    )
+  };
 
-
+  render(){
     return (
       <Mutation 
         mutation={ROOMS_CREATE_ROOM_MUTATION}
@@ -103,7 +101,7 @@ export const RoomsCreateRoom = () => {
       >
         {(createRoom, { loading, error, data }) => (
           <View>
-          {(data ? onCreateRoom(data) : onForm(createRoom))}  
+          {(data ? this.onCreateRoom(data) : this.onForm(createRoom))}  
           {loading && <Spinner />}
           {error && <Text> Error: ${error}</Text>}  
           </View>
@@ -111,5 +109,6 @@ export const RoomsCreateRoom = () => {
       </Mutation>
     )
   }
+}
 
 export default connect(mapStateToProps)(RoomsCreateRoom)
