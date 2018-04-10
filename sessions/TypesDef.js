@@ -16,7 +16,8 @@ export const ValidateSessionQuery = gql`
       nickname,
       name,
       token,
-      client
+      client,
+      image
     }
   }
 `;
@@ -29,7 +30,8 @@ export const SessionCreateMutation = gql`
       nickname,
       name,
       token,
-      client
+      client,
+      image
     }
   }
 `;

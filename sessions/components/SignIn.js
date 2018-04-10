@@ -52,9 +52,10 @@ export const SignIn = () => {
 
     onCreateSession = (data) => {
       console.log(data);
+      Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
       return (
         <View>
-          <Text>Redirección RoomsDetail</Text>
+          <Text>{Store.getState().currentUser.name}</Text>
         </View>
       )
     };
