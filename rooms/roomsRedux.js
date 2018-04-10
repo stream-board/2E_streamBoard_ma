@@ -5,8 +5,6 @@ export const types = {
     ADD_ROOM_DESCRIPTION: 'ADD_ROOM_DESCRIPTION',
     ADD_ROOM_OWNER: 'ADD_ROOM_OWNER',
     ADD__ROOM_CATEGORY: 'ADD__ROOM_CATEGORY',
-    addUserEmail: 'addUserEmail',
-    addUserPassword: 'addUserPassword',
 };
 
 export const roomActionCreators = {
@@ -25,9 +23,6 @@ export const roomActionCreators = {
 }
 
 const roomCreateParams = {};
-const initialState = {
- sessionCreateParams:{},
-};
 
 export const roomCreateReducer = (state = roomCreateParams, action) => {
 
@@ -56,28 +51,6 @@ export const roomCreateReducer = (state = roomCreateParams, action) => {
             return {
                 ...state,
                 categoryRoom: payload
-            }
-        }
-    }
-
-    return state;
-}
-
-const sessionCreateReducer = (state = initialState.sessionCreateParams, action) => {
-
-    const { type, payload } = action;
-
-    switch (type) {
-        case types.addUserEmail: {
-            return {
-                ...state,
-                email: payload
-            }
-        }
-        case types.addUserPassword: {
-            return {
-                ...state,
-                password: payload
             }
         }
     }

@@ -13,31 +13,26 @@ import {
   Input
 } from 'native-base';
 import { connect } from 'react-redux';
+import { sessionActionCreators } from "./../sessionsRedux";
 
 const mapStateToProps = (state) => ({
   queryParams: state.queryParams,
 })
 
 export const SignIn = () => {
-    onAddSession = (session) => {
-      const {dispatch} = this.props
-
-      dispatch(actionCreators.add(session))
-    }
-    
     onForm = (createSession) => {
       return (
         <View>
           <Input
-          placeholder='email'
+          placeholder='E-mail'
           onChangeText= {(text)=>{
-            Store.dispatch( { type:'addUserEmail', payload: text })
+            Store.dispatch( sessionActionCreators.addUserEmail(text));
           }}
           />
           <Input
             placeholder='Password'
             onChangeText= {(text)=>{
-              Store.dispatch( { type:'addUserPassword', payload: text })
+              Store.dispatch( sessionActionCreators.addUserPassword(text));
             }}
           />
           <Button
@@ -59,7 +54,7 @@ export const SignIn = () => {
       console.log(data);
       return (
         <View>
-          <Text>Redirección RoomsDetail roomId={1}</Text>
+          <Text>Redirección RoomsDetail</Text>
         </View>
       )
     };
@@ -67,10 +62,7 @@ export const SignIn = () => {
 
     return (
       <Mutation 
-        mutation={SessionCreateMutation}
-        update={(cache, { data: data })=>{
-          let newSession = data.createSession;
-        }}  
+        mutation={SessionCreateMutation} 
       >
         {(createSession, { loading, error, data }) => (
           <View>
