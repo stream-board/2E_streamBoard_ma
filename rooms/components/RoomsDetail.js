@@ -50,7 +50,7 @@ const RoomDetail = ({ loading, error, room }) => {
     )
 }
 
-export default class RoomsDetail extends Component{
+export default class RoomsDetail extends Component {
     constructor(props) {
         super(props);
     }

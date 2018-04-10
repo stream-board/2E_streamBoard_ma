@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { Component }from 'react';
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
 import { ROOMS_CREATE_ROOM_MUTATION } from './../TypesDef'
 import { ALL_ROOMS_QUERY } from './../TypesDef'
@@ -23,8 +23,14 @@ const mapStateToProps = (state) => ({
   queryParams: state.queryParams,
 })
 
-export const RoomsCreateRoom = () => {
-  onForm = (createRoom) => {
+export class RoomsCreateRoom extends Component{
+  constructor(props){
+    super(props);
+    this.onForm = this.onForm.bind(this);
+    this.onCreateRoom = this.onCreateRoom.bind(this);
+  }
+
+  onForm(createRoom){
     return (
       <View>
         <Input
@@ -66,16 +72,16 @@ export const RoomsCreateRoom = () => {
     )
   };
 
-    onCreateRoom = (data) => {
-      console.log(data);
-      return (
-        <View>
-          <Text>Redirección RoomDetail</Text>
-        </View>
-      )
-    };
+  onCreateRoom(data){
+    console.log(data);
+    return (
+      <View>
+        <Text>Redirección RoomDetail</Text>
+      </View>
+    )
+  };
 
-
+  render(){
     return (
       <Mutation 
         mutation={ROOMS_CREATE_ROOM_MUTATION}
@@ -95,7 +101,7 @@ export const RoomsCreateRoom = () => {
       >
         {(createRoom, { loading, error, data }) => (
           <View>
-          {(data ? onCreateRoom(data) : onForm(createRoom))}  
+          {(data ? this.onCreateRoom(data) : this.onForm(createRoom))}  
           {loading && <Spinner />}
           {error && <Text> Error: ${error}</Text>}  
           </View>
@@ -103,5 +109,6 @@ export const RoomsCreateRoom = () => {
       </Mutation>
     )
   }
+}
 
 export default connect(mapStateToProps)(RoomsCreateRoom)
