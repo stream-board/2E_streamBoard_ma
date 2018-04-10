@@ -35,6 +35,7 @@ export default class BoardSocket extends Component {
     this.onResetBoard = this.onResetBoard.bind(this);
     this.onLostPermission = this.onLostPermission.bind(this);
     this.onSetAdmin = this.onSetAdmin.bind(this);
+    this.askForTurn = this.askForTurn.bind(this);
     this.onAskForBoard = this.onAskForBoard.bind(this);
     this.onAnswerForBoard = this.onAnswerForBoard.bind(this);
     this.onHostLeft = this.onHostLeft.bind(this);
@@ -52,7 +53,7 @@ export default class BoardSocket extends Component {
     });
 
     this.state = {
-      isAllowed: true,
+      isAllowed: false,
       isPenDown: false,
       canvasDidSet: false,
       selectedColor: defaultLineColor,
@@ -143,6 +144,7 @@ export default class BoardSocket extends Component {
   }
 
   onDraw(data) {
+    console.log(data);
     const canvas = this.state.canvas;
     const context = this.state.context;
     if(data.type === 'path') {
@@ -152,7 +154,9 @@ export default class BoardSocket extends Component {
   
   onAnswerForBoard(data) {
     if(data) {
-      this.setState({isAllowed: false})
+      this.setState({isAllowed: true});
+    } else {
+      this.setState({isAllowed: false});
     }
   }
 
@@ -161,7 +165,7 @@ export default class BoardSocket extends Component {
   }
 
   askForTurn() {
-    this.$socket.emit('aksForBoard');
+    this.$socket.emit('askForBoard');
   }
 
   broadcastPath(event, coords){
@@ -229,8 +233,13 @@ export default class BoardSocket extends Component {
 
   render() {
     return (
-      <View style={styles.container} {...this._panResponder.panHandlers}>
-        {this.state.canvas}
+      <View>
+        <View style={styles.container} {...this._panResponder.panHandlers}>
+          {this.state.canvas}
+        </View>
+        <Button 
+          title='ask for turn'
+          onPress={this.askForTurn} />
       </View>
     );
   }

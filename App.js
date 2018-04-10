@@ -31,7 +31,7 @@ export default class App extends Component {
           <Container>
             <Header />
               <Content>
-                <Board roomId={27} userNick={'lacardenasv'} userId={1}/>
+                <Board roomId={43} userNick={'lacardenasv'} userId={1}/>
               </Content>
           </Container>
         </Provider>
