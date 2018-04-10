@@ -12,8 +12,9 @@ import { Provider } from 'react-redux';
 import Store from './reduxConfig';
 import Client from './apolloConfig';
 import RoomsList from './rooms/components/RoomsList';
-import { RoomsCreateRoom } from './rooms/components/RoomsCreateRoom';
+import RoomsCreateRoom from './rooms/components/RoomsCreateRoom';
 import RoomsDetail from './rooms/components/RoomsDetail';
+import SignIn from './sessions/components/SignIn';
 import ChatMessageList from './chat/components/ChatMessageList';
 import ChatWebsocket from './chat/components/ChatWebsocket';
 
@@ -30,8 +31,7 @@ export default class App extends Component {
           <Container>
             <Header />
               <Content>
-                <RoomsCreateRoom />
-                <RoomsList />
+                <SignIn />
               </Content>
           </Container>
         </Provider>
