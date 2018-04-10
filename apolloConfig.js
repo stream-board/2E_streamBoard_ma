@@ -4,7 +4,7 @@ import { ApolloClient } from 'apollo-client';
 
 export default Client = new ApolloClient({
     link: new HttpLink({
-        uri: 'http://ec2-35-168-17-78.compute-1.amazonaws.com:5000/graphql'
+        uri: 'http://192.168.0.17:5000/graphql'
     }),
     cache: new InMemoryCache({
         // TODO: others objects for other mutations or querys

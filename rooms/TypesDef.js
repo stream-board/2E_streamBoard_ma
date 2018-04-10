@@ -20,8 +20,12 @@ export const ROOM_BY_ID_QUERY = gql`
       idRoom,
       nameRoom,
       descriptionRoom,
-      idOwner,
-      Participants
+      owner {
+        nickname,
+      },
+      Participants {
+        nickname
+      }
     }
   }
 `;

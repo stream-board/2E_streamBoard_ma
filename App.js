@@ -30,7 +30,7 @@ export default class App extends Component {
           <Container>
             <Header />
               <Content>
-                <SignIn />
+                <RoomsDetail roomId={43} />
               </Content>
           </Container>
         </Provider>
