@@ -53,7 +53,7 @@ export default class BoardSocket extends Component {
     });
 
     this.state = {
-      isAllowed: false,
+      isAllowed: true,
       isPenDown: false,
       canvasDidSet: false,
       selectedColor: defaultLineColor,
@@ -82,8 +82,8 @@ export default class BoardSocket extends Component {
       onPanResponderGrant: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.x0 - 25;
-        let touchY = gestureState.y0 - 95;
+        let touchX = gestureState.x0 - 40;
+        let touchY = gestureState.y0 - 105;
         if(!this.state.isPenDown) {
           this.penDown(canvas, context, touchX, touchY);
         }
@@ -91,16 +91,16 @@ export default class BoardSocket extends Component {
       onPanResponderMove: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.moveX - 25;
-        let touchY = gestureState.moveY - 95;
+        let touchX = gestureState.moveX - 40;
+        let touchY = gestureState.moveY - 105;
         this.penMove(canvas, context, touchX, touchY);
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.moveX - 25;
-        let touchY = gestureState.moveY - 95;
+        let touchX = gestureState.moveX - 40;
+        let touchY = gestureState.moveY - 105;
         this.penUp(canvas, context, touchX, touchY);
       },
     });
@@ -114,8 +114,8 @@ export default class BoardSocket extends Component {
 
   initCanvas = (canvas) => {
     const context = canvas.getContext('2d');
-    canvas.height = 500;
-    canvas.width = 320;
+    canvas.height = 720;
+    canvas.width = 1280;
     context.lineCap = 'round';
     context.fillStyle = "#fff";
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -250,6 +250,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#00FFFF',
     padding: 16,
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 10,
     flex: 1
   }
 })
