@@ -18,11 +18,8 @@ import {
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
 
-const mapStateToProps = (state) => ({
-  queryParams: state.queryParams,
-})
 
-export class SignIn extends Component {
+export default class SignIn extends Component {
   constructor(props) {
     super(props);
 
@@ -69,9 +66,7 @@ export class SignIn extends Component {
   onCreateSession(data){
     console.log(data);
     console.log(this.props.navigation);
-    if(data){
-      Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
-    }
+    Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
     return this.props.navigation.navigate('MainMenu');
   };
 
@@ -92,7 +87,6 @@ export class SignIn extends Component {
   }
 }
 
-export default connect(mapStateToProps)(SignIn)
 
 const styles = StyleSheet.create({
   container: {

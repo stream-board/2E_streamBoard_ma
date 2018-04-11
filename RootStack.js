@@ -18,7 +18,7 @@ export const RootStack = StackNavigator(
     SignOut: { screen: SignOutPage},
   },
   {
-    initialRouteName: "SignOut",
+    initialRouteName: "SignIn",
   }
 );
 

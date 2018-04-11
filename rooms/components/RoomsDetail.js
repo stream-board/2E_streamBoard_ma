@@ -18,6 +18,9 @@ import { Query } from 'react-apollo';
 import { ROOM_BY_ID_QUERY } from "./../TypesDef";
 import ChatWebsocket from '../../chat/components/ChatWebsocket';
 
+import Store from "./../../reduxConfig";
+import { roomActionCreators } from "./../roomsRedux";
+
 
 const RoomDetailQuery = ({ roomId, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
@@ -39,6 +42,9 @@ const RoomDetail = ({ loading, error, room }) => {
     if (error) {
         return <Text>ERROR</Text>;
     }
+    if(room) {
+        Store.dispatch(roomActionCreators.addRoomParticipantList(room.Participants));
+    }
     return (
         <View>
             {room && (
@@ -53,11 +59,16 @@ const RoomDetail = ({ loading, error, room }) => {
 export default class RoomsDetail extends Component {
     constructor(props) {
         super(props);
+        
+        const { roomId } = this.props.navigation.state.params;        
+        this.state = {
+            roomId: roomId
+        }
     }
 
     render() {
         return (
-            <RoomDetailQuery roomId={this.props.roomId}>
+            <RoomDetailQuery roomId={this.state.roomId}>
                 {result => <RoomDetail {...result} />}
             </RoomDetailQuery>
         );

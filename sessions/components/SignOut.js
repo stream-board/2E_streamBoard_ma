@@ -19,7 +19,7 @@ import {
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
 
-export class SignOut extends Component {
+export default class SignOut extends Component {
   constructor(props) {
     super(props);
 
@@ -38,9 +38,9 @@ export class SignOut extends Component {
             deleteSession({ 
               variables: { 
                 headersSession: {
-                  token : Store.getState().currenUser.token,
-                  uid : Store.getState().currenUser.uid,
-                  client : Store.getState().currenUser.client
+                  token : Store.getState().currentUser.token,
+                  uid : Store.getState().currentUser.email,
+                  client : Store.getState().currentUser.client
                 }
               }
             })

@@ -48,7 +48,6 @@ export const sessionCreateReducer = (state = sessionCreateParams, action) => {
 }
 
 export const currentUserReducer = (state = currrentUser, action) => {
-
     const { type, payload } = action; 
 
     switch (type) {
@@ -61,4 +60,4 @@ export const currentUserReducer = (state = currrentUser, action) => {
     }
     
     return state;
-}
+} 

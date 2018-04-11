@@ -23,7 +23,7 @@ export default class JoinRoomPage extends Component {
                   />
             </Item>
           </Form>
-          <Button onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: this.state.roomId })}>
+          <Button onPress={() =>  this.props.navigation.navigate('RoomsDetail' , { roomId: this.state.roomId })}>
             <Text>Buscar</Text>
           </Button>
           </Tab>
@@ -35,7 +35,7 @@ export default class JoinRoomPage extends Component {
     );
   }
 }
-
+  
 
 const styles = StyleSheet.create({
   container: {
