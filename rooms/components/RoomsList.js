@@ -30,12 +30,12 @@ export default () => (
         return (
           <Container>
             {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
-            <Card>
+            <Card key={index}>
               <CardItem header bordere onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: {idRoom} })}>
                 <Text>IdRoom: {nameRoom}</Text>
               </CardItem>
               <CardItem bordered>
-                <Text>IdRoom: {owner}</Text>
+                <Text>IdRoom: {owner.nickname}</Text>
               </CardItem>
             </Card>
             ))}
