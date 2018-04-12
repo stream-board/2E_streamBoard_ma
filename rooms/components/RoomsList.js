@@ -12,8 +12,8 @@ import {
   Header,
   Content,
   Form,
-  List,
-  ListItem,
+  Card,
+  CardItem,
   Title,
   Subtitle
 } from 'native-base';
@@ -29,17 +29,16 @@ export default () => (
         if (error) return <Text>{`Error: ${error}`}</Text>;
         return (
           <Container>
-          <List>
             {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
-              <ListItem 
-                key={index} style={styles.roomContainer}
-                title={ {nameRoom} }
-                subtitle=  {owner.name}
-              >
-                <Text>IdRoom: {idRoom}</Text>
-              </ListItem>
+            <Card>
+              <CardItem header bordere onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: {idRoom} })}>
+                <Text>IdRoom: {nameRoom}</Text>
+              </CardItem>
+              <CardItem bordered>
+                <Text>IdRoom: {owner}</Text>
+              </CardItem>
+            </Card>
             ))}
-          </List>
           </Container>
         )
       }
@@ -48,10 +47,11 @@ export default () => (
 );
 
 const styles = StyleSheet.create({
-  roomContainer: {
+  card: {
     marginTop: 5,
     marginBottom: 5,
-    flex: 1,
+    width: 300,
+    height: 50,
     backgroundColor: '#0DEBFF'
   },
 })
