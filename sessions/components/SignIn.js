@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View , Image } from 'react-native';
 import { SessionCreateMutation } from './../TypesDef'
 import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
@@ -29,10 +29,13 @@ export default class SignIn extends Component {
 
   onForm(createSession) {
     return (
-      <Container>
-        <Title style={styles.titleElement}>HLA</Title>
+      <Container style = { styles.container } >
+        <Image 
+          style = { styles.image }
+          source = { require('./logo.png' ) }
+        />
 
-        <Item style={styles.formElement}>
+        <Item floatingLabel style={styles.formElement}>
           <Label>Email</Label>
           <Input
           onChangeText= {(text)=>{
@@ -41,9 +44,10 @@ export default class SignIn extends Component {
           />
         </Item>
 
-        <Item style={styles.formElement}>
+        <Item floatingLabel style={styles.formElement}>
+        <Label>Password</Label>
         <Input
-          placeholder='Password'
+          secureTextEntry={true}
           onChangeText= {(text)=>{
             Store.dispatch( sessionActionCreators.addUserPassword(text));
           }}
@@ -58,7 +62,9 @@ export default class SignIn extends Component {
               }
             })
           }}
-        ><Text>INGRESAR</Text></Button>
+        >
+          <Text style={{alignSelf:'center'}}>Sign In</Text>
+        </Button>
       </Container>
     )
   };
@@ -66,8 +72,10 @@ export default class SignIn extends Component {
   onCreateSession(data){
     console.log(data);
     console.log(this.props.navigation);
-    Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
-    return this.props.navigation.navigate('MainMenu');
+    if(data) {
+      Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
+    }
+    return this.props.navigation.navigate('Lobby');
   };
 
   render(){
@@ -89,10 +97,7 @@ export default class SignIn extends Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    
-
-  },
+  
 
   titleElement: {
     margin: 20,
@@ -103,8 +108,22 @@ const styles = StyleSheet.create({
 
   formElement: {
     height: 70,
+    width: 350,
+    alignSelf: 'center',
+    marginTop: 30,
   },
 
   buttonStyle:{
+    marginTop: 20,
+    alignSelf: 'center',
+    width: 100,
+  },
+
+  image: {
+    height: 180,
+    alignSelf: 'center',
+    marginTop: 50,
+    marginBottom: 30,
+
   }
 });
