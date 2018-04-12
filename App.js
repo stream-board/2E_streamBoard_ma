@@ -15,6 +15,9 @@ import Client from './apolloConfig';
 import Expo from "expo";
 import { RootStack } from './RootStack.js';
 
+//test 
+import RoomsDetail from "./rooms/components/RoomsDetail";
+
 export default class App extends Component {  
   constructor(...args) {
     super(...args);

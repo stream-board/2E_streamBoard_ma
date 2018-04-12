@@ -26,6 +26,7 @@ const mapStateToProps = (state) => ({
 export class ChatList extends Component {
   render() {
     const { chatMessageList } = this.props;
+
     return (
       <View>
         {chatMessageList.map(({ id, message, user_id}, index) => (

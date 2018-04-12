@@ -13,7 +13,7 @@ export default class MainMenuPage extends Component {
           <Button rounded primary style={ styles.buttonStyle } onPress={() => this.props.navigation.navigate('JoinRoom')}>
             <Text>Unirse a sala</Text>
           </Button>
-          <Button rounded primary style={ styles.buttonStyle } onPress={() => this.props.navigation.goBack() }>
+          <Button rounded primary style={ styles.buttonStyle } onPress={() => this.props.navigation.navigate('SignOut') }>
             <Text>Cerrar Sesion</Text>
           </Button>
       </Container>
