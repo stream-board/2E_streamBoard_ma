@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View } from 'react-native';
-import { Container, Header, Content, Spinner, Button, Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon, Fab } from 'native-base';
+import { AppRegistry, StyleSheet, View, Header } from 'react-native';
+import { Container,
+         Content,
+         Spinner,
+         Button,
+         Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon, Fab } from 'native-base';
 
 import RoomsList from '../../rooms/components/RoomsList.js';
 
@@ -15,8 +19,6 @@ export default class LobbyPage extends Component {
   render() {
     return (
       <Container style={styles.container}>
-          <Title style={ styles.titleElement }>Bienvenido de nuevo $USER</Title>
-        {/*JOIN WITH ID*/}
           <Text>Unete con el ID</Text>
           <Form>
             <Item floatingLabel >

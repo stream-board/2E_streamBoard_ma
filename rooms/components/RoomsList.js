@@ -3,7 +3,6 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  Text
 } from 'react-native';
 
 import {
@@ -15,7 +14,8 @@ import {
   Card,
   CardItem,
   Title,
-  Subtitle
+  Subtitle,
+  Text
 } from 'native-base';
 
 import { Query } from 'react-apollo';
@@ -32,10 +32,9 @@ export default () => (
             {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
             <Card key={index}>
               <CardItem header bordere onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: {idRoom} })}>
-                <Text>IdRoom: {nameRoom}</Text>
-              </CardItem>
-              <CardItem bordered>
-                <Text>IdRoom: {owner.nickname}</Text>
+                <Text>IdRoom: {idRoom}</Text>
+                <Text>Owner: {owner.nickname}</Text>
+                <Text>NameRoom: {nameRoom}</Text>
               </CardItem>
             </Card>
             ))}

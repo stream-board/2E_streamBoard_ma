@@ -1,22 +1,28 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View , Image } from 'react-native';
 import { SessionCreateMutation } from './../TypesDef'
 import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
+import { connect } from 'react-redux';
+import { sessionActionCreators } from "./../sessionsRedux";
+import { AppRegistry, StyleSheet, View , Image, Platform, } from 'react-native';
 import {
   Spinner,
   Container,
-  Header,
   Content,
+  Header,
   Form,
   Item,
   Input,
   Button,
   Title,
-  Label
+  Subtitle,
+  Label,
+  Left,
+  Body,
+  Right,
+  Text,
 } from 'native-base';
-import { connect } from 'react-redux';
-import { sessionActionCreators } from "./../sessionsRedux";
+import { Constants } from 'expo';
 
 
 export default class SignIn extends Component {
@@ -26,10 +32,22 @@ export default class SignIn extends Component {
     this.onForm = this.onForm.bind(this);
     this.onCreateSession = this.onCreateSession.bind(this);
   }
+  static navigationOptions = ({ navigation }) => ({
+  header: null
+  })
 
   onForm(createSession) {
+
     return (
-      <Container style = { styles.container } >
+      <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+      <Header style={{ height: 50}}>
+          <Left />
+          <Body>
+            <Title>Title</Title>
+            <Subtitle>Subtitle</Subtitle>
+          </Body>
+          <Right />
+        </Header>
         <Image 
           style = { styles.image }
           source = { require('./logo.png' ) }
@@ -63,7 +81,7 @@ export default class SignIn extends Component {
             })
           }}
         >
-          <Text style={{alignSelf:'center'}}>Sign In</Text>
+          <Text>Sign In</Text>
         </Button>
       </Container>
     )
@@ -116,7 +134,6 @@ const styles = StyleSheet.create({
   buttonStyle:{
     marginTop: 20,
     alignSelf: 'center',
-    width: 100,
   },
 
   image: {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import {
     Spinner,
     Container,
@@ -46,13 +46,22 @@ const RoomDetail = ({ loading, error, room }) => {
         Store.dispatch(roomActionCreators.addRoomParticipantList(room.Participants));
     }
     return (
-        <View>
+        <Tabs locked={true}>
+        <Tab heading="Chat">
             {room && (
                 <View>
                     <Chat roomId={room.idRoom} />
                 </View>
             )}
-        </View>
+        </Tab>
+        <Tab heading="Board">
+            <ScrollView style={styles.container}>
+                <ScrollView horizontal>
+                  <View style={styles.boxSmall} />
+                </ScrollView>
+              </ScrollView>
+        </Tab>
+        </Tabs>
     )
 }
 
@@ -72,5 +81,17 @@ export default class RoomsDetail extends Component {
                 {result => <RoomDetail {...result} />}
             </RoomDetailQuery>
         );
-    }   
+    } 
+
 }
+
+const styles = StyleSheet.create({
+
+  boxSmall: {
+    width: 2000,
+    height: 2000,
+    marginBottom: 10,
+    marginRight: 10,
+    backgroundColor: 'skyblue',
+  },
+})
