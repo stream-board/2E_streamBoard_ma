@@ -61,3 +61,12 @@ export const DELETE_ROOM_MUTATION = gql`
     }
   }
 `;
+
+export const JOIN_ROOM_MUTATION = gql`
+  mutation joinRoom($room: JoinRoomInput!){
+    joinRoom(room: $room){
+      nameRoom,
+      idRoom
+    }
+  }
+`;

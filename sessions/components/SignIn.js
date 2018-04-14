@@ -33,13 +33,14 @@ export default class SignIn extends Component {
     this.onCreateSession = this.onCreateSession.bind(this);
   }
   static navigationOptions = ({ navigation }) => ({
-  header: null
+    header: null,
+    formSended: false,
   })
 
   onForm(createSession) {
 
     return (
-      <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+      <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}> 
       <Header style={{ height: 50}}>
           <Left />
           <Body>
@@ -79,6 +80,7 @@ export default class SignIn extends Component {
                 session: Store.getState().sessionCreateParams 
               }
             })
+            this.setState({formSended: true});
           }}
         >
           <Text>Sign In</Text>
@@ -88,13 +90,17 @@ export default class SignIn extends Component {
   };
 
   onCreateSession(data){
-    console.log(data);
-    console.log(this.props.navigation);
-    if(data) {
-      Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
-    }
-    return this.props.navigation.navigate('Lobby');
+    Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
+    return (
+      <Spinner />
+    )
   };
+
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.formSended) {
+      this.props.navigation.navigate('Lobby');
+    }
+  }
 
   render(){
     return (
@@ -103,8 +109,7 @@ export default class SignIn extends Component {
       >
         {(createSession, { loading, error, data }) => (
           <View>
-          {(data ? this.onCreateSession(data) : this.onForm(createSession))}  
-          {loading && <Spinner />}
+          {(data ? this.onCreateSession(data) : this.onForm(createSession))}
           {error && <Text> Error: ${error}</Text>}  
           </View>
         )}
@@ -115,8 +120,6 @@ export default class SignIn extends Component {
 
 
 const styles = StyleSheet.create({
-  
-
   titleElement: {
     margin: 20,
     backgroundColor: 'skyblue',
