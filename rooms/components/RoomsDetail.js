@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Platform,} from "react-native";
 import {
     Spinner,
     Container,
@@ -21,6 +21,7 @@ import ChatWebsocket from '../../chat/components/ChatWebsocket';
 import Store from "./../../reduxConfig";
 import { roomActionCreators } from "./../roomsRedux";
 import RoomExit from "./RoomsExit";
+import { Constants } from 'expo';
 
 const RoomDetailQuery = ({ roomId, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
@@ -78,12 +79,12 @@ export default class RoomsDetail extends Component {
 
     render() {
         return (
-            <View>
+            <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
                 <RoomDetailQuery roomId={this.state.roomId}>
                     {result => <RoomDetail {...result} />}
                 </RoomDetailQuery>
                 <RoomExit roomId={this.state.roomId} navigation={this.props.navigation}/>
-            </View>
+            </Container>
         );
     } 
 
