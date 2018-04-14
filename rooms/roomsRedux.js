@@ -1,10 +1,10 @@
-import { combineReducers } from "redux";
-
 export const types = {
     ADD_ROOM_NAME: 'ADD_ROOM_NAME',
     ADD_ROOM_DESCRIPTION: 'ADD_ROOM_DESCRIPTION',
     ADD_ROOM_OWNER: 'ADD_ROOM_OWNER',
-    ADD__ROOM_CATEGORY: 'ADD__ROOM_CATEGORY',
+    ADD_ROOM_CATEGORY: 'ADD__ROOM_CATEGORY',
+    ADD_ROOM_PARTICIPANT_LIST: 'ADD_ROOM_PARTICIPANT_LIST',
+    ADD_ROOM_PARTICIPANT: 'ADD_ROOM_PARTICIPANT',
 };
 
 export const roomActionCreators = {
@@ -18,11 +18,18 @@ export const roomActionCreators = {
         return { type: types.ADD_ROOM_OWNER, payload: userId }
     },
     addRoomCategory: (text) => {
-        return { type: types.ADD__ROOM_CATEGORY, payload: text }
+        return { type: types.ADD_ROOM_CATEGORY, payload: text }
+    },
+    addRoomParticipantList: (list) => {
+        return { type: types.ADD_ROOM_PARTICIPANT_LIST, payload: list }
+    },
+    addRoomParticipant: (obj) => {
+        return { type: types.ADD_ROOM_PARTICIPANT, payload: obj }
     }
 }
 
 const roomCreateParams = {};
+const roomParticipants = {};
 
 export const roomCreateReducer = (state = roomCreateParams, action) => {
 
@@ -47,7 +54,7 @@ export const roomCreateReducer = (state = roomCreateParams, action) => {
                 idOwner: payload
             }
         }
-        case types.ADD__ROOM_CATEGORY: {
+        case types.ADD_ROOM_CATEGORY: {
             return {
                 ...state,
                 categoryRoom: payload
@@ -57,3 +64,23 @@ export const roomCreateReducer = (state = roomCreateParams, action) => {
 
     return state;
 }
+
+export const roomParticipantsReducer = (state = roomParticipants, action) => {
+    const { type, payload }= action;
+
+    switch (type) {
+        case types.ADD_ROOM_PARTICIPANT_LIST:
+            const result = {};
+            payload.map((userObj, index)=> {
+                result[userObj.id] = userObj;
+            });
+            return result;
+            
+        case types.ADD_ROOM_PARTICIPANT:
+            const currentRoomParticipants = Object.assign({}, state);
+            currentRoomParticipants.payload.id = payload;
+            return currentRoomParticipants;
+    }
+
+    return state;
+}  

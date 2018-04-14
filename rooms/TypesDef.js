@@ -21,10 +21,20 @@ export const ROOM_BY_ID_QUERY = gql`
       nameRoom,
       descriptionRoom,
       owner {
+        id,
+        email,
+        provider,
+        name,
         nickname,
+        image
       },
       Participants {
-        nickname
+        id,
+        email,
+        provider,
+        name,
+        nickname,
+        image
       }
     }
   }
@@ -48,6 +58,15 @@ export const DELETE_ROOM_MUTATION = gql`
     deleteRoom(roomDelete: $room){
       idRoom,
       nameRoom
+    }
+  }
+`;
+
+export const JOIN_ROOM_MUTATION = gql`
+  mutation joinRoom($room: JoinRoomInput!){
+    joinRoom(room: $room){
+      nameRoom,
+      idRoom
     }
   }
 `;

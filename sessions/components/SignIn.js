@@ -1,38 +1,54 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View , Image } from 'react-native';
 import { SessionCreateMutation } from './../TypesDef'
 import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
+import { connect } from 'react-redux';
+import { sessionActionCreators } from "./../sessionsRedux";
+import { AppRegistry, StyleSheet, View , Image, Platform, } from 'react-native';
 import {
   Spinner,
   Container,
-  Header,
   Content,
+  Header,
   Form,
   Item,
   Input,
   Button,
   Title,
-  Label
+  Subtitle,
+  Label,
+  Left,
+  Body,
+  Right,
+  Text,
 } from 'native-base';
-import { connect } from 'react-redux';
-import { sessionActionCreators } from "./../sessionsRedux";
+import { Constants } from 'expo';
 
-const mapStateToProps = (state) => ({
-  queryParams: state.queryParams,
-})
 
-export class SignIn extends Component {
+export default class SignIn extends Component {
   constructor(props) {
     super(props);
 
     this.onForm = this.onForm.bind(this);
     this.onCreateSession = this.onCreateSession.bind(this);
   }
+  static navigationOptions = ({ navigation }) => ({
+    header: null,
+    formSended: false,
+  })
 
   onForm(createSession) {
+
     return (
-      <Container style = { styles.container } >
+      <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}> 
+      <Header style={{ height: 50}}>
+          <Left />
+          <Body>
+            <Title>Title</Title>
+            <Subtitle>Subtitle</Subtitle>
+          </Body>
+          <Right />
+        </Header>
         <Image 
           style = { styles.image }
           source = { require('./logo.png' ) }
@@ -64,22 +80,27 @@ export class SignIn extends Component {
                 session: Store.getState().sessionCreateParams 
               }
             })
+            this.setState({formSended: true});
           }}
         >
-          <Text style={{alignSelf:'center'}}>Sign In</Text>
+          <Text>Sign In</Text>
         </Button>
       </Container>
     )
   };
 
   onCreateSession(data){
-    console.log(data);
-    console.log(this.props.navigation);
-    if(data) {
-      Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
-    }
-    return this.props.navigation.navigate('Lobby');
+    Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
+    return (
+      <Spinner />
+    )
   };
+
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.formSended) {
+      this.props.navigation.navigate('Lobby');
+    }
+  }
 
   render(){
     return (
@@ -88,8 +109,7 @@ export class SignIn extends Component {
       >
         {(createSession, { loading, error, data }) => (
           <View>
-          {(data ? this.onCreateSession(data) : this.onForm(createSession))}  
-          {loading && <Spinner />}
+          {(data ? this.onCreateSession(data) : this.onForm(createSession))}
           {error && <Text> Error: ${error}</Text>}  
           </View>
         )}
@@ -98,11 +118,8 @@ export class SignIn extends Component {
   }
 }
 
-export default connect(mapStateToProps)(SignIn)
 
 const styles = StyleSheet.create({
-  
-
   titleElement: {
     margin: 20,
     backgroundColor: 'skyblue',
@@ -120,7 +137,6 @@ const styles = StyleSheet.create({
   buttonStyle:{
     marginTop: 20,
     alignSelf: 'center',
-    width: 100,
   },
 
   image: {
