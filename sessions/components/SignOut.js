@@ -23,16 +23,13 @@ export default class SignOut extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: false, text: '' };
+    this.state = { open: false, text: '', sessionDeleted: false };
     this.onForm = this.onForm.bind(this);
     this.onDeleteSession = this.onDeleteSession.bind(this);
   }
 
   onForm(deleteSession) {
     return (
-      <Container>
-        <Title style={styles.titleElement}>HLA</Title>
-
         <Button style={styles.buttonStyle} rounded success
           onPress={() => {
             deleteSession({ 
@@ -44,18 +41,25 @@ export default class SignOut extends Component {
                 }
               }
             })
+            this.setState({sessionDeleted: true});
           }}
-        ><Text>Salir</Text></Button>
-      </Container>
+        ><Text>Salir</Text>
+        </Button>
     )
   };
 
   onDeleteSession(data){
-    console.log(data);
-    console.log(this.props.navigation);
     Store.dispatch(sessionActionCreators.deleteCurrentUser());
-    return this.props.navigation.navigate('SignIn')
+    return (
+      <Spinner />
+    )
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.sessionDeleted){
+      this.props.navigation.navigate('SignIn');
+    }
+  }
 
   render(){
     return (
@@ -65,7 +69,6 @@ export default class SignOut extends Component {
         {(deleteSession, { loading, error, data }) => (
           <View>
           {(data ? this.onDeleteSession(data) : this.onForm(deleteSession))}
-          {loading && <Spinner />}
           {error && <Text> Error: ${error}</Text>}  
           </View>
         )}

@@ -7,6 +7,7 @@ import { Container,
          Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon, Fab } from 'native-base';
 
 import RoomsList from './../../rooms/components/RoomsList';
+import SignOut from "./../../sessions/components/SignOut";
 
 import { Mutation } from 'react-apollo';
 import { JOIN_ROOM_MUTATION } from "./../../rooms/TypesDef";
@@ -65,10 +66,7 @@ export default class LobbyPage extends Component {
         <Icon name="add" />
         </Fab>
       {/*LOG OUT*/}  
-
-        <Button rounded primary style={ styles.buttonStyle } onPress={() => this.props.navigation.goBack() }>
-          <Text>Cerrar Sesion</Text>
-        </Button>
+        <SignOut navigation={this.props.navigation}/>
      </Container>
     )
   }

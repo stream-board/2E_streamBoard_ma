@@ -70,3 +70,12 @@ export const JOIN_ROOM_MUTATION = gql`
     }
   }
 `;
+
+export const EXIT_ROOM_MUTATION = gql`
+  mutation exitRoom($room: RoomDelete!){
+    exitRoom(roomDelete: $room) {
+      nameRoom,
+      idRoom
+    }
+  }
+`;
