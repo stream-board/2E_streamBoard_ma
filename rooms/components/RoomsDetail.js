@@ -20,7 +20,7 @@ import ChatWebsocket from '../../chat/components/ChatWebsocket';
 
 import Store from "./../../reduxConfig";
 import { roomActionCreators } from "./../roomsRedux";
-
+import RoomExit from "./RoomsExit";
 
 const RoomDetailQuery = ({ roomId, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
@@ -47,20 +47,20 @@ const RoomDetail = ({ loading, error, room }) => {
     }
     return (
         <Tabs locked={true}>
-        <Tab heading="Chat">
-            {room && (
-                <View>
-                    <Chat roomId={room.idRoom} />
-                </View>
-            )}
-        </Tab>
-        <Tab heading="Board">
-            <ScrollView style={styles.container}>
-                <ScrollView horizontal>
-                  <View style={styles.boxSmall} />
+            <Tab heading="Chat">
+                {room && (
+                    <View>
+                        <Chat roomId={room.idRoom} />
+                    </View>
+                )}
+            </Tab>
+            <Tab heading="Board">
+                <ScrollView style={styles.container}>
+                    <ScrollView horizontal>
+                    <View style={styles.boxSmall} />
+                    </ScrollView>
                 </ScrollView>
-              </ScrollView>
-        </Tab>
+            </Tab>
         </Tabs>
     )
 }
@@ -71,15 +71,19 @@ export default class RoomsDetail extends Component {
         
         const { roomId } = this.props.navigation.state.params;        
         this.state = {
-            roomId: roomId
+            roomId: roomId,
+            navigation: this.props.navigation
         }
     }
 
     render() {
         return (
-            <RoomDetailQuery roomId={this.state.roomId}>
-                {result => <RoomDetail {...result} />}
-            </RoomDetailQuery>
+            <View>
+                <RoomDetailQuery roomId={this.state.roomId}>
+                    {result => <RoomDetail {...result} />}
+                </RoomDetailQuery>
+                <RoomExit roomId={this.state.roomId} navigation={this.props.navigation}/>
+            </View>
         );
     } 
 
