@@ -28,13 +28,14 @@ export default () => (
         if (loading) return <Spinner />;
         if (error) return <Text>{`Error: ${error}`}</Text>;
         return (
-          <Container>
+          <Container style={styles.listElement}>
             {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
             <Card key={index}>
-              <CardItem header bordere onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: {idRoom} })}>
-                <Text>IdRoom: {idRoom}</Text>
-                <Text>Owner: {owner.nickname}</Text>
+              <CardItem header button onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: {idRoom} })}>
                 <Text>NameRoom: {nameRoom}</Text>
+              </CardItem>
+              <CardItem>
+              <Text>idRoom : {idRoom}</Text>
               </CardItem>
             </Card>
             ))}
@@ -53,4 +54,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#0DEBFF'
   },
+  listElement:{
+    margin:10,
+  }
 })

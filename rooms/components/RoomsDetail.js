@@ -76,6 +76,8 @@ export default class RoomsDetail extends Component {
     }
 
     render() {
+        console.log("idroom ingresado en roomdetails");
+        console.log(this.state.roomId);
         return (
             <RoomDetailQuery roomId={this.state.roomId}>
                 {result => <RoomDetail {...result} />}
