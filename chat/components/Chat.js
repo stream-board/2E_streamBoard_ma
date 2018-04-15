@@ -1,6 +1,6 @@
 import React, { Component }from 'react';
 import { View, StyleSheet } from 'react-native';
-import {Container, Header, Content, Footer, Text} from "native-base";
+import {Container, Header, Content, Footer, Text, H1} from "native-base";
 
 import ChatMessageList from './ChatMessageList';
 import ChatWebsocket from './ChatWebsocket';
@@ -11,7 +11,7 @@ export default class Chat extends Component {
     const { roomId } = this.props;
     return (
       <View style={styles.chatElement}>
-        <Text style={{alignSelf: 'center', margin:10,}} >{`Chat Room ${roomId}`}</Text>
+        <H1 style={{alignSelf: 'center', margin:10,}} >{`Chat Room ${roomId}`}</H1>
         <ChatMessageList roomId={roomId} />
       </View>
     );
