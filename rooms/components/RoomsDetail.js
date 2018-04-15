@@ -49,9 +49,7 @@ const RoomDetail = ({ loading, error, room }) => {
         <Tabs locked={true}>
         <Tab heading="Chat">
             {room && (
-                <View>
-                    <Chat roomId={room.idRoom} />
-                </View>
+                <Chat roomId={room.idRoom} />
             )}
         </Tab>
         <Tab heading="Board">
@@ -82,6 +80,7 @@ export default class RoomsDetail extends Component {
             <RoomDetailQuery roomId={this.state.roomId}>
                 {result => <RoomDetail {...result} />}
             </RoomDetailQuery>
+            
         );
     } 
 

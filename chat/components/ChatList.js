@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
 export class ChatList extends Component {
   render() {
     const { chatMessageList } = this.props;
-
+    const currentUser = Store.getState().currentUser.id;
     return (
       <View>
         {chatMessageList.map(({ id, message, user_id}, index) => (
@@ -51,4 +51,12 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
   },
+  messageOther: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0CE882',
+    width: 320,
+    margin: 5,
+    borderRadius: 10,
+  }
 })

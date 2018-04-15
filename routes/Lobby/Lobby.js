@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Header } from 'react-native';
+import { AppRegistry, StyleSheet, View, Platform } from 'react-native';
 import { Container,
+         Header,
          Content,
          Spinner,
          Button,
          Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon, Fab } from 'native-base';
+import { Constants } from 'expo';
 
 import RoomsList from './../../rooms/components/RoomsList';
 
@@ -22,6 +24,7 @@ export default class LobbyPage extends Component {
       //variable to FAB
       active: 'true',
       joinedToRoom: false,
+      navigation: this.props.navigation,
     }
 
     this.onLobby = this.onLobby.bind(this);
@@ -30,7 +33,15 @@ export default class LobbyPage extends Component {
 
   onLobby(joinRoom) {
     return (
-      <Container style={styles.container}>
+      <Container style={{flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+      <Header style={{ height: 50}}>
+          <Left />
+          <Body>
+            <Title>Title</Title>
+            <Subtitle>Subtitle</Subtitle>
+          </Body>
+          <Right />
+        </Header>
         <Text>Unete con el ID</Text>
         <Form>
           <Item floatingLabel >
@@ -54,7 +65,7 @@ export default class LobbyPage extends Component {
         </Button>
       {/*LIST OF ROOMS*/}
       <Content>
-        <RoomsList />
+        <RoomsList navigation={this.state.navigation} joinRoom={joinRoom}/>
       </Content>
         <Fab
           active = {this.state.active}
@@ -133,6 +144,7 @@ const styles = StyleSheet.create({
 
   fabElement: {
     backgroundColor: '#5067FF',
+    zIndex: 5,
 
   },
 });
