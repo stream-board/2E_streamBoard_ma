@@ -41,14 +41,7 @@ export default class SignIn extends Component {
 
     return (
       <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}> 
-      <Header style={{ height: 50}}>
-          <Left />
-          <Body>
-            <Title>Title</Title>
-            <Subtitle>Subtitle</Subtitle>
-          </Body>
-          <Right />
-        </Header>
+
         <Image 
           style = { styles.image }
           source = { require('./logo.png' ) }
@@ -66,7 +59,7 @@ export default class SignIn extends Component {
         <Item floatingLabel style={styles.formElement}>
         <Label>Password</Label>
         <Input
-          secureTextEntry={true}
+          //secureTextEntry={true}
           onChangeText= {(text)=>{
             Store.dispatch( sessionActionCreators.addUserPassword(text));
           }}

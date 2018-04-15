@@ -53,15 +53,13 @@ const RoomDetail = ({ loading, error, room, navigation }) => {
     }
     return (
         <Container>
-            <Tabs locked={true}>
-                <Tab heading="Chat">
-                    {room && (
-                        <View>
-                            <Chat roomId={room.idRoom} />
-                        </View>
-                    )}
-                </Tab>
-                <Tab heading="Board">
+        <Tabs locked={true} tabBarUnderlineStyle={{borderBottomWidth:2}}>
+            <Tab heading="Chat" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+                {room && (
+                )}
+                    <Chat roomId={room.idRoom} />
+            </Tab>
+            <Tab heading="Board" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
                     <Board roomId={room.idRoom} />
                 </Tab>
             </Tabs>
@@ -82,12 +80,12 @@ export default class RoomsDetail extends Component {
     }
     
     render() {
+        console.log("idroom ingresado en roomdetails");
+        console.log(this.state.roomId);
         return (
-            <Container>
                 <RoomDetailQuery roomId={this.state.roomId} navigation={this.props.navigation}>
                     {result => <RoomDetail {...result} />}
                 </RoomDetailQuery>
-            </Container>
         );
     } 
 

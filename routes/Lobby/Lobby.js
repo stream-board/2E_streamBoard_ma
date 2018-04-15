@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Header } from 'react-native';
+import { AppRegistry, StyleSheet, View, Platform } from 'react-native';
 import { Container,
+         Header,
          Content,
          Spinner,
          Button,
          Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon, Fab } from 'native-base';
+import { Col, Row, Grid } from "react-native-easy-grid";
+import { Constants } from 'expo';
 
 import RoomsList from './../../rooms/components/RoomsList';
 import SignOut from "./../../sessions/components/SignOut";
@@ -23,6 +26,7 @@ export default class LobbyPage extends Component {
       //variable to FAB
       active: 'true',
       joinedToRoom: false,
+      navigation: this.props.navigation,
     }
 
     this.onLobby = this.onLobby.bind(this);
@@ -31,31 +35,40 @@ export default class LobbyPage extends Component {
 
   onLobby(joinRoom) {
     return (
-      <Container style={styles.container}>
-        <Text>Unete con el ID</Text>
-        <Form>
-          <Item floatingLabel >
-              <Label>Id Room</Label>
-              <Input onChangeText= {(text)=> this.setState({roomId:text})}
-                />
-          </Item>
-        </Form>
-        <Button onPress={() => {
-            joinRoom({
-              variables: {
-                room: {
-                  idRoom: this.state.roomId,
-                  idOwner: Store.getState().currentUser.id
+      <Container style={{flex: 1,}}>
+        <Text style={styles.titleElement}>Unete con el ID</Text>
+        <View style={{height:80}}>
+        <Grid>
+        <Col size={3}>
+          <Form>
+            <Item floatingLabel >
+                <Label>Id Room</Label>
+                <Input onChangeText= {(text)=> this.setState({roomId:text})}
+                  />
+            </Item>
+          </Form>
+        </Col>
+        <Col size={1}>
+          <Button rounded style={styles.buttonElement} onPress={() => {
+              joinRoom({
+                variables: {
+                  room: {
+                    idRoom: this.state.roomId,
+                    idOwner: Store.getState().currentUser.id
+                  }
                 }
-              }
-            })
-            this.setState({ joinedToRoom: true });
-          }}>
-          <Text>Buscar</Text>
-        </Button>
+              })
+              this.setState({ joinedToRoom: true });
+            }}>
+            <Text>Buscar</Text>
+          </Button>
+        </Col>
+        </Grid>
+        </View>
+
       {/*LIST OF ROOMS*/}
       <Content>
-        <RoomsList />
+        <RoomsList navigation={this.state.navigation} joinRoom={joinRoom}/>
       </Content>
         <Fab
           active = {this.state.active}
@@ -119,20 +132,19 @@ const styles = StyleSheet.create({
   formElement: {
     backgroundColor: 'skyblue',
     alignSelf: 'center',
-    width: 300,
-    margin: 20,
 
   },
 
-  buttonStyle:{
-    marginTop: 30,
-    backgroundColor: 'blue',
+  buttonElement:{
     alignSelf: 'center',
+    backgroundColor: '#26d3cd',
+    margin: 10,
 
   },
 
   fabElement: {
-    backgroundColor: '#5067FF',
+    backgroundColor: '#26d3cd',
+    zIndex: 5,
 
   },
 });

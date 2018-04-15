@@ -32,31 +32,42 @@ export class RoomsCreateRoom extends Component{
 
   onForm(createRoom){
     return (
-      <View>
+      <View style={{flex:1}}>
+      <Item floatingLabel style={styles.formElement}>
+      <Label>Room Name</Label>
         <Input
-        placeholder='Room name'
         onChangeText= {(text)=>{
           Store.dispatch(roomActionCreators.addRoomName(text));
         }}
         />
+      </Item>
+
+      <Item floatingLabel style={styles.formElement}>
+      <Label>Description</Label>
         <Input
-          placeholder='Description'
           onChangeText= {(text)=>{
             Store.dispatch(roomActionCreators.addRoomDescription(text));
           }}
         />
+      </Item>
+
+      <Item floatingLabel style={styles.formElement}>
+        <Label>Category</Label>
           <Input
-          placeholder='Category'
           onChangeText= {(text)=>{
             Store.dispatch(roomActionCreators.addRoomCategory(text));
           }}
         />
+      </Item>
+
+      <Item floatingLabel style={styles.formElement}>
+      <Label>ID owner</Label>
         <Input
-          placeholder='ID OWNER'
           onChangeText= {(userId)=>{
             Store.dispatch(roomActionCreators.addRoomOwner(userId));
           }}
         />
+      </Item>
         <Button
           onPress={() => {
             createRoom({ 
@@ -112,3 +123,15 @@ export class RoomsCreateRoom extends Component{
 }
 
 export default connect(mapStateToProps)(RoomsCreateRoom)
+
+const styles = StyleSheet.create({
+  formElement: {
+      height: 70,
+      width: 350,
+      alignSelf: 'center',
+      marginTop: 30,
+    },
+
+}
+
+  )

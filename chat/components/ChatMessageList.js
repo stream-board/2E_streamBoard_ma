@@ -3,7 +3,7 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  Text
+  Text,
 } from 'react-native';
 import { Container, Content, Footer} from "native-base"
 
@@ -28,14 +28,17 @@ export default ({ roomId: currentId }) => (
           Store.dispatch(chatActionsCreators.addChatMessageList(data.chatMsgByRoomId));
         }
         return (
-          <Container>
-          <Content>
-            <ChatList />
-          </Content>
-          <Footer>
-            <ChatWebsocket roomId={currentId}/>
-          </Footer>
-          </Container>
+          <View style={{flex:1}}>
+            <Container>
+              <Content //style={{backgroundColor:'red'}}
+              >
+                <ChatList />
+              </Content>
+              <Footer style={styles.chatElement}>
+                <ChatWebsocket roomId={currentId} />
+              </Footer>
+            </Container>
+          </View>
         )
       }
     }
@@ -44,17 +47,12 @@ export default ({ roomId: currentId }) => (
 
 //export default connect(mapStateToProps)(ChatMessageList)
 const styles = StyleSheet.create({
-  messageContainer: {
-    backgroundColor: '#00FFFF',
-    padding: 16,
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
-
-  message: {
-    color: '#FFFAF0',
-  },
-
-  sender: {
-    color: '#FF1493',
-  },
-
+  chatElement:{
+    height: 55,
+  }
 })

@@ -20,30 +20,63 @@ import {
 
 import { Query } from 'react-apollo';
 import { ALL_ROOMS_QUERY } from './../TypesDef';
+import Store from "./../../reduxConfig";
 
-
-export default () => (
-  <Query query={ALL_ROOMS_QUERY}>
-    {({ loading, error, data }) => {
-        if (loading) return <Spinner />;
-        if (error) return <Text>{`Error: ${error}`}</Text>;
-        return (
-          <Container>
-            {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
-            <Card key={index}>
-              <CardItem header bordere onPress={() => this.props.navigation.navigate('RoomsDetail' , { roomId: {idRoom} })}>
-                <Text>IdRoom: {idRoom}</Text>
-                <Text>Owner: {owner.nickname}</Text>
-                <Text>NameRoom: {nameRoom}</Text>
-              </CardItem>
-            </Card>
-            ))}
-          </Container>
-        )
-      }
+export default class RoomList extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      joinedToRoom: false,
+      roomSelected: 0,
     }
-  </Query>
-);
+  };
+
+  render(){
+    return(
+      <Query query={ALL_ROOMS_QUERY}>
+        {({ loading, error, data }) => {
+          if (loading) return <Spinner />;
+          if (error) return <Text>{`Error: ${error}`}</Text>;
+          return (
+            <Container style={styles.listElement}>
+              {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
+              <Card key={index}>
+                <CardItem header button onPress={() => {
+                    this.props.joinRoom({
+                      variables: {
+                        room: {
+                          idRoom: idRoom,
+                          idOwner: Store.getState().currentUser.id
+                        }
+                      }
+                    })
+                    this.setState({ joinedToRoom: true , roomSelected: idRoom });
+                  }
+                }>
+                  <Text>NameRoom: {nameRoom}</Text>
+                </CardItem>
+                <CardItem>
+                  <Text>idRoom : {idRoom}</Text>
+                </CardItem>
+              </Card>
+              ))}
+            </Container>
+          )
+        }
+      }
+
+      </Query>
+    )
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.joinedToRoom) {
+      this.props.navigation.navigate('RoomsDetail', { roomId: this.state.roomSelected})
+    }
+  }
+
+
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -53,4 +86,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#0DEBFF'
   },
+  listElement:{
+    margin:10,
+  }
 })

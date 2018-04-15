@@ -16,7 +16,6 @@ export const RootStack = StackNavigator(
     RoomsDetail: { screen: RoomsDetail},
     SignOut: { screen: SignOutPage},
   },
-  { headerMode: 'screen' },
   {
     initialRouteName: "SignIn",
     navigationOptions: {
@@ -32,5 +31,6 @@ export const RootStack = StackNavigator(
       },
     },
   },
+   { header: {visible:false} },
 );
 
