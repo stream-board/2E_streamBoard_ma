@@ -14,7 +14,9 @@ import {
   Input,
   Button,
   Title,
-  Label
+  Label,
+  Fab,
+  Icon,
 } from 'native-base';
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
@@ -23,14 +25,17 @@ export default class SignOut extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: false, text: '', sessionDeleted: false };
+    this.state = { open: false, text: '', sessionDeleted: false, active: 'true',};
     this.onForm = this.onForm.bind(this);
     this.onDeleteSession = this.onDeleteSession.bind(this);
   }
 
   onForm(deleteSession) {
     return (
-        <Button style={styles.buttonStyle} rounded success
+        <Fab 
+          active = {this.state.active}
+          position="bottomLeft"
+          style={{backgroundColor: '#0a8b88', zIndex: 5,}}
           onPress={() => {
             deleteSession({ 
               variables: { 
@@ -43,8 +48,8 @@ export default class SignOut extends Component {
             })
             this.setState({sessionDeleted: true});
           }}
-        ><Text>Salir</Text>
-        </Button>
+        ><Icon name="log-out" />
+        </Fab>
     )
   };
 
@@ -92,7 +97,4 @@ const styles = StyleSheet.create({
   formElement: {
     height: 70,
   },
-
-  buttonStyle:{
-  }
 });

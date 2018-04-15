@@ -94,9 +94,9 @@ export class ChatWebsocket extends Component {
   }
   render() {  
     return (
-      <Grid>
+      <Grid style={{backgroundColor:'white'}}>
         <Col size={8}>
-            <Item rounded style={{borderColor:'green', borderWidth: 0.7, marginRight: 10 }}>
+            <Item rounded style={{borderColor:'#174557', borderWidth: 0.7, marginRight: 10 }}>
               <Input 
                 placeholder='Type a message'
                 onChangeText={(text) => { 
@@ -106,10 +106,10 @@ export class ChatWebsocket extends Component {
             </Item>
         </Col>
         <Col size={1}>
-            <Button success rounded
+            <Button success rounded style={{backgroundColor:'#174557'}}
               onPress={() => this.sendMessage(this.state.text)}
             >
-               <Icon name="send" size={10}/>
+               <Icon name="send" size={8}/>
             </Button>
         </Col>
       </Grid>

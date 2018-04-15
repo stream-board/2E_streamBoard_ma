@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   chatElement:{
-    height: 50,
+    height: 55,
   }
 })
