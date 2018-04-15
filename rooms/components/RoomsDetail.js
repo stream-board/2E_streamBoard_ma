@@ -58,6 +58,7 @@ const RoomDetail = ({ loading, error, room }) => {
                 <ScrollView horizontal>
                   <View style={styles.boxSmall} />
                 </ScrollView>
+            </ScrollView>
             </Tab>
         </Tabs>
     )
