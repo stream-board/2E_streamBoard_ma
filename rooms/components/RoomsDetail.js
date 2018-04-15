@@ -22,6 +22,8 @@ import Store from "./../../reduxConfig";
 import { roomActionCreators } from "./../roomsRedux";
 import RoomExit from "./RoomsExit";
 import { Constants } from 'expo';
+import Board from './../../board/components/Board';
+
 
 const RoomDetailQuery = ({ roomId, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
@@ -56,11 +58,7 @@ const RoomDetail = ({ loading, error, room }) => {
                 )}
             </Tab>
             <Tab heading="Board">
-                <ScrollView style={styles.container}>
-                    <ScrollView horizontal>
-                    <View style={styles.boxSmall} />
-                    </ScrollView>
-                </ScrollView>
+                <Board roomId={room.idRoom} />
             </Tab>
         </Tabs>
     )
@@ -69,21 +67,23 @@ const RoomDetail = ({ loading, error, room }) => {
 export default class RoomsDetail extends Component {
     constructor(props) {
         super(props);
-        
-        const { roomId } = this.props.navigation.state.params;        
+        console.log(this.props.navigation.state.params);
+        const { roomId, roomName } = this.props.navigation.state.params;
+        console.log(roomName);
         this.state = {
             roomId: roomId,
-            navigation: this.props.navigation
+            navigation: this.props.navigation,
+            roomName: roomName
         }
     }
-
+    
     render() {
         return (
-            <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+            <Container>
                 <RoomDetailQuery roomId={this.state.roomId}>
                     {result => <RoomDetail {...result} />}
                 </RoomDetailQuery>
-                <RoomExit roomId={this.state.roomId} navigation={this.props.navigation}/>
+                <RoomExit roomId={this.state.roomId} roomName={this.state.roomName} navigation={this.props.navigation}/>
             </Container>
         );
     } 
