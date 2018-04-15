@@ -25,20 +25,23 @@ import { Constants } from 'expo';
 import Board from './../../board/components/Board';
 
 
-const RoomDetailQuery = ({ roomId, children }) => (
+const RoomDetailQuery = ({ roomId, navigation, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
     {result => {
+        console.log(navigation);
         const { loading , error, data } = result;
         return children({
             loading,
             error,
             room: data && data.roomById,
+            navigation: navigation,
         });
     }}
     </Query>   
 );
 
-const RoomDetail = ({ loading, error, room }) => {
+const RoomDetail = ({ loading, error, room, navigation }) => {
+    console.log(navigation);
     if(loading) {
         return <Spinner />;
     }
@@ -49,18 +52,21 @@ const RoomDetail = ({ loading, error, room }) => {
         Store.dispatch(roomActionCreators.addRoomParticipantList(room.Participants));
     }
     return (
-        <Tabs locked={true}>
-            <Tab heading="Chat">
-                {room && (
-                    <View>
-                        <Chat roomId={room.idRoom} />
-                    </View>
-                )}
-            </Tab>
-            <Tab heading="Board">
-                <Board roomId={room.idRoom} />
-            </Tab>
-        </Tabs>
+        <Container>
+            <Tabs locked={true}>
+                <Tab heading="Chat">
+                    {room && (
+                        <View>
+                            <Chat roomId={room.idRoom} />
+                        </View>
+                    )}
+                </Tab>
+                <Tab heading="Board">
+                    <Board roomId={room.idRoom} />
+                </Tab>
+            </Tabs>
+            <RoomExit roomObj={room} navigation={navigation}/>
+        </Container>
     )
 }
 
@@ -68,22 +74,19 @@ export default class RoomsDetail extends Component {
     constructor(props) {
         super(props);
         console.log(this.props.navigation.state.params);
-        const { roomId, roomName } = this.props.navigation.state.params;
-        console.log(roomName);
+        const { roomId } = this.props.navigation.state.params;
         this.state = {
             roomId: roomId,
             navigation: this.props.navigation,
-            roomName: roomName
         }
     }
     
     render() {
         return (
             <Container>
-                <RoomDetailQuery roomId={this.state.roomId}>
+                <RoomDetailQuery roomId={this.state.roomId} navigation={this.props.navigation}>
                     {result => <RoomDetail {...result} />}
                 </RoomDetailQuery>
-                <RoomExit roomId={this.state.roomId} roomName={this.state.roomName} navigation={this.props.navigation}/>
             </Container>
         );
     } 

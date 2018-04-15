@@ -49,8 +49,7 @@ export default class BoardSocket extends Component {
     this.drawPath = this.drawPath.bind(this);
     this.initCanvas = this.initCanvas.bind(this);
     this.$socket.on('connect', () => {
-      console.log('Connected');
-      console.log(this.socket);
+      console.log('Connected to board socket');
     });
 
     this.state = {

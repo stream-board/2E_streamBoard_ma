@@ -56,7 +56,7 @@ export class ChatWebsocket extends Component {
 
   onOpen() {
     const { roomId } = this.props;
-    console.log('Connected');
+    console.log('Connected to chat socket');
     this.$socket.send(
       JSON.stringify({
         'category': 'JOIN-ROOM',
