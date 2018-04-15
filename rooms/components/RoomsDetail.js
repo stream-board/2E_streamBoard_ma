@@ -48,17 +48,17 @@ const RoomDetail = ({ loading, error, room }) => {
     }
     return (
         <Tabs locked={true} tabBarUnderlineStyle={{borderBottomWidth:2}}>
-        <Tab heading="Chat" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-            {room && (
-                <Chat roomId={room.idRoom} />
-            )}
-        </Tab>
-        <Tab heading="Board" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-            <ScrollView style={styles.container}>
-                <ScrollView horizontal>
-                  <View style={styles.boxSmall} />
+            <Tab heading="Chat" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+                {room && (
+                    <Chat roomId={room.idRoom} />
+                )}
+            </Tab>
+            <Tab heading="Board" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+                <ScrollView style={styles.container}>
+                    <ScrollView horizontal>
+                    <View style={styles.boxSmall} />
+                    </ScrollView>
                 </ScrollView>
-            </ScrollView>
             </Tab>
         </Tabs>
     )
