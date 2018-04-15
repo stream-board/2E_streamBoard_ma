@@ -21,7 +21,6 @@ export default class Chat extends Component {
 const styles = StyleSheet.create({
   chatElement: {
     paddingHorizontal: 5,
-    backgroundColor: 'red',
     flex: 1,
     width: Dimensions.get('screen').width,
   },
