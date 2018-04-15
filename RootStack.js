@@ -8,7 +8,6 @@ import JoinRoomPage from './routes/Lobby/JoinRoom.js';
 
 import { StackNavigator } from "react-navigation";
 
-
 export const RootStack = StackNavigator(
   {
     SignIn: { screen: SignInPage },
@@ -19,6 +18,18 @@ export const RootStack = StackNavigator(
   },
   {
     initialRouteName: "SignIn",
+    navigationOptions: {
+      headerStyle: {
+        height: 0,
+        opacity: 0,
+        display: 'none',
+        backgroundColor: '#f4511e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
   },
    { header: {visible:false} },
 );

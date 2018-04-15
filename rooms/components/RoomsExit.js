@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View} from 'react-native';
+import { AppRegistry, StyleSheet, View, Dimensions} from 'react-native';
 import {
+  Text,
   Spinner,
   Container,
   Header,
@@ -30,20 +31,25 @@ export default class RoomExit extends Component {
   }
 
   onForm(exitRoom) {
+    const roomOwner = this.props.roomObj.owner.id;
+    const currentId = Store.getState().currentUser.id;
+    const currentOwner = ((roomOwner === currentId) ? true : false);
+
     return (
-        <Button style={styles.buttonStyle} rounded success
+        <Button style={styles.buttonStyle}
           onPress={() => {
             exitRoom({ 
               variables: { 
                 room: {
-                  idRoom : this.props.roomId,
+                  idRoom : this.props.roomObj.idRoom,
                   idOwner : Store.getState().currentUser.id
                 }
               }
             })
             this.setState({exitRoom: true});
           }}
-        ><Text>Salir sala</Text>
+        ><Text style={{ color: '#fff' }}>{currentOwner ? 'Delete': 'Get out from' } {this.props.roomObj.nameRoom}</Text>
+        
         </Button>
     )
   };
@@ -93,5 +99,8 @@ const styles = StyleSheet.create({
   },
 
   buttonStyle:{
+    width: Dimensions.get('screen').width,
+    backgroundColor: '#26d3cd',
+    justifyContent: 'center'
   }
 });

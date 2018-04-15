@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
+import Store from './../../reduxConfig';
 
 import BoardSocket from './BoardSocket';
 
 export default class Board extends Component {
     render(){
-        const { roomId, userNick, userId } = this.props;
+        const { roomId } = this.props;
+        const userNick = Store.getState().currentUser.nickname;
+        const userId = Store.getState().currentUser.id;
+        
         return (   
-            <View>
+            <View style={styles.boardContainer}>
                 <BoardSocket 
                     roomId={roomId}
                     userNick={userNick}
@@ -17,3 +21,9 @@ export default class Board extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    boardContainer: {
+        backgroundColor: 'skyblue',
+    },
+})
