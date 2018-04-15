@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Button,
   TextInput
 } from 'react-native';
-import { Container, Header, Content, Form, Item, Input } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Button, Text, Icon } from 'native-base';
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 import Client from './../../apolloConfig';
 import Store from './../../reduxConfig';
@@ -87,23 +86,34 @@ export class ChatWebsocket extends Component {
     this.$socket.send(JSON.stringify({
       'category': 'NEW-MESSAGE',
       'room_id': this.props.roomId,
-      'user_id': 1,
+      //'user_id': 1,
+      'user_id': Store.getState().currentUser.id,
       'message': message
     }))
     this.setState({text: ''});
   }
-  render() {
+  render() {  
     return (
-      <View style={{ flex: 1, backgroundColor: '#FFFF00'}}>
-        <TextInput
-          onChangeText={(text) => { this.setState({ text: text })}}
-          value={this.state.text}
-        />
-        <Button success
-          onPress={() => this.sendMessage(this.state.text)}
-          title="Enviar"
-        />
-      </View>
+      <Grid>
+        <Col size={8}>
+            <Item rounded style={{borderColor:'green', borderWidth: 0.7, marginRight: 10 }}>
+              <Input 
+                placeholder='Type a message'
+                onChangeText={(text) => { 
+                  this.setState({ text: text })}}
+                  value={this.state.text}
+              />
+            </Item>
+        </Col>
+        <Col size={1}>
+            <Button success rounded
+              onPress={() => this.sendMessage(this.state.text)}
+            >
+               <Icon name="send" size={10}/>
+            </Button>
+        </Col>
+      </Grid>
+
     )
   }
 }

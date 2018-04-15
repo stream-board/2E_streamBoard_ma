@@ -66,7 +66,7 @@ export default class SignIn extends Component {
         <Item floatingLabel style={styles.formElement}>
         <Label>Password</Label>
         <Input
-          secureTextEntry={true}
+          //secureTextEntry={true}
           onChangeText= {(text)=>{
             Store.dispatch( sessionActionCreators.addUserPassword(text));
           }}
