@@ -23,6 +23,14 @@ const mapStateToProps = (state) => ({
     chatMessageList: state.chatMessageList,
 });
 
+function renderIf(condition, content) {
+    if (condition) {
+        return content;
+    } else {
+        return null;
+    }
+}
+
 export class ChatList extends Component {
   render() {
     const { chatMessageList } = this.props;
@@ -30,11 +38,13 @@ export class ChatList extends Component {
     return (
       <View>
         {chatMessageList.map(({ id, message, user_id}, index) => (
-            <View key={index} style={styles.messageOwn}>
-              <Text>User: {user_id}</Text>
-              <Text>Msg: {message}</Text>
+
+            <View key={index} style={styles.messageOwner}>
+              <Text style={styles.textOwner}>User: {user_id}</Text>
+              <Text style={styles.textOwner}>Msg: {message}</Text>
             </View>
-          ))}
+          )
+        )}
       </View>
     )
   }
@@ -43,20 +53,23 @@ export class ChatList extends Component {
 export default connect(mapStateToProps)(ChatList);
 
 const styles = StyleSheet.create({
-  messageOwn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#0CE882',
+  messageOwner: {
+    //alignSelf: "self-end",
+    backgroundColor: '#174557',
     width: 320,
     margin: 5,
     borderRadius: 10,
   },
   messageOther: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#0CE882',
+    backgroundColor: '#E0E0E0',
     width: 320,
     margin: 5,
     borderRadius: 10,
+  },
+  textOwner:{
+    textAlign: "right",
+  },
+  textOther:{
+    textAlign: "left",
   }
 })
