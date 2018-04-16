@@ -1,5 +1,5 @@
 import React, { Component }from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import {Container, Header, Content, Footer, Text, H1} from "native-base";
 
 import ChatMessageList from './ChatMessageList';
@@ -20,8 +20,8 @@ export default class Chat extends Component {
 
 const styles = StyleSheet.create({
   chatElement: {
-    margin:5,
+    paddingHorizontal: 5,
     flex: 1,
-
+    width: Dimensions.get('screen').width,
   },
 })

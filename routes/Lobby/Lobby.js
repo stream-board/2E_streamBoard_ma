@@ -85,14 +85,16 @@ export default class LobbyPage extends Component {
   }
 
   onJoinRoom(data) {
-    return(
+    return (
       <Spinner />
     )
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(this.state.joinedToRoom) {
-      this.props.navigation.navigate('RoomsDetail', { roomId: this.state.roomId})
+      return this.props.navigation.navigate('RoomsDetail', { 
+        roomId: this.state.roomId,
+      })
     }
   }
 

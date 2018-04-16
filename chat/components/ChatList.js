@@ -3,6 +3,7 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
+  Dimensions
 } from 'react-native';
 import { 
     Container, 
@@ -26,7 +27,7 @@ const mapStateToProps = (state) => ({
 });
 
 function renderIf(condition, condition2, content, alterContent) {
-    if (condition==condition2) {
+    if (condition === condition2) {
         return content;
     } else {
         return alterContent;
@@ -35,7 +36,7 @@ function renderIf(condition, condition2, content, alterContent) {
 
 function existPhoto(user_id , content, alterContent){
   if(Store.getState().roomParticipants[user_id]){
-    return content;
+  return <Thumbnail source={{uri: Store.getState().roomParticipants[user_id].image}} />;
   }else{
     return alterContent; 
   }
@@ -47,50 +48,45 @@ export class ChatList extends Component {
     const currentUser = Store.getState().currentUser.id;
     console.log(currentUser);
     const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
-    console.log(Store.getState().roomParticipants);
+    console.log(Store.getState().currentUser);
     return (
-      <View>
+      <View style={styles.chatContainer}>
         {chatMessageList.map(({ id, message, user_id, name}, index) => (
           renderIf(currentUser,user_id, 
-            <View key={index} >
-              <Grid>
-                <Col size={2}>
+            <Grid key={index}>
+              <Col size={35}>
 
-                </Col>
-                <Col size={4} style={styles.messageOwner}>
-                  <Text style={styles.textOwner}>{name}</Text>
-                  <Text style={styles.textOwner}>{message}</Text>
-                </Col>
-                <Col size={1}>
-                  <Thumbnail source={{uri: Store.getState().roomParticipants[currentUser].image}} />
-                </Col>
-              </Grid>
-            </View>
-            ,
-            <View key={index} >
-              <Grid>
-                <Col size={1}>
-                {
-                  existPhoto(
-                    user_id, 
-                    <Thumbnail source={{uri: Store.getState().roomParticipants[user_id].image}} />,
-                    <Thumbnail source={{uri: uri}} />
-                  )
-                }
-                </Col>
-                <Col size={4} style={styles.messageOther}>
-              <Text style={styles.textOther}>{name}</Text>
-              <Text style={styles.textOther}>{message}</Text>
-                </Col>
-                <Col size={2}>
+              </Col>
+              <Col size={45} style={styles.messageOwner}>
+                <Text style={styles.textOwner}>{name}</Text>
+                <Text style={styles.textOwner}>{message}</Text>
+              </Col>
+              <Col size={20}>
+                <Thumbnail source={{uri: Store.getState().currentUser.image}} />
+              </Col>
+            </Grid>
+          ,
+          
+            <Grid key={index}>
+              <Col size={17}>
+              {
+                existPhoto(
+                  user_id, 
+                  <Thumbnail source={{uri: Store.getState().roomParticipants[user_id]}} />,
+                  <Thumbnail source={{uri: uri}} />
+                )
+              }
+              </Col>
+              <Col size={48} style={styles.messageOther}>
+                <Text style={styles.textOther}>{name}</Text>
+                <Text style={styles.textOther}>{message}</Text>
+              </Col>
+              <Col size={35}>
 
-                </Col>
-              </Grid>
-            </View>
+              </Col>
+            </Grid>
           )
-
-          )
-        )}
+        ))}
       </View>
     )
   }
@@ -117,5 +113,9 @@ const styles = StyleSheet.create({
   },
   textOther:{
     textAlign: "left",
+  },
+  chatContainer: {
+    flex: 1,
+    width: Dimensions.get('screen').width
   }
 })

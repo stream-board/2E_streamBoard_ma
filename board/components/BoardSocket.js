@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View,
   ActivityIndicator,
   StyleSheet,
   Text,
-  Button,
-  PanResponder
+  PanResponder,
+  Platform,
+  Dimensions
 } from 'react-native';
 
 import SocketIOClient from 'socket.io-client';
@@ -17,6 +17,7 @@ import {
 } from './../Server';
 
 import Canvas, {Image as CanvasImage, Path2D} from 'react-native-canvas';
+import { Fab, Icon, Button, View } from 'native-base';
 
 
 export default class BoardSocket extends Component {
@@ -48,20 +49,21 @@ export default class BoardSocket extends Component {
     this.drawPath = this.drawPath.bind(this);
     this.initCanvas = this.initCanvas.bind(this);
     this.$socket.on('connect', () => {
-      console.log('Connected');
-      console.log(this.socket);
+      console.log('Connected to board socket');
     });
 
     this.state = {
       isAllowed: true,
       isPenDown: false,
-      canvasDidSet: false,
+      contextDidSet: false,
       selectedColor: defaultLineColor,
       selectedThickness: defaultLineThickness,
-      canvas: <Canvas ref={this.initCanvas} />,
+      canvas: <Canvas style={{ backgroundColor: '#fff', width: '100%', height: '100%', position: 'absolute', top:0, left: 0 }} ref={this.initCanvas} />,
       context: '',
       hasTouch: false,
-      localPen: {}
+      localPen: {},
+      active: 'false',
+      onChangeColor: false
     }
     this.$socket.on('resetBoard', this.onResetBoard);
     this.$socket.on('lostPermission', this.onLostPermission);
@@ -82,8 +84,8 @@ export default class BoardSocket extends Component {
       onPanResponderGrant: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.x0 - 40;
-        let touchY = gestureState.y0 - 105;
+        let touchX = gestureState.x0 - 20;
+        let touchY = gestureState.y0 - 130;
         if(!this.state.isPenDown) {
           this.penDown(canvas, context, touchX, touchY);
         }
@@ -91,8 +93,8 @@ export default class BoardSocket extends Component {
       onPanResponderMove: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.moveX - 40;
-        let touchY = gestureState.moveY - 105;
+        let touchX = gestureState.moveX - 20;
+        let touchY = gestureState.moveY - 130;
         this.penMove(canvas, context, touchX, touchY);
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
@@ -100,7 +102,7 @@ export default class BoardSocket extends Component {
         const canvas = this.state.canvas;
         const context = this.state.context;
         let touchX = gestureState.moveX - 40;
-        let touchY = gestureState.moveY - 105;
+        let touchY = gestureState.moveY - 130;
         this.penUp(canvas, context, touchX, touchY);
       },
     });
@@ -109,18 +111,20 @@ export default class BoardSocket extends Component {
     console.log('did Mount');
   }
   shouldComponentUpdate(nextProps, nextState) {
+    if(this.state.onChageColor){
+      return true;
+    }
     return false;
   }
 
   initCanvas = (canvas) => {
-    const context = canvas.getContext('2d');
+    let context = canvas.getContext('2d');
     canvas.height = 720;
     canvas.width = 1280;
     context.lineCap = 'round';
     context.fillStyle = "#fff";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    this.setState({canvas: canvas, context: context});
-    console.log('initcanvas');
+    this.setState({canvas: canvas, context: context, contextDidSet: true});
+    console.log('initcanvas');  
     return context;
   }
 
@@ -233,13 +237,26 @@ export default class BoardSocket extends Component {
 
   render() {
     return (
-      <View>
-        <View style={styles.container} {...this._panResponder.panHandlers}>
+      <View style={styles.container}>
+        <View style={styles.canvas} {...this._panResponder.panHandlers}>
           {this.state.canvas}
         </View>
-        <Button 
-          title='ask for turn'
-          onPress={this.askForTurn} />
+        <Fab 
+          active={this.state.active}
+          direction='up'
+          containerStyle={{paddingBottom: 10}}
+          style={styles.settingBtn}
+          potition='bottomRight'
+          onPress={()=>{ this.setState({ 'active': !this.state.active })}}
+        >
+          <Icon type='FontAwesome' name='home' />
+          <Button style={styles.toolBtn}>
+            <Icon type='MaterialIcons' name='color-lens' style={{ color: '#26d3cd' }}/>
+          </Button>
+          <Button style={styles.toolBtn} onPress={()=> { this.setState({ onChageColor: true}); console.log('brush')}}>
+            <Icon type='MaterialIcons' name='brush' style={{ color: '#26d3cd' }}/>
+          </Button>
+        </Fab>
       </View>
     );
   }
@@ -248,11 +265,21 @@ export default class BoardSocket extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#00FFFF',
-    padding: 16,
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft: 10,
+    backgroundColor: 'red',
+    overflow: 'hidden',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height - 210
+  },
+
+  canvas: {
     flex: 1
+  },
+
+  settingBtn: {
+    backgroundColor: '#174557',
+  },
+
+  toolBtn: {
+    backgroundColor: '#174557'
   }
 })

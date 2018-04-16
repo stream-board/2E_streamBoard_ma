@@ -22,21 +22,26 @@ import Store from "./../../reduxConfig";
 import { roomActionCreators } from "./../roomsRedux";
 import RoomExit from "./RoomsExit";
 import { Constants } from 'expo';
+import Board from './../../board/components/Board';
 
-const RoomDetailQuery = ({ roomId, children }) => (
+
+const RoomDetailQuery = ({ roomId, navigation, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
     {result => {
+        console.log(navigation);
         const { loading , error, data } = result;
         return children({
             loading,
             error,
             room: data && data.roomById,
+            navigation: navigation,
         });
     }}
     </Query>   
 );
 
-const RoomDetail = ({ loading, error, room }) => {
+const RoomDetail = ({ loading, error, room, navigation }) => {
+    console.log(navigation);
     if(loading) {
         return <Spinner />;
     }
@@ -47,42 +52,39 @@ const RoomDetail = ({ loading, error, room }) => {
         Store.dispatch(roomActionCreators.addRoomParticipantList(room.Participants));
     }
     return (
+        <Container>
         <Tabs locked={true} tabBarUnderlineStyle={{borderBottomWidth:2}}>
-        <Tab heading="Chat" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-            {room && (
-                <Chat roomId={room.idRoom} />
-            )}
-        </Tab>
-        <Tab heading="Board" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-            <ScrollView style={styles.container}>
-                <ScrollView horizontal>
-                  <View style={styles.boxSmall} />
-                </ScrollView>
-            </ScrollView>
+            <Tab heading="Chat" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+                {room && ( <Chat roomId={room.idRoom} />
+                )}
             </Tab>
-        </Tabs>
+            <Tab heading="Board" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+                    <Board roomId={room.idRoom} />
+                </Tab>
+            </Tabs>
+            <RoomExit roomObj={room} navigation={navigation}/>
+        </Container>
     )
 }
 
 export default class RoomsDetail extends Component {
     constructor(props) {
         super(props);
-        
-        const { roomId } = this.props.navigation.state.params;        
+        console.log(this.props.navigation.state.params);
+        const { roomId } = this.props.navigation.state.params;
         this.state = {
             roomId: roomId,
-            navigation: this.props.navigation
+            navigation: this.props.navigation,
         }
     }
-
+    
     render() {
         console.log("idroom ingresado en roomdetails");
         console.log(this.state.roomId);
         return (
-            <RoomDetailQuery roomId={this.state.roomId}>
-                {result => <RoomDetail {...result} />}
-            </RoomDetailQuery>
-
+                <RoomDetailQuery roomId={this.state.roomId} navigation={this.props.navigation}>
+                    {result => <RoomDetail {...result} />}
+                </RoomDetailQuery>
         );
     } 
 
