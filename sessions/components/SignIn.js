@@ -41,12 +41,12 @@ export default class SignIn extends Component {
 
     return (
       <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}> 
-
-        <Image 
-          style = { styles.image }
-          source = { require('./logo.png' ) }
-        />
-
+        <View style={styles.image}>
+          <Image 
+            style = { styles.img }
+            source = { require('./logo.png' ) }
+          />
+        </View>
         <Item floatingLabel style={styles.formElement}>
           <Label>Email</Label>
           <Input
@@ -132,8 +132,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 
+  img: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'contain',
+    padding: 3,
+  },
+
   image: {
     height: 180,
+    width: 400,
     alignSelf: 'center',
     marginTop: 50,
     marginBottom: 30,
