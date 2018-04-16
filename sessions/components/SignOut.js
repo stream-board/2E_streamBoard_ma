@@ -15,7 +15,6 @@ import {
   Button,
   Title,
   Label,
-  Fab,
   Icon,
 } from 'native-base';
 import { connect } from 'react-redux';
@@ -32,10 +31,9 @@ export default class SignOut extends Component {
 
   onForm(deleteSession) {
     return (
-        <Fab 
-          active = {this.state.active}
-          position="bottomLeft"
-          style={{backgroundColor: '#0a8b88', zIndex: 5,}}
+        <Button
+          rounded
+          style={styles.buttonElement}
           onPress={() => {
             deleteSession({ 
               variables: { 
@@ -49,7 +47,7 @@ export default class SignOut extends Component {
             this.setState({sessionDeleted: true});
           }}
         ><Icon name="log-out" />
-        </Fab>
+        </Button>
     )
   };
 
@@ -84,17 +82,9 @@ export default class SignOut extends Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-  },
-
-  titleElement: {
-    margin: 20,
-    backgroundColor: 'skyblue',
+  buttonElement: {
+    backgroundColor: '#0a8b88',
     alignSelf: 'center',
-
-  },
-
-  formElement: {
-    height: 70,
+    margin: 5,
   },
 });

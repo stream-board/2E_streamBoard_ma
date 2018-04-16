@@ -1,5 +1,5 @@
 import React , { Component }from 'react';
-import { AppRegistry, StyleSheet, Text, View } from 'react-native';
+import { AppRegistry, StyleSheet, View, Platform } from 'react-native';
 import { ROOMS_CREATE_ROOM_MUTATION } from './../TypesDef'
 import { ALL_ROOMS_QUERY } from './../TypesDef'
 import { Mutation } from 'react-apollo';
@@ -7,23 +7,15 @@ import Store from './../../reduxConfig';
 import {
  Spinner,
  Container,
- Header,
- Content,
  Button,
- Form,
  Item,
  Input,
  Picker,
  Label,
  H1,
- Body,
- Left,
- Right,
- Icon,
- Fab,
- Title,
- Footer
+ Text
 } from 'native-base';
+import { Constants } from 'expo';
 import { connect } from 'react-redux';
 import { roomActionCreators } from "./../roomsRedux";
 
@@ -50,8 +42,10 @@ export class RoomsCreateRoom extends Component{
 
  onForm(createRoom){
    return (
-     <Container style={{flex:1}}>
+     <Container style={{flex:1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+
        <H1 style={styles.titleElement}>Create Room</H1>
+
        <Item floatingLabel style={styles.formElement}>
        <Label>Room Name</Label>
          <Input
@@ -70,8 +64,10 @@ export class RoomsCreateRoom extends Component{
          />
        </Item>
 
-       <Text style = {{fontSize: 15, marginLeft: 32, marginTop: 25, color: '#87838B'}} >Category</Text>
+       <Text style = {styles.textElement} >Category</Text>
+
        <Picker
+          placeholder="hola"
           style = {styles.pickerElement}
           mode="dropdown"
           selectedValue={this.state.selected1}
@@ -91,10 +87,9 @@ export class RoomsCreateRoom extends Component{
           <Picker.Item label="Science" value="science" />
         </Picker>
 
-        <Content />
-        <Footer style = {{backgroundColor:'#EAE6CA', marginTop: 20}}>
-        <Fab
-          style={styles.fabElement}
+        <Button
+          rounded
+          style={styles.buttonElement}
           onPress={() => {
            Store.dispatch(roomActionCreators.addRoomOwner(Store.getState().currentUser.id));
            createRoom({ 
@@ -105,9 +100,8 @@ export class RoomsCreateRoom extends Component{
            this.setState({formSended: true});
          }}
         >
-        <Icon name="md-send" />
-        </Fab>
-        </Footer>
+        <Text>Create Room!</Text>
+        </Button>
      </Container>
    )
  };
@@ -166,15 +160,12 @@ const styles = StyleSheet.create({
      marginTop: 30,
    },
 
-  buttonStyle:{
-    marginTop: 20,
-    width: 100,
+  textElement:{
+    color:'#87838B',
+    width: 300,
     alignSelf: 'center',
-    backgroundColor: '#26d3cd',
-  },
-
-  fabElement: {
-    backgroundColor: '#26d3cd',
+    marginTop: 30,
+    textAlign: "left",
   },
 
   pickerElement: {
@@ -183,4 +174,11 @@ const styles = StyleSheet.create({
     width: 300,
     alignSelf: 'center',
   },
+
+  buttonElement:{
+    marginTop: 20,
+    alignSelf: 'center',
+    backgroundColor: '#26d3cd',
+  },
+
 })

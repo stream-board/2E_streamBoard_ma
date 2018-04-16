@@ -52,7 +52,7 @@ const RoomDetail = ({ loading, error, room, navigation }) => {
         Store.dispatch(roomActionCreators.addRoomParticipantList(room.Participants));
     }
     return (
-        <Container>
+        <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
         <Tabs locked={true} tabBarUnderlineStyle={{borderBottomWidth:2}}>
             <Tab heading="Chat" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
                 {room && ( <Chat roomId={room.idRoom} />
