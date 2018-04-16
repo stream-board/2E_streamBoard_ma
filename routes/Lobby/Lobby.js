@@ -37,7 +37,7 @@ export default class LobbyPage extends Component {
   onLobby(joinRoom) {
     return (
       <Container style={{flex: 1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
-        <View style={{alignItems: 'center', height: 70}}>
+        <View style={{alignItems: 'center', height: 80, margin:5}}>
           <Thumbnail large source={{uri: Store.getState().currentUser.image}} />
         </View>
         <View style={{height:90}}>
