@@ -47,9 +47,11 @@ export const ROOMS_CREATE_ROOM_MUTATION = gql`
     createRoom(room: $room) {
       idRoom,
       nameRoom,
+      descriptionRoom,
       owner {
         name,
-        nickname
+        nickname,
+        image
       }
     }
   }
