@@ -19,6 +19,8 @@ import {
 import Canvas, {Image as CanvasImage, Path2D} from 'react-native-canvas';
 import { Fab, Icon, Button, View } from 'native-base';
 
+import ToolsModal from './BoardToolsModal';
+
 
 export default class BoardSocket extends Component {
   constructor(props) {
@@ -48,6 +50,8 @@ export default class BoardSocket extends Component {
 
     this.drawPath = this.drawPath.bind(this);
     this.initCanvas = this.initCanvas.bind(this);
+    this.changeColor = this.changeColor.bind(this);
+    this.clearBoard = this.clearBoard.bind(this);
     this.$socket.on('connect', () => {
       console.log('Connected to board socket');
     });
@@ -72,6 +76,7 @@ export default class BoardSocket extends Component {
     this.$socket.on('answerForBoard', this.onAnswerForBoard);
     this.$socket.on('hostLeft', this.onHostLeft);
     this.$socket.on('draw', this.onDraw);
+    this.$socket.on('clear', this.clearBoard);
   }
 
   componentWillMount() {
@@ -84,8 +89,8 @@ export default class BoardSocket extends Component {
       onPanResponderGrant: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.x0 - 20;
-        let touchY = gestureState.y0 - 130;
+        let touchX = gestureState.x0;
+        let touchY = gestureState.y0 - 100;
         if(!this.state.isPenDown) {
           this.penDown(canvas, context, touchX, touchY);
         }
@@ -93,16 +98,16 @@ export default class BoardSocket extends Component {
       onPanResponderMove: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.moveX - 20;
-        let touchY = gestureState.moveY - 130;
+        let touchX = gestureState.moveX;
+        let touchY = gestureState.moveY - 100;
         this.penMove(canvas, context, touchX, touchY);
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (evt, gestureState) => {
         const canvas = this.state.canvas;
         const context = this.state.context;
-        let touchX = gestureState.moveX - 40;
-        let touchY = gestureState.moveY - 130;
+        let touchX = gestureState.moveX;
+        let touchY = gestureState.moveY - 100;
         this.penUp(canvas, context, touchX, touchY);
       },
     });
@@ -111,9 +116,6 @@ export default class BoardSocket extends Component {
     console.log('did Mount');
   }
   shouldComponentUpdate(nextProps, nextState) {
-    if(this.state.onChageColor){
-      return true;
-    }
     return false;
   }
 
@@ -126,6 +128,11 @@ export default class BoardSocket extends Component {
     this.setState({canvas: canvas, context: context, contextDidSet: true});
     console.log('initcanvas');  
     return context;
+  }
+
+  changeColor(selectedColor) {
+    console.log(selectedColor);
+    this.setState({ 'selectedColor': selectedColor });
   }
 
   onLostPermission(data) {
@@ -170,6 +177,15 @@ export default class BoardSocket extends Component {
 
   askForTurn() {
     this.$socket.emit('askForBoard');
+  }
+
+  clearBoard(){
+    if(this.state.canvas) {
+      const canvas = this.state.canvas;
+      const context = this.state.context;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      this.$socket.emit('clear');
+    }
   }
 
   broadcastPath(event, coords){
@@ -241,22 +257,7 @@ export default class BoardSocket extends Component {
         <View style={styles.canvas} {...this._panResponder.panHandlers}>
           {this.state.canvas}
         </View>
-        <Fab 
-          active={this.state.active}
-          direction='up'
-          containerStyle={{paddingBottom: 10}}
-          style={styles.settingBtn}
-          potition='bottomRight'
-          onPress={()=>{ this.setState({ 'active': !this.state.active })}}
-        >
-          <Icon type='FontAwesome' name='home' />
-          <Button style={styles.toolBtn}>
-            <Icon type='MaterialIcons' name='color-lens' style={{ color: '#26d3cd' }}/>
-          </Button>
-          <Button style={styles.toolBtn} onPress={()=> { this.setState({ onChageColor: true}); console.log('brush')}}>
-            <Icon type='MaterialIcons' name='brush' style={{ color: '#26d3cd' }}/>
-          </Button>
-        </Fab>
+        <ToolsModal currentColor={this.state.selectedColor} changeColor={this.changeColor} />
       </View>
     );
   }
@@ -268,11 +269,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     overflow: 'hidden',
     width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height - 210
+    height: Dimensions.get('window').height - 100
   },
 
   canvas: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'blue'
   },
 
   settingBtn: {

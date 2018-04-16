@@ -57,11 +57,11 @@ const RoomDetail = ({ loading, error, room, navigation }) => {
     return (
         <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
         <Tabs locked={true} tabBarUnderlineStyle={{borderBottomWidth:2}}>
-            <Tab heading="Chat" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+            <Tab heading="Chat" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
                 {room && ( <Chat roomId={room.idRoom} />
                 )}
             </Tab>
-            <Tab heading="Board" tabStyle={{backgroundColor: '#0a8b88'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#0a8b88'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+            <Tab heading="Board" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
                     <Board roomId={room.idRoom} />
                 </Tab>
             </Tabs>
