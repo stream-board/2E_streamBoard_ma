@@ -6,9 +6,11 @@ export const ALL_ROOMS_QUERY = gql`
     allRooms {
       idRoom,
       nameRoom,
+      descriptionRoom,
       owner {
         name,
-        nickname
+        nickname,
+        image
       }
     }
   }
@@ -45,9 +47,11 @@ export const ROOMS_CREATE_ROOM_MUTATION = gql`
     createRoom(room: $room) {
       idRoom,
       nameRoom,
+      descriptionRoom,
       owner {
         name,
-        nickname
+        nickname,
+        image
       }
     }
   }

@@ -5,6 +5,7 @@ export const types = {
     ADD_ROOM_CATEGORY: 'ADD__ROOM_CATEGORY',
     ADD_ROOM_PARTICIPANT_LIST: 'ADD_ROOM_PARTICIPANT_LIST',
     ADD_ROOM_PARTICIPANT: 'ADD_ROOM_PARTICIPANT',
+    ADD_ROOM_CURRENT_ID: 'ADD_ROOM_CURRENT_ID',
 };
 
 export const roomActionCreators = {
@@ -25,6 +26,10 @@ export const roomActionCreators = {
     },
     addRoomParticipant: (obj) => {
         return { type: types.ADD_ROOM_PARTICIPANT, payload: obj }
+    },
+
+    addCurrentRoomId: (text) => {
+        return { type: types.ADD_ROOM_CURRENT_ID, payload: text }
     }
 }
 
@@ -58,6 +63,12 @@ export const roomCreateReducer = (state = roomCreateParams, action) => {
             return {
                 ...state,
                 categoryRoom: payload
+            }
+        }
+        case types.ADD_ROOM_CURRENT_ID: {
+            return {
+                ...state,
+                currentRoomId: payload
             }
         }
     }

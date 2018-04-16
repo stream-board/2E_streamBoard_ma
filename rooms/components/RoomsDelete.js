@@ -16,28 +16,28 @@ import {
 } from 'native-base';
 
 import { roomActionCreators } from "./../roomsRedux";
-import { EXIT_ROOM_MUTATION } from './../TypesDef'
+import { DELETE_ROOM_MUTATION, ALL_ROOMS_QUERY } from './../TypesDef'
 
 import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
 
-export default class RoomExit extends Component {
+export default class RoomDelele extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { exitRoom: false };
+    this.state = { deleteRoom: false };
     this.onForm = this.onForm.bind(this);
-    this.onExitRoom = this.onExitRoom.bind(this);
+    this.onDeleteRoom = this.onDeleteRoom.bind(this);
   }
 
-  onForm(exitRoom) {
+  onForm(deleteRoom) {
     const roomOwner = this.props.roomObj.owner.id;
     const currentId = Store.getState().currentUser.id;
 
     return (
         <Button style={styles.buttonStyle}
           onPress={() => {
-            exitRoom({ 
+            deleteRoom({ 
               variables: { 
                 room: {
                   idRoom : this.props.roomObj.idRoom,
@@ -45,22 +45,23 @@ export default class RoomExit extends Component {
                 }
               }
             })
-            this.setState({exitRoom: true});
+            this.setState({deleteRoom: true});
           }}
-        ><Text style={{ color: '#fff' }}>Get out from {this.props.roomObj.nameRoom}</Text>
+        ><Text style={{ color: '#fff' }}> Delete {this.props.roomObj.nameRoom}</Text>
         
         </Button>
     )
   };
 
-  onExitRoom(data){
+  onDeleteRoom(data){
     return (
       <Spinner />
     )
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.state.exitRoom){
+    console.log('did update');
+    if(this.state.deleteRoom){
       this.props.navigation.navigate('Lobby');
     }
   }
@@ -68,11 +69,26 @@ export default class RoomExit extends Component {
   render(){
     return (
       <Mutation 
-        mutation={EXIT_ROOM_MUTATION} 
+        mutation={DELETE_ROOM_MUTATION}
+        update={(cache, { data: data })=>{
+         let roomDeleted = data.deleteRoom;
+        
+         const dataList = cache.readQuery({
+           query: ALL_ROOMS_QUERY
+         });
+         const roomListCurrent = dataList.allRooms.filter((room)=> room.idRoom !== roomDeleted.idRoom);
+         
+         cache.writeQuery({
+           query: ALL_ROOMS_QUERY,
+           data: {
+             allRooms: roomListCurrent,
+           },
+         })
+       }}  
       >
-        {(exitRoom, { loading, error, data }) => (
+        {(deleteRoom, { loading, error, data }) => (
           <View>
-          {(data ? this.onExitRoom(data) : this.onForm(exitRoom))}
+          {(data ? this.onDeleteRoom(data) : this.onForm(deleteRoom))}
           {error && <Text> Error: ${error}</Text>}  
           </View>
         )}

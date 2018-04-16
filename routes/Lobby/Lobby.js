@@ -129,9 +129,10 @@ export default class LobbyPage extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#174557',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',

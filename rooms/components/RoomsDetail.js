@@ -21,6 +21,7 @@ import ChatWebsocket from '../../chat/components/ChatWebsocket';
 import Store from "./../../reduxConfig";
 import { roomActionCreators } from "./../roomsRedux";
 import RoomExit from "./RoomsExit";
+import RoomDelete from './RoomsDelete';
 import { Constants } from 'expo';
 import Board from './../../board/components/Board';
 
@@ -41,7 +42,6 @@ const RoomDetailQuery = ({ roomId, navigation, children }) => (
 );
 
 const RoomDetail = ({ loading, error, room, navigation }) => {
-    console.log(navigation);
     if(loading) {
         return <Spinner />;
     }
@@ -51,6 +51,9 @@ const RoomDetail = ({ loading, error, room, navigation }) => {
     if(room) {
         Store.dispatch(roomActionCreators.addRoomParticipantList(room.Participants));
     }
+    const currentUserId = Store.getState().currentUser.id;
+    const currentOwner = ((room.owner.id === currentUserId) ? true : false);
+    
     return (
         <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
         <Tabs locked={true} tabBarUnderlineStyle={{borderBottomWidth:2}}>
@@ -62,7 +65,7 @@ const RoomDetail = ({ loading, error, room, navigation }) => {
                     <Board roomId={room.idRoom} />
                 </Tab>
             </Tabs>
-            <RoomExit roomObj={room} navigation={navigation}/>
+            {currentOwner ? <RoomDelete roomObj={room} navigation={navigation}/>: <RoomExit roomObj={room} navigation={navigation}/>}
         </Container>
     )
 }

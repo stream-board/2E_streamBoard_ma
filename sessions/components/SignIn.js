@@ -28,14 +28,12 @@ import { Constants } from 'expo';
 export default class SignIn extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      formSended: false
+    }
     this.onForm = this.onForm.bind(this);
     this.onCreateSession = this.onCreateSession.bind(this);
   }
-  static navigationOptions = ({ navigation }) => ({
-    header: null,
-    formSended: false,
-  })
 
   onForm(createSession) {
 
@@ -68,12 +66,17 @@ export default class SignIn extends Component {
 
         <Button style={styles.buttonStyle} rounded success
           onPress={() => {
-            createSession({ 
+           async function auth(){ 
+             await createSession({ 
               variables: { 
                 session: Store.getState().sessionCreateParams 
               }
             })
-            this.setState({formSended: true});
+           }
+           auth().then(() => {
+              this.setState({formSended: true});
+            }
+           );
           }}
         >
           <Text>Sign In</Text>

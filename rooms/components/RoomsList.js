@@ -15,7 +15,14 @@ import {
   CardItem,
   Title,
   Subtitle,
-  Text
+  Text,
+  List,
+  Left, 
+  Body,
+  Right,
+  Thumbnail,
+  Icon,
+  Button
 } from 'native-base';
 
 import { Query } from 'react-apollo';
@@ -38,10 +45,10 @@ export default class RoomList extends Component {
           if (loading) return <Spinner />;
           if (error) return <Text>{`Error: ${error}`}</Text>;
           return (
-            <Container style={styles.listElement}>
-              {data.allRooms.map(({ idRoom, nameRoom, owner }, index) => (
-              <Card key={index}>
-                <CardItem header button onPress={() => {
+            <Content style={styles.roomsContainer}>
+              {data.allRooms.map(({ idRoom, nameRoom, descriptionRoom, owner }, index) => (
+              <Card key={index} style={styles.cardContainer}>
+                <CardItem button style={styles.cardItem} onPress={() => {
                     this.props.joinRoom({
                       variables: {
                         room: {
@@ -52,19 +59,24 @@ export default class RoomList extends Component {
                     })
                     this.setState({ joinedToRoom: true , roomSelected: idRoom });
                   }
-                }>
-                  <Text>NameRoom: {nameRoom}</Text>
-                </CardItem>
-                <CardItem>
-                  <Text>idRoom : {idRoom}</Text>
+                } >
+                <Left>
+                  {owner ? <Thumbnail source={{uri: owner.image }} />: <Text></Text>}
+                  <Body>
+                    <Text style={styles.subtitle}>{nameRoom}</Text>
+                    <Text style={styles.description}>
+                    {owner ? owner.name : 'Not available' }
+                    </Text>
+                    <Text style={styles.description}>{descriptionRoom}</Text>
+                  </Body>
+                </Left>
                 </CardItem>
               </Card>
               ))}
-            </Container>
+            </Content>
           )
         }
       }
-
       </Query>
     )
   };
@@ -83,10 +95,32 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     width: 300,
-    height: 50,
     backgroundColor: '#0DEBFF'
+  },
+  roomsContainer:{
+    margin: 10
   },
   listElement:{
     margin:10,
+  },
+  cardItem: {
+    alignContent: 'center',
+  },
+  cardContainer: {
+    backgroundColor: '#fafafa',
+  },
+  subtitle: {
+    fontWeight: 'bold',
+    lineHeight: 20
+  },
+  description: {
+    fontSize: 12,
+    color: '#aeaeae'
+  },
+  col1: {
+    width: '25%'
+  },
+  col2: {
+    width: '75%'
   }
 })
