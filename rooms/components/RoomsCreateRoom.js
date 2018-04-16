@@ -44,11 +44,11 @@ export class RoomsCreateRoom extends Component{
    return (
      <Container style={{flex:1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
 
-       <H1 style={styles.titleElement}>Create Room</H1>
+       <Text style={styles.titleElement}>Create Room</Text>
 
        <Item floatingLabel style={styles.formElement}>
-       <Label>Room Name</Label>
-         <Input
+       <Label style={{color:'white'}}>Room Name</Label>
+         <Input style={{color:'white'}}
          onChangeText= {(text)=>{
            Store.dispatch(roomActionCreators.addRoomName(text));
          }}
@@ -56,8 +56,8 @@ export class RoomsCreateRoom extends Component{
        </Item>
 
        <Item floatingLabel style={styles.formElement}>
-       <Label>Description</Label>
-         <Input
+       <Label style={{color:'white'}}>Description</Label>
+         <Input style={{color:'white'}}
            onChangeText= {(text)=>{
              Store.dispatch(roomActionCreators.addRoomDescription(text));
            }}
@@ -88,7 +88,7 @@ export class RoomsCreateRoom extends Component{
         </Picker>
 
         <Button
-          rounded
+          block
           style={styles.buttonElement}
           onPress={() => {
            Store.dispatch(roomActionCreators.addRoomOwner(Store.getState().currentUser.id));
@@ -144,7 +144,7 @@ export class RoomsCreateRoom extends Component{
        }}  
      >
        {(createRoom, { loading, error, data }) => (
-         <View>
+         <View style={styles.container}>
          {(data ? this.onCreateRoom(data) : this.onForm(createRoom))}  
          {loading && <Spinner />}
          {error && <Text> Error: ${error}</Text>}  
@@ -158,11 +158,21 @@ export class RoomsCreateRoom extends Component{
 export default connect(mapStateToProps)(RoomsCreateRoom)
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#174557',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+
+  },
 
   titleElement: {
     margin: 20,
+    marginTop: 50,
     color: '#0a8b88',
     alignSelf: 'center',
+    fontSize: 40,
+    fontWeight: 'bold',
   },
 
  formElement: {
@@ -185,12 +195,17 @@ const styles = StyleSheet.create({
     height: 70,
     width: 300,
     alignSelf: 'center',
+    color:'white'
   },
 
   buttonElement:{
     marginTop: 20,
     alignSelf: 'center',
+    marginBottom: 20,
+    width: 300,
+    height: 50,
     backgroundColor: '#26d3cd',
+    borderRadius: 8,
   },
 
 })

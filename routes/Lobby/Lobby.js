@@ -45,8 +45,9 @@ export default class LobbyPage extends Component {
         <Col size={3}>
           <Form>
             <Item floatingLabel >
-                <Label>Join with the ID</Label>
-                <Input onChangeText= {(text)=> this.setState({roomId:text})}
+                <Label style={{color:'white'}}>Join with the ID</Label>
+                <Input style={{color:'white'}} 
+                  onChangeText= {(text)=> this.setState({roomId:text})}
                   />
             </Item>
           </Form>
@@ -73,7 +74,7 @@ export default class LobbyPage extends Component {
       <Content style={{borderRadius: 8}}>
         <RoomsList navigation={this.state.navigation} joinRoom={joinRoom}/>
       </Content>
-      <Footer style={{marginTop:10, backgroundColor:'white'}}>
+      <Footer style={{marginTop:10, backgroundColor:'#174557'}}>
         <Grid style={{justifyContent: 'center',}}>
           <Col size={1}>
             <SignOut navigation={this.props.navigation}/>
@@ -81,7 +82,7 @@ export default class LobbyPage extends Component {
           <Col size={3}>
             <Image 
               style = { styles.imageElement }
-              source = { require('./../../logo.png' ) }
+              source = { require('./../../logo-white.png' ) }
             />
           </Col>
           <Col size={1}>
