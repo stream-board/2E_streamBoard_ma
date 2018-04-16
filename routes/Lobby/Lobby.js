@@ -129,6 +129,7 @@ export default class LobbyPage extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#174557',

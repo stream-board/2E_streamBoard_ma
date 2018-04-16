@@ -92,12 +92,16 @@ export class RoomsCreateRoom extends Component{
           style={styles.buttonElement}
           onPress={() => {
            Store.dispatch(roomActionCreators.addRoomOwner(Store.getState().currentUser.id));
-           createRoom({ 
-             variables: { 
-               room: Store.getState().roomCreateParams 
-             }
+           async function roomCreate() {
+              await createRoom({ 
+                variables: { 
+                  room: Store.getState().roomCreateParams 
+                }
+              })
+           }
+           roomCreate().then(() => {
+            this.setState({formSended: true});
            })
-           this.setState({formSended: true});
          }}
         >
         <Text>Create Room!</Text>
@@ -108,10 +112,18 @@ export class RoomsCreateRoom extends Component{
 
  onCreateRoom(data){
    console.log(data);
-    return (
-      this.props.navigation.navigate('RoomsDetail', { roomId: data.createRoom.idRoom})
-    )
+   Store.dispatch( roomActionCreators.addCurrentRoomId(data.createRoom.idRoom));
+   return (
+     <Spinner />
+   )
  };
+
+ componentDidUpdate(prevProps, prevState) {
+   if(this.state.formSended){
+    const currentRoomId = Store.getState().roomCreateParams.currentRoomId;
+    this.props.navigation.navigate('RoomsDetail', { roomId: currentRoomId});
+   }
+ }
 
  render(){
    return (

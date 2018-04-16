@@ -44,7 +44,6 @@ export default class RoomList extends Component {
         {({ loading, error, data }) => {
           if (loading) return <Spinner />;
           if (error) return <Text>{`Error: ${error}`}</Text>;
-          console.log(data);
           return (
             <Content style={styles.roomsContainer}>
               {data.allRooms.map(({ idRoom, nameRoom, descriptionRoom, owner }, index) => (

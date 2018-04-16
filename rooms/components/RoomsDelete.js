@@ -60,6 +60,7 @@ export default class RoomDelele extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('did update');
     if(this.state.deleteRoom){
       this.props.navigation.navigate('Lobby');
     }
