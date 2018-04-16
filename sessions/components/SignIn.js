@@ -23,6 +23,7 @@ import {
   Text,
 } from 'native-base';
 import { Constants } from 'expo';
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 
 export default class SignIn extends Component {
@@ -39,15 +40,15 @@ export default class SignIn extends Component {
 
     return (
       <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}> 
-
-        <Image 
-          style = { styles.image }
-          source = { require('./logo.png' ) }
-        />
-
+        <View style={styles.image}>
+          <Image 
+            style = { styles.img }
+            source = { require('./logo-white.png' ) }
+          />
+        </View>
         <Item floatingLabel style={styles.formElement}>
-          <Label>Email</Label>
-          <Input
+          <Label style={{color:'white'}}>Email</Label>
+          <Input style={{color:'white'}}
           onChangeText= {(text)=>{
             Store.dispatch( sessionActionCreators.addUserEmail(text));
           }}
@@ -55,16 +56,16 @@ export default class SignIn extends Component {
         </Item>
 
         <Item floatingLabel style={styles.formElement}>
-        <Label>Password</Label>
-        <Input
-          //secureTextEntry={true}
+        <Label style={{color:'white'}}>Password</Label>
+        <Input style={{color:'white'}}
+          secureTextEntry={true}
           onChangeText= {(text)=>{
             Store.dispatch( sessionActionCreators.addUserPassword(text));
           }}
         />
         </Item>
 
-        <Button style={styles.buttonStyle} rounded success
+        <Button style={styles.buttonStyle} block
           onPress={() => {
            async function auth(){ 
              await createSession({ 
@@ -81,6 +82,14 @@ export default class SignIn extends Component {
         >
           <Text>Sign In</Text>
         </Button>
+
+        <Grid style={{justifyContent: 'center',}}>
+          <Col size={1}>
+              <Image style={styles.img}
+                source = { require('./banner.png' ) }
+              />
+          </Col>
+        </Grid>
       </Container>
     )
   };
@@ -104,7 +113,7 @@ export default class SignIn extends Component {
         mutation={SessionCreateMutation} 
       >
         {(createSession, { loading, error, data }) => (
-          <View>
+          <View style={styles.container}>
           {(data ? this.onCreateSession(data) : this.onForm(createSession))}
           {error && <Text> Error: ${error}</Text>}  
           </View>
@@ -116,6 +125,14 @@ export default class SignIn extends Component {
 
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#174557',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+
+  },
+
   titleElement: {
     margin: 20,
     backgroundColor: 'skyblue',
@@ -133,13 +150,27 @@ const styles = StyleSheet.create({
   buttonStyle:{
     marginTop: 20,
     alignSelf: 'center',
+    marginBottom: 20,
+    width: 300,
+    height: 50,
+    backgroundColor: '#26d3cd',
+    borderRadius: 8,
+  },
+
+  img: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'contain',
+    padding: 3,
   },
 
   image: {
     height: 180,
+    width: 400,
     alignSelf: 'center',
     marginTop: 50,
     marginBottom: 30,
+  },
 
-  }
 });
