@@ -67,9 +67,7 @@ export default class LobbyPage extends Component {
         </View>
 
       {/*LIST OF ROOMS*/}
-      <Content>
         <RoomsList navigation={this.state.navigation} joinRoom={joinRoom}/>
-      </Content>
         <Fab
           active = {this.state.active}
           style={styles.fabElement}
@@ -115,7 +113,7 @@ export default class LobbyPage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F2FFD2',
+    backgroundColor: '#174557',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',

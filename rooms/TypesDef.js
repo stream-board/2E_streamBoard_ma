@@ -6,9 +6,11 @@ export const ALL_ROOMS_QUERY = gql`
     allRooms {
       idRoom,
       nameRoom,
+      descriptionRoom,
       owner {
         name,
-        nickname
+        nickname,
+        image
       }
     }
   }
