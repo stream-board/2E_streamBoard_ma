@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Platform } from 'react-native';
+import { AppRegistry, StyleSheet, View, Platform, Image } from 'react-native';
 import { Container,
          Header,
          Content,
+         Footer,
          Spinner,
          Button,
-         Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon, Fab } from 'native-base';
+         Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon, Fab, Thumbnail, H1 } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Constants } from 'expo';
 
@@ -35,20 +36,22 @@ export default class LobbyPage extends Component {
 
   onLobby(joinRoom) {
     return (
-      <Container style={{flex: 1,}}>
-        <Text style={styles.titleElement}>Unete con el ID</Text>
-        <View style={{height:80}}>
+      <Container style={{flex: 1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+        <View style={{alignItems: 'center', height: 80, margin:5}}>
+          <Thumbnail large source={{uri: Store.getState().currentUser.image}} />
+        </View>
+        <View style={{height:90}}>
         <Grid>
         <Col size={3}>
           <Form>
             <Item floatingLabel >
-                <Label>Id Room</Label>
+                <Label>Join with the ID</Label>
                 <Input onChangeText= {(text)=> this.setState({roomId:text})}
                   />
             </Item>
           </Form>
         </Col>
-        <Col size={1}>
+        <Col size={1} style={{justifyContent: 'center',}}>
           <Button rounded style={styles.buttonElement} onPress={() => {
               joinRoom({
                 variables: {
@@ -60,24 +63,39 @@ export default class LobbyPage extends Component {
               })
               this.setState({ joinedToRoom: true });
             }}>
-            <Text>Buscar</Text>
+            <Text>Search</Text>
           </Button>
         </Col>
         </Grid>
         </View>
 
       {/*LIST OF ROOMS*/}
+      <Content style={{borderRadius: 8}}>
         <RoomsList navigation={this.state.navigation} joinRoom={joinRoom}/>
-        <Fab
-          active = {this.state.active}
-          style={styles.fabElement}
-          position='bottomRight'
-          onPress={() => this.props.navigation.navigate('CreateRoom')}
-        >
+      </Content>
+      <Footer style={{marginTop:10, backgroundColor:'white'}}>
+        <Grid style={{justifyContent: 'center',}}>
+          <Col size={1}>
+            <SignOut navigation={this.props.navigation}/>
+          </Col>
+          <Col size={3}>
+            <Image 
+              style = { styles.imageElement }
+              source = { require('./../../logo.png' ) }
+            />
+          </Col>
+          <Col size={1}>
+            <Button
+              rounded
+              style={styles.buttonElement}
+              onPress={() => this.props.navigation.navigate('CreateRoom')}
+            >
         <Icon name="add" />
-        </Fab>
+        </Button>
+          </Col>
+        </Grid>
       {/*LOG OUT*/}  
-        <SignOut navigation={this.props.navigation}/>
+      </Footer>
      </Container>
     )
   }
@@ -127,6 +145,14 @@ const styles = StyleSheet.create({
 
   },
 
+  imageElement:{
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'contain',
+    padding: 3,
+  },
+
   formElement: {
     backgroundColor: 'skyblue',
     alignSelf: 'center',
@@ -136,13 +162,8 @@ const styles = StyleSheet.create({
   buttonElement:{
     alignSelf: 'center',
     backgroundColor: '#26d3cd',
-    margin: 10,
+    margin: 5,
 
   },
 
-  fabElement: {
-    backgroundColor: '#26d3cd',
-    zIndex: 5,
-
-  },
 });
