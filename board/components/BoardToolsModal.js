@@ -9,7 +9,8 @@ export default class ModalTester extends Component {
       super(props);
       this.state = {
         isModalVisible: false,
-        active: 'false'
+        active: 'false',
+        type: this.props.activeType
       };
       this._toggleModal = this._toggleModal.bind(this);
   }
@@ -18,6 +19,8 @@ export default class ModalTester extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
 
   render() {
+    let iconType = (this.state.type === 'eraser') ? 'pencil': 'eraser';
+
     return (
       <View>
         <Fab 
@@ -32,10 +35,20 @@ export default class ModalTester extends Component {
         >
             <Icon type='FontAwesome' name='cogs'/>
             <Button style={styles.toolBtn} onPress={this._toggleModal}>
-                <Icon type='MaterialIcons' name='color-lens' style={{ color: '#26d3cd' }}/>
+                <Icon type='MaterialIcons' name='color-lens' style={{ color: '#FFF' }}/>
             </Button>
             <Button style={styles.toolBtn} onPress={()=> { this.setState({ onChageColor: true}); console.log('brush')}}>
-                <Icon type='MaterialIcons' name='brush' style={{ color: '#26d3cd' }}/>
+                <Icon type='MaterialIcons' name='brush' style={{ color: '#FFF' }}/>
+            </Button>
+            <Button style={styles.toolBtn} onPress={() => this.props.clearBoard()}>
+                <Icon type='FontAwesome' name='trash' style={{ color: '#FFF' }}/>
+            </Button>
+            <Button style={styles.toolBtn} onPress={() =>{
+                let newType = (this.state.type === 'eraser') ? 'point': 'eraser';
+                this.props.setType(newType);
+                this.setState({ type: newType });
+            }}>
+                <Icon type='FontAwesome' name={iconType} style={{ color: '#FFF' }}/>
             </Button>
         </Fab>
         <Modal isVisible={this.state.isModalVisible}>
@@ -66,5 +79,8 @@ const styles = StyleSheet.create({
     },
     settingBtn: {
         backgroundColor: '#174557',
+    },
+    toolBtn: {
+        backgroundColor: '#26d3cd',
     }
 });
