@@ -40,56 +40,90 @@ export default class SignIn extends Component {
 
     return (
       <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}> 
-        <View style={styles.image}>
-          <Image 
-            style = { styles.img }
-            source = { require('./logo-white.png' ) }
-          />
-        </View>
-        <Item floatingLabel style={styles.formElement}>
-          <Label style={{color:'white'}}>Email</Label>
-          <Input style={{color:'white'}}
-          onChangeText= {(text)=>{
-            Store.dispatch( sessionActionCreators.addUserEmail(text));
-          }}
-          />
-        </Item>
+      <Grid style={{justifyContent: 'center',}}>
+        <Col size={1}></Col>
+        <Col size={20}>
+          {/*LOGO*/}
+          <Row size={4}>
+            <Image 
+              style = { styles.img }
+              source = { require('./logo-white.png' ) }
+            />
+          </Row>
+          {/*EMAIL*/}
+          <Row size={1}>
+            <Col size={1}></Col>
+            <Col size={6}>
 
-        <Item floatingLabel style={styles.formElement}>
-        <Label style={{color:'white'}}>Password</Label>
-        <Input style={{color:'white'}}
-          secureTextEntry={true}
-          onChangeText= {(text)=>{
-            Store.dispatch( sessionActionCreators.addUserPassword(text));
-          }}
-        />
-        </Item>
+              <Item floatingLabel>
+                <Label style={{color:'white'}}>Email</Label>
+                <Input style={{color:'white'}}
+                onChangeText= {(text)=>{
+                  Store.dispatch( sessionActionCreators.addUserEmail(text));
+                }}
+                />
+              </Item>
 
-        <Button style={styles.buttonStyle} block
-          onPress={() => {
-           async function auth(){ 
-             await createSession({ 
-              variables: { 
-                session: Store.getState().sessionCreateParams 
-              }
-            })
-           }
-           auth().then(() => {
-              this.setState({formSended: true});
-            }
-           );
-          }}
-        >
-          <Text>Sign In</Text>
-        </Button>
+            </Col>
+            <Col size={1}></Col>
+          </Row>
+          {/*PASSWORD*/}
+          <Row size={1}>
+            <Col size={1}></Col>
+            <Col size={6}>
 
-        <Grid style={{justifyContent: 'center',}}>
-          <Col size={1}>
-              <Image style={styles.img}
-                source = { require('./banner.png' ) }
+              <Item floatingLabel>
+              <Label style={{color:'white'}}>Password</Label>
+              <Input style={{color:'white'}}
+                secureTextEntry={true}
+                onChangeText= {(text)=>{
+                  Store.dispatch( sessionActionCreators.addUserPassword(text));
+                }}
               />
-          </Col>
-        </Grid>
+              </Item>
+
+            </Col>
+            <Col size={1}></Col>
+          </Row>
+          {/*BUTTON*/}
+          <Row size={1}>
+            <Col size={1}></Col>
+            <Col size={4}>
+              <Button 
+                block
+                style={styles.buttonStyle}
+                onPress={() => {
+                 async function auth(){ 
+                   await createSession({ 
+                    variables: { 
+                      session: Store.getState().sessionCreateParams 
+                    }
+                  })
+                 }
+                 auth().then(() => {
+                    this.setState({formSended: true});
+                  }
+                 );
+                }}
+              >
+                <Text>Sign In</Text>
+              </Button>
+
+            </Col>
+            <Col size={1}></Col>
+          </Row>
+          {/*BANNER*/}
+          <Row size={2}>
+            
+            <Image style={styles.img}
+                source = { require('./banner.png' ) }
+            />
+
+          </Row>
+        </Col>
+        <Col size={1}></Col>
+      </Grid>
+
       </Container>
     )
   };
@@ -133,26 +167,7 @@ const styles = StyleSheet.create({
 
   },
 
-  titleElement: {
-    margin: 20,
-    backgroundColor: 'skyblue',
-    alignSelf: 'center',
-
-  },
-
-  formElement: {
-    height: 70,
-    width: 350,
-    alignSelf: 'center',
-    marginTop: 30,
-  },
-
   buttonStyle:{
-    marginTop: 20,
-    alignSelf: 'center',
-    marginBottom: 20,
-    width: 300,
-    height: 50,
     backgroundColor: '#26d3cd',
     borderRadius: 8,
   },
@@ -163,14 +178,6 @@ const styles = StyleSheet.create({
     height: null,
     resizeMode: 'contain',
     padding: 3,
-  },
-
-  image: {
-    height: 180,
-    width: 400,
-    alignSelf: 'center',
-    marginTop: 50,
-    marginBottom: 30,
   },
 
 });
