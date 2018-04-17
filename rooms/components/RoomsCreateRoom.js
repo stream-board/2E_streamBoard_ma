@@ -1,5 +1,5 @@
 import React , { Component }from 'react';
-import { AppRegistry, StyleSheet, View, Platform } from 'react-native';
+import { AppRegistry, StyleSheet, View, Platform, Image } from 'react-native';
 import { ROOMS_CREATE_ROOM_MUTATION } from './../TypesDef'
 import { ALL_ROOMS_QUERY } from './../TypesDef'
 import { Mutation } from 'react-apollo';
@@ -43,7 +43,8 @@ export class RoomsCreateRoom extends Component{
 
  onForm(createRoom){
    return (
-     <Container style={{flex:1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+    <Container style={{flex:1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+
       <Grid>
         <Col size={1}></Col>
         <Col size={20}>
@@ -53,7 +54,8 @@ export class RoomsCreateRoom extends Component{
           </Row>
           {/*NAME ROOM*/}
           <Row size={1}>
-
+            <Col size={1}></Col>
+            <Col size={6}>
             <Item floatingLabel>
               <Label style={{color:'white'}}>Room Name</Label>
               <Input style={{color:'white'}}
@@ -62,10 +64,13 @@ export class RoomsCreateRoom extends Component{
                }}
                />
             </Item>
-
+            </Col>
+            <Col size={1}></Col>
           </Row>
           {/*DESCRIPTION*/}
           <Row size={1}>
+            <Col size={1}></Col>
+            <Col size={6}>
             <Item floatingLabel>
               <Label style={{color:'white'}}>Description</Label>
                <Input style={{color:'white'}}
@@ -74,33 +79,36 @@ export class RoomsCreateRoom extends Component{
                  }}
                />
            </Item>
-
+           </Col>
+          <Col size={1}></Col>
           </Row>
           {/*CATEGORY*/}
           <Row size={1}>
-
-           <Text style = {styles.textElement} >Category</Text>
-           <Picker
-              placeholder="hola"
-              style = {styles.pickerElement}
-              mode="dropdown"
-              selectedValue={this.state.selected1}
-              onValueChange={
-                this.onValueChange.bind(this)
-              }
-            >
-              <Picker.Item label="Books" value="books" />
-              <Picker.Item label="Gamming" value="gamming" />
-              <Picker.Item label="Languages" value="languages" />
-              <Picker.Item label="Math" value="math" />
-              <Picker.Item label="Movies" value="movies" />
-              <Picker.Item label="Music" value="music" />
-              <Picker.Item label="Politics" value="politics" />
-              <Picker.Item label="Programming" value="programming" />
-              <Picker.Item label="Relaxing" value="relaxing" />
-              <Picker.Item label="Science" value="science" />
-            </Picker>
-
+            <Col size={1}></Col>
+            <Col size={6}>
+              <Text style = {styles.textElement} >Category</Text> 
+              <Picker
+                placeholder="hola"
+                style = {styles.pickerElement}
+                mode="dropdown"
+                selectedValue={this.state.selected1}
+                onValueChange={
+                  this.onValueChange.bind(this)
+                }
+              >
+                <Picker.Item label="Books" value="books" />
+                <Picker.Item label="Gamming" value="gamming" />
+                <Picker.Item label="Languages" value="languages" />
+                <Picker.Item label="Math" value="math" />
+                <Picker.Item label="Movies" value="movies" />
+                <Picker.Item label="Music" value="music" />
+                <Picker.Item label="Politics" value="politics" />
+                <Picker.Item label="Programming" value="programming" />
+                <Picker.Item label="Relaxing" value="relaxing" />
+                <Picker.Item label="Science" value="science" />
+              </Picker>
+            </Col>
+            <Col size={1}></Col>
           </Row>
           {/*BUTTON*/}
           <Row size={1}>
@@ -128,14 +136,22 @@ export class RoomsCreateRoom extends Component{
             </Col>
             <Col size={1}></Col>
           </Row>
+          <Row>
+            <Col size={1}></Col>
+             <Col size={3}>
+            <Image 
+              style = { styles.imageElement }
+              source = { require('./../../logo-white.png' ) }
+            />
+          </Col>
+          <Col size={1}></Col>
+          </Row>
         </Col>
         <Col size={1}></Col>
       </Grid>
+      
 
-       
-
-        
-     </Container>
+    </Container>
    )
  };
 
@@ -187,37 +203,46 @@ export class RoomsCreateRoom extends Component{
 export default connect(mapStateToProps)(RoomsCreateRoom)
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     backgroundColor: '#174557',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-
+ 
   },
-
+ 
   titleElement: {
     margin: 20,
+    color: 'white',
     alignSelf: 'center',
-    fontSize: 50,
+    fontSize: 40,
     fontWeight: 'bold',
-    color:'white',
+    textAlign: 'center',
   },
-
+ 
   textElement:{
     color:'white',
-    marginTop: 30,
     textAlign: "left",
   },
-
+ 
   pickerElement: {
-    marginTop: 10,
+    height: 70,
+    width: 300,
     alignSelf: 'center',
     color:'white'
   },
-
+ 
   buttonElement:{
     backgroundColor: '#26d3cd',
     borderRadius: 8,
   },
-
+  
+  imageElement:{
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'contain',
+    padding: 3,
+  },
+ 
 })
