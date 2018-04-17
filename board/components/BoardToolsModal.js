@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, Dimensions, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 import { ColorPicker } from 'react-native-color-picker';
 import { Fab, Icon, Button, View } from 'native-base';
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 export default class ModalTester extends Component {
   constructor(props){
@@ -52,7 +53,8 @@ export default class ModalTester extends Component {
             </Button>
         </Fab>
         <Modal isVisible={this.state.isModalVisible}>
-          <View style={{ flex: 1 }}>
+          <Grid>
+            <Row size={4}>
             <ColorPicker
                 oldColor='purple'
                 onColorSelected={color => {
@@ -61,7 +63,35 @@ export default class ModalTester extends Component {
                 }}
                 style={{flex: 1}}
                 />
-          </View>
+            </Row>
+            <Row size={1} style={{justifyContent: 'center', marginTop: 20}}>
+                <Col>
+                    <Button style={styles.shapeBtn} onPress={() => console.log("boton1")}>
+                        <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 8 }}/>
+                    </Button>
+                </Col>
+                <Col>
+                    <Button style={styles.shapeBtn} onPress={() => console.log("boton2")}>
+                        <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 12 }}/>
+                    </Button>
+                </Col>
+                <Col>
+                    <Button style={styles.shapeBtn} onPress={() => console.log("boton3")}>
+                        <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 18 }}/>
+                    </Button>
+                </Col>
+                <Col>
+                    <Button style={styles.shapeBtn} onPress={() => console.log("boton4")}>
+                        <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 24 }}/>
+                    </Button>
+                </Col>
+                <Col>
+                    <Button style={styles.shapeBtn} onPress={() => console.log("boton5")}>
+                        <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 36 }}/>
+                    </Button>
+                </Col>
+            </Row>
+          </Grid>
         </Modal>
       </View>
     );
@@ -82,5 +112,9 @@ const styles = StyleSheet.create({
     },
     toolBtn: {
         backgroundColor: '#26d3cd',
+    },
+    shapeBtn:{
+        backgroundColor: '#0a8b88',
+        borderRadius: 10,
     }
 });
