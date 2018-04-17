@@ -5,7 +5,8 @@ import {
   Text,
   PanResponder,
   Platform,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 
 import SocketIOClient from 'socket.io-client';
@@ -178,7 +179,7 @@ export default class BoardSocket extends Component {
 
   onAskForBoard(data) {
     //modal
-    alert(
+    Alert.alert(
       'Turn petition',
       `User ${data.nick} wants to use the board`,
       [
