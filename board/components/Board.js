@@ -6,7 +6,7 @@ import BoardSocket from './BoardSocket';
 
 export default class Board extends Component {
     render(){
-        const { roomId } = this.props;
+        const { roomId, roomOwner } = this.props;
         const userNick = Store.getState().currentUser.nickname;
         const userId = Store.getState().currentUser.id;
         
@@ -16,6 +16,7 @@ export default class Board extends Component {
                     roomId={roomId}
                     userNick={userNick}
                     userId={userId}
+                    roomOwner={roomOwner}
                 />
             </View>
         )

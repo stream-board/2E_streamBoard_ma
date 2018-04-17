@@ -20,9 +20,9 @@ export default class ModalTester extends Component {
 
   render() {
     let iconType = (this.state.type === 'eraser') ? 'pencil': 'eraser';
-
+    console.log(this.props.admin);
     return (
-        
+    
       <View>
         <Fab 
             active={this.state.active}
@@ -51,6 +51,14 @@ export default class ModalTester extends Component {
             }}>
                 <Icon type='FontAwesome' name={iconType} style={{ color: '#FFF' }}/>
             </Button>
+            <Button style={styles.toolBtn} onPress={() => this.props.askForTurn()}>
+                <Icon type='FontAwesome' name='hand-paper-o' style={{ color: '#FFF' }}/>
+            </Button>
+            {this.props.admin && 
+                <Button style={styles.toolBtn} onPress={() => this.props.resetPermissions()}>
+                    <Icon type='FontAwesome' name='redo-alt' style={{ color: '#FFF' }}/>
+                </Button>
+            }
         </Fab>
         <Modal isVisible={this.state.isModalVisible}>
           <View style={{ flex: 1 }}>

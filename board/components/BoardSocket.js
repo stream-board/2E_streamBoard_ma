@@ -29,8 +29,9 @@ export default class BoardSocket extends Component {
     const defaultLineColor = '#000000';
     const defaultLineThickness = 3;
 
-    const { roomId, userNick, userId } = this.props;
-
+    const { roomId, userNick, userId, roomOwner } = this.props;
+    console.log(roomOwner);
+    const admin = (userId === roomOwner) ? true: false;
     const url = `http://${serverIp}:${port}?room=${roomId}&nick=${userNick}&id=${userId}`;
     this.$socket = SocketIOClient(url);
     this.broadcastPath = this.broadcastPath.bind(this);
@@ -60,7 +61,7 @@ export default class BoardSocket extends Component {
     });
 
     this.state = {
-      isAllowed: true,
+      isAllowed: admin,
       isPenDown: false,
       contextDidSet: false,
       selectedColor: defaultLineColor,
@@ -71,7 +72,8 @@ export default class BoardSocket extends Component {
       localPen: {},
       active: 'false',
       onChangeColor: false,
-      type: 'point'
+      type: 'point',
+      admin: admin,
     }
     this.$socket.on('resetBoard', this.onResetBoard);
     this.$socket.on('lostPermission', this.onLostPermission);
@@ -145,11 +147,23 @@ export default class BoardSocket extends Component {
   onLostPermission(data) {
     console.log('se ha reseteado');
     //Modals
+    alert(
+      'You lost permission',
+      'You can no longer draw',
+      {text: 'OK', onPress: () => console.log('ok')}
+    )
+    this.setState({ isAllowed: false });
   }
 
   onResetBoard(data) {
     console.log('Rset board');
     //Modals
+    alert(
+      'You took the pen back',
+      'You can start drawing again',
+      {text: 'OK', onPress: () => console.log('ok')}
+    )
+    this.setState({ isAllowed: true });
   }
 
   onSetAdmin(data) {
@@ -158,7 +172,29 @@ export default class BoardSocket extends Component {
   }
 
   onAskForBoard(data) {
-    //modal 
+    //modal
+    alert(
+      'Turn petition',
+      `User ${data.nick} wants to use the board`,
+      [
+        { 
+          text: 'Yes, approve',
+          onPress: () => { 
+            console.log('yes');
+            this.$socket.emit('answerForBoard', {answer: true, socketId: data.socketId });
+            this.setState({isAllowed: false});
+          }
+        },
+        {
+          text: 'No, disapprove',
+          onPress: () => { 
+            console.log('no');
+            this.$socket.emit('answerForBoard', {answer: false, socketId: data.socketId });
+          },
+          style: 'cancel'
+        }
+      ]
+    )
   }
 
   onDraw(data) {
@@ -172,8 +208,26 @@ export default class BoardSocket extends Component {
   
   onAnswerForBoard(data) {
     if(data) {
+      alert(
+        'Permission granted',
+        'You can draw on the board',
+        [
+          {
+            text: 'OK', onPress: () => console.log('ok')
+          }
+        ]
+      );
       this.setState({isAllowed: true});
     } else {
+      alert(
+        'Permission denied',
+        'You can\'t draw on the board',
+        [
+          {
+            text: 'OK', onPress: () => console.log('ok')
+          }
+        ]
+      );
       this.setState({isAllowed: false});
     }
   }
@@ -183,6 +237,7 @@ export default class BoardSocket extends Component {
   }
 
   askForTurn() {
+    console.log('aks gor');
     this.$socket.emit('askForBoard');
   }
 
@@ -317,6 +372,8 @@ export default class BoardSocket extends Component {
           setType={this.setType} 
           activeType={this.state.type}
           askForTurn={this.askForTurn}
+          admin={this.state.admin}
+          resetPermissions={this.resetPermissions}
         />
       </View>
     );

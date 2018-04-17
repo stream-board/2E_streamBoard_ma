@@ -64,7 +64,7 @@ const RoomDetail = ({ loading, error, room, navigation, closeRoom, roomClosed })
                 )}
             </Tab>
             <Tab heading="Board" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-                    <Board roomId={room.idRoom} />
+                    <Board roomId={room.idRoom} roomOwner={room.owner.id}/>
                 </Tab>
             </Tabs>
             {currentOwner ? <RoomDelete roomObj={room} navigation={navigation} closeRoom={closeRoom}/>: <RoomExit roomObj={room} navigation={navigation} closeRoom={closeRoom} />}
