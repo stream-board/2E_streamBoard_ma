@@ -68,7 +68,7 @@ export default class LobbyPage extends Component {
               })
               this.setState({ joinedToRoom: true });
             }}>
-            <Text>Search</Text>
+            <Icon type='MaterialIcons' name='search' style={{ color: '#FFF' }}/>
           </Button>
         </Col>
         </Grid>

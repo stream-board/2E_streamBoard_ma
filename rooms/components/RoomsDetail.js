@@ -26,7 +26,7 @@ import { Constants } from 'expo';
 import Board from './../../board/components/Board';
 
 
-const RoomDetailQuery = ({ roomId, navigation, children }) => (
+const RoomDetailQuery = ({ roomId, navigation, closeRoom, roomClosed, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
     {result => {
         console.log(navigation);
@@ -36,12 +36,14 @@ const RoomDetailQuery = ({ roomId, navigation, children }) => (
             error,
             room: data && data.roomById,
             navigation: navigation,
+            closeRoom: closeRoom,
+            roomClosed: roomClosed,
         });
     }}
     </Query>   
 );
 
-const RoomDetail = ({ loading, error, room, navigation }) => {
+const RoomDetail = ({ loading, error, room, navigation, closeRoom, roomClosed }) => {
     if(loading) {
         return <Spinner />;
     }
@@ -58,14 +60,14 @@ const RoomDetail = ({ loading, error, room, navigation }) => {
         <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
         <Tabs locked={true} tabBarUnderlineStyle={{borderBottomWidth:2}}>
             <Tab heading="Chat" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-                {room && ( <Chat roomId={room.idRoom} />
+                {room && ( <Chat roomId={room.idRoom} roomClosed={roomClosed}/>
                 )}
             </Tab>
             <Tab heading="Board" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-                    <Board roomId={room.idRoom} />
+                    <Board roomId={room.idRoom} roomOwner={room.owner.id}/>
                 </Tab>
             </Tabs>
-            {currentOwner ? <RoomDelete roomObj={room} navigation={navigation}/>: <RoomExit roomObj={room} navigation={navigation}/>}
+            {currentOwner ? <RoomDelete roomObj={room} navigation={navigation} closeRoom={closeRoom}/>: <RoomExit roomObj={room} navigation={navigation} closeRoom={closeRoom} />}
         </Container>
     )
 }
@@ -78,14 +80,19 @@ export default class RoomsDetail extends Component {
         this.state = {
             roomId: roomId,
             navigation: this.props.navigation,
+            close: false
         }
+        this.closeRoom = this.closeRoom.bind(this);
     }
     
+    closeRoom(){
+        this.setState({ close: true });
+    }
     render() {
         console.log("idroom ingresado en roomdetails");
         console.log(this.state.roomId);
         return (
-                <RoomDetailQuery roomId={this.state.roomId} navigation={this.props.navigation}>
+                <RoomDetailQuery roomId={this.state.roomId} navigation={this.props.navigation} closeRoom={this.closeRoom} roomClosed={this.state.close}>
                     {result => <RoomDetail {...result} />}
                 </RoomDetailQuery>
         );

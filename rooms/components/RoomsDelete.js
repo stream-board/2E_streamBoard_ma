@@ -46,6 +46,7 @@ export default class RoomDelele extends Component {
               }
             })
             this.setState({deleteRoom: true});
+            this.props.closeRoom();
           }}
         ><Text style={{ color: '#fff' }}> Delete {this.props.roomObj.nameRoom}</Text>
         
