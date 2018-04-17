@@ -46,6 +46,7 @@ export default class RoomExit extends Component {
               }
             })
             this.setState({exitRoom: true});
+            this.props.closeRoom();
           }}
         ><Text style={{ color: '#fff' }}>Get out from {this.props.roomObj.nameRoom}</Text>
         

@@ -10,7 +10,7 @@ export default class ModalTester extends Component {
       super(props);
       this.state = {
         isModalVisible: false,
-        active: 'false',
+        active: 'true',
         type: this.props.activeType
       };
       this._toggleModal = this._toggleModal.bind(this);
@@ -21,8 +21,9 @@ export default class ModalTester extends Component {
 
   render() {
     let iconType = (this.state.type === 'eraser') ? 'pencil': 'eraser';
-
+    console.log(this.props.admin);
     return (
+    
       <View>
         <Fab 
             active={this.state.active}
@@ -51,6 +52,14 @@ export default class ModalTester extends Component {
             }}>
                 <Icon type='FontAwesome' name={iconType} style={{ color: '#FFF' }}/>
             </Button>
+            <Button style={styles.toolBtn} onPress={() => this.props.askForTurn()}>
+                <Icon type='FontAwesome' name='hand-paper-o' style={{ color: '#FFF' }}/>
+            </Button>
+            {this.props.admin && 
+                <Button style={styles.toolBtn} onPress={() => this.props.resetPermissions()}>
+                    <Icon type='MaterialIcons' name='replay' style={{ color: '#FFF' }}/>
+                </Button>
+            }
         </Fab>
         <Modal isVisible={this.state.isModalVisible}>
           <Grid>
@@ -66,30 +75,33 @@ export default class ModalTester extends Component {
             </Row>
             <Row size={1} style={{justifyContent: 'center', marginTop: 20}}>
                 <Col>
-                    <Button style={styles.shapeBtn} onPress={() => console.log("boton1")}>
+                    <Button style={styles.shapeBtn} onPress={() => this.props.changeThickness(3)}>
                         <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 8 }}/>
                     </Button>
                 </Col>
                 <Col>
-                    <Button style={styles.shapeBtn} onPress={() => console.log("boton2")}>
+                    <Button style={styles.shapeBtn} onPress={() => this.props.changeThickness(5)}>
                         <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 12 }}/>
                     </Button>
                 </Col>
                 <Col>
-                    <Button style={styles.shapeBtn} onPress={() => console.log("boton3")}>
+                    <Button style={styles.shapeBtn} onPress={() => this.props.changeThickness(7)}>
                         <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 18 }}/>
                     </Button>
                 </Col>
                 <Col>
-                    <Button style={styles.shapeBtn} onPress={() => console.log("boton4")}>
+                    <Button style={styles.shapeBtn} onPress={() => this.props.changeThickness(9)}>
                         <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 24 }}/>
                     </Button>
                 </Col>
                 <Col>
-                    <Button style={styles.shapeBtn} onPress={() => console.log("boton5")}>
+                    <Button style={styles.shapeBtn} onPress={() => this.props.changeThickness(20)}>
                         <Icon type='FontAwesome' name='circle' style={{ color: '#FFF', fontSize: 36 }}/>
                     </Button>
                 </Col>
+            </Row>
+            <Row size={1}>
+                <Button onPress={this._toggleModal}><Text>Salir</Text></Button>
             </Row>
           </Grid>
         </Modal>

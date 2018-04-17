@@ -12,7 +12,7 @@ export default class Chat extends Component {
     return (
       <View style={styles.chatElement}>
         <H1 style={{alignSelf: 'center', margin:10,}} >{`Chat Room ${roomId}`}</H1>
-        <ChatMessageList roomId={roomId} />
+        <ChatMessageList roomId={roomId} roomClosed={this.props.roomClosed}/>
       </View>
     );
   }
