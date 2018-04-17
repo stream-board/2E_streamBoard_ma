@@ -37,8 +37,12 @@ export default class LobbyPage extends Component {
   onLobby(joinRoom) {
     return (
       <Container style={{flex: 1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
-        <View style={{alignItems: 'center', height: 80, margin:5}}>
-          <Thumbnail large source={{uri: Store.getState().currentUser.image}} />
+        <View style={{height: 100}}>
+          <Grid>
+            <Row size={1} style={{alignSelf: 'center', marginTop:20}}>
+              <Thumbnail large source={{uri: Store.getState().currentUser.image}} />
+            </Row>
+          </Grid>
         </View>
         <View style={{height:90}}>
         <Grid>
@@ -141,9 +145,11 @@ const styles = StyleSheet.create({
   },
 
   titleElement: {
-    margin: 20,
-    backgroundColor: 'skyblue',
+    fontSize: 30,
     alignSelf: 'center',
+    textAlign: 'left',
+    color: 'white',
+    fontWeight: 'bold',
 
   },
 
