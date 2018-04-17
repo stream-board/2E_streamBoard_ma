@@ -9,7 +9,7 @@ export default class ModalTester extends Component {
       super(props);
       this.state = {
         isModalVisible: false,
-        active: 'false',
+        active: 'true',
         type: this.props.activeType
       };
       this._toggleModal = this._toggleModal.bind(this);
@@ -22,6 +22,7 @@ export default class ModalTester extends Component {
     let iconType = (this.state.type === 'eraser') ? 'pencil': 'eraser';
 
     return (
+        
       <View>
         <Fab 
             active={this.state.active}

@@ -44,7 +44,7 @@ export default class BoardSocket extends Component {
     this.onAnswerForBoard = this.onAnswerForBoard.bind(this);
     this.onHostLeft = this.onHostLeft.bind(this);
     this.onDraw = this.onDraw.bind(this);
-
+ 
     this.penDown = this.penDown.bind(this);
     this.penMove = this.penMove.bind(this);
     this.penUp = this.penUp.bind(this);
@@ -135,7 +135,6 @@ export default class BoardSocket extends Component {
   }
 
   changeColor(selectedColor) {
-    console.log(selectedColor);
     this.setState({ 'selectedColor': selectedColor });
   }
 
@@ -311,7 +310,14 @@ export default class BoardSocket extends Component {
         <View style={styles.canvas} {...this._panResponder.panHandlers}>
           {this.state.canvas}
         </View>
-        <ToolsModal currentColor={this.state.selectedColor} changeColor={this.changeColor} clearBoard={this.clearBoard} setType={this.setType} activeType={this.state.type}/>
+        <ToolsModal 
+          currentColor={this.state.selectedColor} 
+          changeColor={this.changeColor} 
+          clearBoard={this.clearBoard} 
+          setType={this.setType} 
+          activeType={this.state.type}
+          askForTurn={this.askForTurn}
+        />
       </View>
     );
   }

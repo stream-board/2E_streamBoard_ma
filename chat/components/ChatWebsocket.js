@@ -30,7 +30,7 @@ export class ChatWebsocket extends Component {
     this.emit = this.emit.bind(this);
     this.onMessage = this.onMessage.bind(this);
     this.onOpen = this.onOpen.bind(this);
-    this.onClose = this.onOpen.bind(this);
+    this.onClose = this.onClose.bind(this);
   }
 
   emit() {
@@ -51,6 +51,10 @@ export class ChatWebsocket extends Component {
     } else {
       this.onAddMessage(chatData);
     }
+  }
+
+  onClose(){
+    this.$socket.close();
   }
 
   onOpen() {
@@ -80,6 +84,13 @@ export class ChatWebsocket extends Component {
 
   componentWillUnmount() {
     this.$socket.close();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log(nextProps);
+    if(nextProps.roomClosed) {
+      this.onClose();
+    }
   }
 
   sendMessage(message) {

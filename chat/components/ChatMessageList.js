@@ -19,7 +19,7 @@ const mapStateToProps = (state) => ({
   chatMessageList: state.chatMessageList,
 });
 
-export default ({ roomId: currentId }) => (
+export default ({ roomId: currentId, roomClosed }) => (
   <Query query={CHAT_MESSAGE_LIST_QUERY} variables={{ id: currentId }}>
     { ({ loading, error, data }) => {
         if (loading) return <ActivityIndicator />;
@@ -35,7 +35,7 @@ export default ({ roomId: currentId }) => (
                 <ChatList />
               </Content>
               <Footer style={styles.chatElement}>
-                <ChatWebsocket roomId={currentId} />
+                <ChatWebsocket roomId={currentId} roomClosed={roomClosed}/>
               </Footer>
             </Container>
           </View>
