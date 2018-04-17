@@ -15,6 +15,7 @@ import {
  H1,
  Text
 } from 'native-base';
+import { Col, Row, Grid } from "react-native-easy-grid";
 import { Constants } from 'expo';
 import { connect } from 'react-redux';
 import { roomActionCreators } from "./../roomsRedux";
@@ -43,69 +44,97 @@ export class RoomsCreateRoom extends Component{
  onForm(createRoom){
    return (
      <Container style={{flex:1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
+      <Grid>
+        <Col size={1}></Col>
+        <Col size={20}>
+          {/*TITLE*/}
+          <Row size={2}>
+            <Text style={styles.titleElement}>Create Room</Text>
+          </Row>
+          {/*NAME ROOM*/}
+          <Row size={1}>
 
-       <Text style={styles.titleElement}>Create Room</Text>
+            <Item floatingLabel>
+              <Label style={{color:'white'}}>Room Name</Label>
+              <Input style={{color:'white'}}
+               onChangeText= {(text)=>{
+                 Store.dispatch(roomActionCreators.addRoomName(text));
+               }}
+               />
+            </Item>
 
-       <Item floatingLabel style={styles.formElement}>
-       <Label style={{color:'white'}}>Room Name</Label>
-         <Input style={{color:'white'}}
-         onChangeText= {(text)=>{
-           Store.dispatch(roomActionCreators.addRoomName(text));
-         }}
-         />
-       </Item>
+          </Row>
+          {/*DESCRIPTION*/}
+          <Row size={1}>
+            <Item floatingLabel>
+              <Label style={{color:'white'}}>Description</Label>
+               <Input style={{color:'white'}}
+                 onChangeText= {(text)=>{
+                   Store.dispatch(roomActionCreators.addRoomDescription(text));
+                 }}
+               />
+           </Item>
 
-       <Item floatingLabel style={styles.formElement}>
-       <Label style={{color:'white'}}>Description</Label>
-         <Input style={{color:'white'}}
-           onChangeText= {(text)=>{
-             Store.dispatch(roomActionCreators.addRoomDescription(text));
-           }}
-         />
-       </Item>
+          </Row>
+          {/*CATEGORY*/}
+          <Row size={1}>
 
-       <Text style = {styles.textElement} >Category</Text>
+           <Text style = {styles.textElement} >Category</Text>
+           <Picker
+              placeholder="hola"
+              style = {styles.pickerElement}
+              mode="dropdown"
+              selectedValue={this.state.selected1}
+              onValueChange={
+                this.onValueChange.bind(this)
+              }
+            >
+              <Picker.Item label="Books" value="books" />
+              <Picker.Item label="Gamming" value="gamming" />
+              <Picker.Item label="Languages" value="languages" />
+              <Picker.Item label="Math" value="math" />
+              <Picker.Item label="Movies" value="movies" />
+              <Picker.Item label="Music" value="music" />
+              <Picker.Item label="Politics" value="politics" />
+              <Picker.Item label="Programming" value="programming" />
+              <Picker.Item label="Relaxing" value="relaxing" />
+              <Picker.Item label="Science" value="science" />
+            </Picker>
 
-       <Picker
-          placeholder="hola"
-          style = {styles.pickerElement}
-          mode="dropdown"
-          selectedValue={this.state.selected1}
-          onValueChange={
-            this.onValueChange.bind(this)
-          }
-        >
-          <Picker.Item label="Books" value="books" />
-          <Picker.Item label="Gamming" value="gamming" />
-          <Picker.Item label="Languages" value="languages" />
-          <Picker.Item label="Math" value="math" />
-          <Picker.Item label="Movies" value="movies" />
-          <Picker.Item label="Music" value="music" />
-          <Picker.Item label="Politics" value="politics" />
-          <Picker.Item label="Programming" value="programming" />
-          <Picker.Item label="Relaxing" value="relaxing" />
-          <Picker.Item label="Science" value="science" />
-        </Picker>
+          </Row>
+          {/*BUTTON*/}
+          <Row size={1}>
+            <Col size={1}></Col>
+            <Col size={4}>
+            <Button
+              block
+              style={styles.buttonElement}
+              onPress={() => {
+               Store.dispatch(roomActionCreators.addRoomOwner(Store.getState().currentUser.id));
+               async function roomCreate() {
+                  await createRoom({ 
+                    variables: { 
+                      room: Store.getState().roomCreateParams 
+                    }
+                  })
+               }
+               roomCreate().then(() => {
+                this.setState({formSended: true});
+               })
+             }}
+            >
+            <Text>Create!</Text>
+            </Button>
+            </Col>
+            <Col size={1}></Col>
+          </Row>
+        </Col>
+        <Col size={1}></Col>
+      </Grid>
 
-        <Button
-          block
-          style={styles.buttonElement}
-          onPress={() => {
-           Store.dispatch(roomActionCreators.addRoomOwner(Store.getState().currentUser.id));
-           async function roomCreate() {
-              await createRoom({ 
-                variables: { 
-                  room: Store.getState().roomCreateParams 
-                }
-              })
-           }
-           roomCreate().then(() => {
-            this.setState({formSended: true});
-           })
-         }}
-        >
-        <Text>Create Room!</Text>
-        </Button>
+       
+
+        
      </Container>
    )
  };
@@ -168,42 +197,25 @@ const styles = StyleSheet.create({
 
   titleElement: {
     margin: 20,
-    marginTop: 50,
-    color: '#0a8b88',
     alignSelf: 'center',
-    fontSize: 40,
+    fontSize: 50,
     fontWeight: 'bold',
+    color:'white',
   },
 
- formElement: {
-     height: 70,
-     width: 300,
-     alignSelf: 'center',
-     marginTop: 30,
-   },
-
   textElement:{
-    color:'#87838B',
-    width: 300,
-    alignSelf: 'center',
+    color:'white',
     marginTop: 30,
     textAlign: "left",
   },
 
   pickerElement: {
     marginTop: 10,
-    height: 70,
-    width: 300,
     alignSelf: 'center',
     color:'white'
   },
 
   buttonElement:{
-    marginTop: 20,
-    alignSelf: 'center',
-    marginBottom: 20,
-    width: 300,
-    height: 50,
     backgroundColor: '#26d3cd',
     borderRadius: 8,
   },
