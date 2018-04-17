@@ -63,6 +63,11 @@ export default class ModalTester extends Component {
         </Fab>
         <Modal isVisible={this.state.isModalVisible}>
           <Grid>
+            <Row style={styles.containerExit}>
+                <Button rounded style={styles.exitButton} onPress={this._toggleModal}>
+                    <Icon type='MaterialIcons' name='clear' style={{ color: '#FFF' }}/>
+                </Button>
+            </Row>
             <Row size={4}>
             <ColorPicker
                 oldColor='purple'
@@ -100,9 +105,6 @@ export default class ModalTester extends Component {
                     </Button>
                 </Col>
             </Row>
-            <Row size={1}>
-                <Button onPress={this._toggleModal}><Text>Salir</Text></Button>
-            </Row>
           </Grid>
         </Modal>
       </View>
@@ -128,5 +130,12 @@ const styles = StyleSheet.create({
     shapeBtn:{
         backgroundColor: '#0a8b88',
         borderRadius: 10,
+    },
+    exitButton: {
+        backgroundColor: 'transparent',
+    },
+    containerExit: {
+        display: 'flex',
+        justifyContent: 'flex-end'
     }
 });
