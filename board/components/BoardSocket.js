@@ -53,6 +53,7 @@ export default class BoardSocket extends Component {
     this.drawPath = this.drawPath.bind(this);
     this.initCanvas = this.initCanvas.bind(this);
     this.changeColor = this.changeColor.bind(this);
+    this.changeThickness = this.changeThickness.bind(this);
     this.clearBoard = this.clearBoard.bind(this);
     this.setType = this.setType.bind(this);
 
@@ -137,7 +138,11 @@ export default class BoardSocket extends Component {
   }
 
   changeColor(selectedColor) {
-    this.setState({ 'selectedColor': selectedColor });
+    this.setState({ selectedColor: selectedColor });
+  }
+
+  changeThickness(selectedThickness){
+    this.setState({ selectedThickness: selectedThickness});
   }
 
   setType(type) {
@@ -374,6 +379,7 @@ export default class BoardSocket extends Component {
           askForTurn={this.askForTurn}
           admin={this.state.admin}
           resetPermissions={this.resetPermissions}
+          changeThickness={this.changeThickness}
         />
       </View>
     );
