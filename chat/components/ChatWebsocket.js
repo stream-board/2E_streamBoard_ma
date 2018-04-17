@@ -120,7 +120,7 @@ export class ChatWebsocket extends Component {
             <Button success rounded style={{backgroundColor:'#174557'}}
               onPress={() => this.sendMessage(this.state.text)}
             >
-               <Icon name="send" size={8}/>
+               <Icon name="send" style={{fontSize:16}} />
             </Button>
         </Col>
       </Grid>
