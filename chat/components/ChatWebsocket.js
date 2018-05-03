@@ -26,7 +26,7 @@ export class ChatWebsocket extends Component {
 
     const { roomId } = props;
     this.state = { open: false, text: '' };
-    this.$socket = new WebSocket(`ws:${serverIp}:${port}/${entryPoint}/${roomId}`);
+    this.$socket = new WebSocket(`ws:${serverIp}/${entryPoint}/${roomId}`);
     this.emit = this.emit.bind(this);
     this.onMessage = this.onMessage.bind(this);
     this.onOpen = this.onOpen.bind(this);
