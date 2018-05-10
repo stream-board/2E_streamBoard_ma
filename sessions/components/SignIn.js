@@ -114,6 +114,15 @@ export default class SignIn extends Component {
                   }
                  ).catch(() => {
                     console.log("hay error!! usuario invalido");
+                    alert(
+                      'Permission granted',
+                      'You can draw on the board',
+                      [
+                        {
+                          text: 'OK', onPress: () => console.log('ok')
+                        }
+                      ]
+                    );
                     /*
                     Alert.alert(
                       'No existes!',
