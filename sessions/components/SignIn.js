@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
-import { AppRegistry, StyleSheet, View , Image, Platform, } from 'react-native';
+import { AppRegistry, StyleSheet, View , Image, Platform, Alert, } from 'react-native';
 import {
   Spinner,
   Container,
@@ -24,6 +24,7 @@ import {
 } from 'native-base';
 import { Constants } from 'expo';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import { onError } from "apollo-link-error";
 
 
 export default class SignIn extends Component {
@@ -111,7 +112,26 @@ export default class SignIn extends Component {
                  auth().then(() => {
                     this.setState({formSended: true});
                   }
-                 );
+                 ).catch(() => {
+                    console.log("hay error!! usuario invalido");
+                    /*
+                    Alert.alert(
+                      'No existes!',
+                      [{text: 'OK', onPress: () => console.log('ok')}]
+                    )
+                    
+                    const link = onError(({ graphQLErrors, networkError }) => {
+                      if (graphQLErrors)
+                        graphQLErrors.map(({ message, locations, path }) =>
+                          console.log(
+                            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+                          ),
+                        );
+
+                      if (networkError) console.log(`[Network error]: ${networkError}`);
+                    });
+                    */
+                  });
                 }}
               >
                 <Text>Sign In</Text>
