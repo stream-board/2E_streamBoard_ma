@@ -23,7 +23,7 @@ export const ValidateSessionQuery = gql`
 `;
 
 export const SessionCreateMutation = gql`
-  mutation createSession($session: SessionInput!) {
+  mutation createSession($session: AuthInput!) {
     createSession(session: $session) {
       id,
       email,

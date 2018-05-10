@@ -4,11 +4,13 @@ import { ApolloClient } from 'apollo-client';
 
 export default Client = new ApolloClient({
     link: new HttpLink({
-        uri: 'http://ec2-35-168-17-78.compute-1.amazonaws.com:5000/graphql'
+        uri: 'http://35.190.138.158/graphql'
     }),
+    onError: (e) => { console.log(e.graphQLErrors) }, // Works
     cache: new InMemoryCache({
         // TODO: others objects for other mutations or querys
         dataIdFromObject: object => {
+            console.log(object)
             switch(object.__typename) {
                 case 'Room': return object.idRoom;
                 case 'ChatMessage': return object.id;

@@ -1,3 +1,3 @@
-export const serverIp = 'ec2-34-228-226-216.compute-1.amazonaws.com';
+export const serverIp = '35.190.138.158';
 export const port = '4002';
 export const entryPoint = 'api';

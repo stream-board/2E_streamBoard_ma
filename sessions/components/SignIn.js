@@ -30,10 +30,18 @@ export default class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formSended: false
+      formSended: false,
+      hasError: false
     }
     this.onForm = this.onForm.bind(this);
     this.onCreateSession = this.onCreateSession.bind(this);
+  }
+
+  componentDidCatch(error, info) {
+    // Display fallback UI
+    this.setState({ hasError: true });
+    // You can also log the error to an error reporting service
+    logErrorToMyService(error, info);
   }
 
   onForm(createSession) {
@@ -142,6 +150,10 @@ export default class SignIn extends Component {
   }
 
   render(){
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
     return (
       <Mutation 
         mutation={SessionCreateMutation} 
@@ -149,7 +161,7 @@ export default class SignIn extends Component {
         {(createSession, { loading, error, data }) => (
           <View style={styles.container}>
           {(data ? this.onCreateSession(data) : this.onForm(createSession))}
-          {error && <Text> Error: ${error}</Text>}  
+          {error && <Text> Error!!! </Text>}  
           </View>
         )}
       </Mutation>
