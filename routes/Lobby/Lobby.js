@@ -18,6 +18,7 @@ import { JOIN_ROOM_MUTATION } from "./../../rooms/TypesDef";
 
 import Store from "./../../reduxConfig";
 import { roomActionCreators } from './../../rooms/roomsRedux';
+import { asyncWrapFunction } from '../../utils';
 
 
 export default class LobbyPage extends Component {
@@ -58,15 +59,15 @@ export default class LobbyPage extends Component {
         </Col>
         <Col size={1} style={{justifyContent: 'center',}}>
           <Button rounded style={styles.buttonElement} onPress={() => {
-              joinRoom({
-                variables: {
-                  room: {
-                    idRoom: this.state.roomId,
-                    idOwner: Store.getState().currentUser.id
-                  }
+              let roomParam = {
+                room:  {
+                  idRoom: this.state.roomId,
+                  idOwner: Store.getState().currentUser.id
                 }
+              }
+              asyncWrapFunction(joinRoom, roomParam).then(()=> {
+                this.setState({ joinedToRoom: true });  
               })
-              this.setState({ joinedToRoom: true });
             }}>
             <Icon type='MaterialIcons' name='search' style={{ color: '#FFF' }}/>
           </Button>

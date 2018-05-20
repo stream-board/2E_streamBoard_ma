@@ -18,6 +18,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
+import { asyncWrapFunction } from './../../utils';
 
 export default class SignOut extends Component {
   constructor(props) {
@@ -34,16 +35,16 @@ export default class SignOut extends Component {
           rounded
           style={styles.buttonElement}
           onPress={() => {
-            deleteSession({ 
-              variables: { 
-                headersSession: {
-                  token : Store.getState().currentUser.token,
-                  uid : Store.getState().currentUser.email,
-                  client : Store.getState().currentUser.client
-                }
+            let deleteParam = {
+              headersSession: {
+                token : Store.getState().currentUser.token,
+                uid : Store.getState().currentUser.email,
+                client : Store.getState().currentUser.client
               }
+            };
+            asyncWrapFunction(deleteSession, deleteParam).then(() => {
+              this.setState({sessionDeleted: true});
             })
-            this.setState({sessionDeleted: true});
           }}
         ><Icon name="log-out" />
         </Button>

@@ -24,8 +24,8 @@ import {
 } from 'native-base';
 import { Constants } from 'expo';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import { asyncWrapFunction } from './../../utils';
 import { onError } from "apollo-link-error";
-
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -103,14 +103,10 @@ export default class SignIn extends Component {
                 block
                 style={styles.buttonStyle}
                 onPress={() => {
-                 async function auth(){ 
-                   await createSession({ 
-                    variables: { 
-                      session: Store.getState().sessionCreateParams 
-                    }
-                  })
-                 }
-                 auth().then(() => {
+                  let sessionParam = {
+                    session: Store.getState().sessionCreateParams
+                  };
+                  asyncWrapFunction(createSession, sessionParam).then(() => {
                     this.setState({formSended: true});
                   }
                  ).catch(() => {
