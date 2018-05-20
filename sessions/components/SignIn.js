@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
-import { AppRegistry, StyleSheet, View , Image, Platform, Alert, } from 'react-native';
+import { AppRegistry, StyleSheet, View , Image, Platform, Alert, BackHandler, } from 'react-native';
 import {
   Spinner,
   Container,
@@ -36,6 +36,7 @@ export default class SignIn extends Component {
     }
     this.onForm = this.onForm.bind(this);
     this.onCreateSession = this.onCreateSession.bind(this);
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
 
   componentDidCatch(error, info) {
@@ -114,32 +115,17 @@ export default class SignIn extends Component {
                   }
                  ).catch(() => {
                     console.log("hay error!! usuario invalido");
-                    alert(
-                      'Permission granted',
-                      'You can draw on the board',
+                    Alert.alert(
+                      'Sorry :(',
+                      'Ups! Email or password incorrect',
                       [
                         {
                           text: 'OK', onPress: () => console.log('ok')
                         }
-                      ]
+                      ],
+                      { cancelable: false }
                     );
-                    /*
-                    Alert.alert(
-                      'No existes!',
-                      [{text: 'OK', onPress: () => console.log('ok')}]
-                    )
-                    
-                    const link = onError(({ graphQLErrors, networkError }) => {
-                      if (graphQLErrors)
-                        graphQLErrors.map(({ message, locations, path }) =>
-                          console.log(
-                            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-                          ),
-                        );
-
-                      if (networkError) console.log(`[Network error]: ${networkError}`);
-                    });
-                    */
+                  
                   });
                 }}
               >
@@ -178,6 +164,34 @@ export default class SignIn extends Component {
     }
   }
 
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    console.log("oprime back");
+    Alert.alert(
+      'Exit',
+      'Are you sure?',
+      [
+        {text: 'Nope', onPress: () => console.log('No me vy a salir')},
+        {text: 'OK', onPress: () => 
+          {
+            console.log('OK Pressed');
+            BackHandler.exitApp();
+          }
+        },
+      ],
+      { cancelable: false }
+    );
+    return true;
+  }
+
   render(){
     if (this.state.hasError) {
       // You can render any custom fallback UI
@@ -190,7 +204,6 @@ export default class SignIn extends Component {
         {(createSession, { loading, error, data }) => (
           <View style={styles.container}>
           {(data ? this.onCreateSession(data) : this.onForm(createSession))}
-          {error && <Text> Error!!! </Text>}  
           </View>
         )}
       </Mutation>
