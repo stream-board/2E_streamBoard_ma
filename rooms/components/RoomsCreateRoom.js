@@ -19,6 +19,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { Constants } from 'expo';
 import { connect } from 'react-redux';
 import { roomActionCreators } from "./../roomsRedux";
+import { asyncWrapFunction } from './../../utils';
 
 const mapStateToProps = (state) => ({
  queryParams: state.queryParams,
@@ -118,17 +119,14 @@ export class RoomsCreateRoom extends Component{
               block
               style={styles.buttonElement}
               onPress={() => {
-               Store.dispatch(roomActionCreators.addRoomOwner(Store.getState().currentUser.id));
-               async function roomCreate() {
-                  await createRoom({ 
-                    variables: { 
-                      room: Store.getState().roomCreateParams 
-                    }
-                  })
-               }
-               roomCreate().then(() => {
-                this.setState({formSended: true});
-               })
+                Store.dispatch(roomActionCreators.addRoomOwner(Store.getState().currentUser.id));
+                let newRoom = {
+                  room: Store.getState().roomCreateParams 
+                }
+                console.log(newRoom.room);
+                asyncWrapFunction(createRoom, newRoom).then(() => {
+                  this.setState({formSended: true});
+                })
              }}
             >
             <Text>Create!</Text>

@@ -20,6 +20,7 @@ import { DELETE_ROOM_MUTATION, ALL_ROOMS_QUERY } from './../TypesDef'
 
 import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
+import { asyncWrapFunction } from './../../utils';
 
 export default class RoomDelele extends Component {
   constructor(props) {
@@ -37,16 +38,16 @@ export default class RoomDelele extends Component {
     return (
         <Button style={styles.buttonStyle}
           onPress={() => {
-            deleteRoom({ 
-              variables: { 
-                room: {
-                  idRoom : this.props.roomObj.idRoom,
-                  idOwner : Store.getState().currentUser.id
-                }
+            let roomParam = {
+              room: {
+                idRoom : this.props.roomObj.idRoom,
+                idOwner : Store.getState().currentUser.id
               }
+            }
+            asyncWrapFunction(deleteRoom, roomParam).then(() => {
+              this.setState({deleteRoom: true});
+              this.props.closeRoom();
             })
-            this.setState({deleteRoom: true});
-            this.props.closeRoom();
           }}
         ><Text style={{ color: '#fff' }}> Delete {this.props.roomObj.nameRoom}</Text>
         

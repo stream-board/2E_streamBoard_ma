@@ -20,6 +20,7 @@ import { EXIT_ROOM_MUTATION } from './../TypesDef'
 
 import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
+import { asyncWrapFunction } from './../../utils';
 
 export default class RoomExit extends Component {
   constructor(props) {
@@ -37,16 +38,16 @@ export default class RoomExit extends Component {
     return (
         <Button style={styles.buttonStyle}
           onPress={() => {
-            exitRoom({ 
-              variables: { 
-                room: {
-                  idRoom : this.props.roomObj.idRoom,
-                  idOwner : Store.getState().currentUser.id
-                }
+            let roomParam = {
+              room: {
+                idRoom : this.props.roomObj.idRoom,
+                idOwner : Store.getState().currentUser.id
               }
+            }
+            asyncWrapFunction(exitRoom, roomParam).then(() => {
+              this.setState({exitRoom: true});
+              this.props.closeRoom();  
             })
-            this.setState({exitRoom: true});
-            this.props.closeRoom();
           }}
         ><Text style={{ color: '#fff' }}>Get out from {this.props.roomObj.nameRoom}</Text>
         

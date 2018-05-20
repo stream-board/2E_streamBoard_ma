@@ -28,6 +28,7 @@ import {
 import { Query } from 'react-apollo';
 import { ALL_ROOMS_QUERY } from './../TypesDef';
 import Store from "./../../reduxConfig";
+import RoomItem from './RoomsItem';
 
 export default class RoomList extends Component {
   constructor(props){
@@ -35,6 +36,7 @@ export default class RoomList extends Component {
     this.state = {
       joinedToRoom: false,
       roomSelected: 0,
+      roomClicked: false,
     }
   };
 
@@ -46,32 +48,8 @@ export default class RoomList extends Component {
           if (error) return <Text>{`Error: ${error}`}</Text>;
           return (
             <Content style={styles.roomsContainer}>
-              {data.allRooms.map(({ idRoom, nameRoom, descriptionRoom, owner }, index) => (
-              <Card key={index} style={styles.cardContainer}>
-                <CardItem button style={styles.cardItem} onPress={() => {
-                    this.props.joinRoom({
-                      variables: {
-                        room: {
-                          idRoom: idRoom,
-                          idOwner: Store.getState().currentUser.id
-                        }
-                      }
-                    })
-                    this.setState({ joinedToRoom: true , roomSelected: idRoom });
-                  }
-                } >
-                <Left>
-                  {owner ? <Thumbnail source={{uri: owner.image }} />: <Text></Text>}
-                  <Body>
-                    <Text style={styles.subtitle}>{nameRoom}</Text>
-                    <Text style={styles.description}>
-                    {owner ? owner.name : 'Not available' }
-                    </Text>
-                    <Text style={styles.description}>{descriptionRoom}</Text>
-                  </Body>
-                </Left>
-                </CardItem>
-              </Card>
+              {data.allRooms.map((room, index) => (
+                <RoomItem room={room} joinRoom={this.props.joinRoom} index={index} navigation={this.props.navigation}/>
               ))}
             </Content>
           )
@@ -81,10 +59,22 @@ export default class RoomList extends Component {
     )
   };
 
+  /*shouldComponentUpdate(nextProps, nextState) {
+    if(nextState.roomClicked && !nextState.joinedToRoom) {
+      console.log(nextState);
+      return false;
+    }
+    return true;
+  }*/
+
   componentDidUpdate(prevProps, prevState) {
+    console.log(`xhey hola`);
+    console.log(this.state.joinedToRoom);
     if(this.state.joinedToRoom) {
+      console.log('redirect');
       this.props.navigation.navigate('RoomsDetail', { roomId: this.state.roomSelected})
     }
+    console.log('raor');
   }
 
 
