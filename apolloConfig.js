@@ -43,6 +43,7 @@ export default Client = new ApolloClient({
             switch(object.__typename) {
                 case 'Room': return object.idRoom;
                 case 'ChatMessage': return object.id;
+                case 'owner': return object.id;
                 default: return defaultDataIdFromObject(object);
             }
         }

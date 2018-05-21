@@ -8,6 +8,7 @@ export const ALL_ROOMS_QUERY = gql`
       nameRoom,
       descriptionRoom,
       owner {
+        id,
         name,
         nickname,
         image
@@ -49,6 +50,7 @@ export const ROOMS_CREATE_ROOM_MUTATION = gql`
       nameRoom,
       descriptionRoom,
       owner {
+        id,
         name,
         nickname,
         image
@@ -102,6 +104,7 @@ export const ROOM_ADDED_S = gql`
       nameRoom,
       descriptionRoom
       owner {
+        id,
         name,
         nickname,
         image
