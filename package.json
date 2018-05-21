@@ -25,6 +25,7 @@
     "apollo-link-error": "1.0.9",
     "apollo-link-http": "^1.5.3",
     "apollo-link-ws": "^1.0.8",
+    "apollo-utilities": "^1.0.12",
     "expo": "^25.0.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
@@ -41,6 +42,7 @@
     "react-navigation": "^1.5.11",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "socket.io-client": "^2.1.0"
+    "socket.io-client": "^2.1.0",
+    "subscriptions-transport-ws": "^0.9.9"
   }
 }

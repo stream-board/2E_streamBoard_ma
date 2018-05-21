@@ -83,3 +83,37 @@ export const EXIT_ROOM_MUTATION = gql`
     }
   }
 `;
+
+export const PARTICIPAN_JOINED = gql`
+  subscription participantJoined($roomId: Int!) {
+    participantJoined(roomId: $roomId){
+      id
+      nickname
+      image
+      name
+    }
+  }
+`;
+
+export const ROOM_ADDED_S = gql`
+  subscription roomAdded {
+    roomAdded {
+      idRoom,
+      nameRoom,
+      descriptionRoom
+      owner {
+        name,
+        nickname,
+        image
+      }
+    }
+}
+`;
+
+export const PARTICIPANT_LEFT = gql`
+  subscription participantLeft($roomId: Int! ) {
+    participantLeft(roomId: $roomId){
+      id
+    }
+}
+`;

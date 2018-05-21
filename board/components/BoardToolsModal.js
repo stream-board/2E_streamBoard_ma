@@ -11,13 +11,22 @@ export default class ModalTester extends Component {
       this.state = {
         isModalVisible: false,
         active: 'true',
-        type: this.props.activeType
+        type: this.props.activeType,
+        roomClosed: this.props.roomClosed
       };
       this._toggleModal = this._toggleModal.bind(this);
   }
 
   _toggleModal = () =>
     this.setState({ isModalVisible: !this.state.isModalVisible });
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log(nextProps);
+      if(nextProps.roomClosed) {
+        this.props.onClose();
+      }
+   }
+    
 
   render() {
     let iconType = (this.state.type === 'eraser') ? 'pencil': 'eraser';

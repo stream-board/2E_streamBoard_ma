@@ -34,10 +34,10 @@ export default class RoomsItem extends Component {
     constructor(props) {
         super(props);
 
-        console.log('room item');
         this.state = {
             joinRoomFunc: this.props.joinRoom,
-            room: this.props.room
+            room: this.props.room,
+            joinedToRoom: false
         }    
     }
 
@@ -45,26 +45,23 @@ export default class RoomsItem extends Component {
         return (
         <Card key={this.props.index} style={styles.cardContainer}>
         <CardItem button style={styles.cardItem} onPress={() => {
-            this.setState({ roomClicked: true });
-            let roomParam = {
-              room: {
+            console.log(this.props.room);
+            /*let roomParam = {
+              room:  {
                 idRoom: this.state.room.idRoom,
                 idOwner: Store.getState().currentUser.id
               }
             }
-
-            /*this.props.joinRoom({
+            asyncWrapFunction(this.props.joinRoom, roomParam).then(()=> {
+              this.setState({ joinedToRoom: true });  
+            })*/
+            this.props.joinRoom({
               variables: {room: {
                 idRoom: this.state.room.idRoom,
                 idOwner: Store.getState().currentUser.id
               }}
             })
-            this.setState({ joinedToRoom: true , roomSelected: this.state.room.idRoom });*/
-            asyncWrapFunction(this.props.joinRoom, roomParam).then(() => {
-              //this.setState({ joinedToRoom: true , roomSelected: idRoom });
-              console.log('unided');
-              this.props.navigation.navigate('RoomsDetail', { roomId: this.state.roomSelected})
-            });
+            this.setState({ joinedToRoom: true , roomSelected: this.state.room.idRoom }); 
           }
         } >
         <Left>
@@ -83,13 +80,9 @@ export default class RoomsItem extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-      console.log(`xhey hola`);
-      console.log(this.state.joinedToRoom);
       if(this.state.joinedToRoom) {
-        console.log('redirect');
         this.props.navigation.navigate('RoomsDetail', { roomId: this.state.roomSelected})
       }
-      console.log('raor');
     }
 }
 

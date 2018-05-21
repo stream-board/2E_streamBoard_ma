@@ -17,6 +17,7 @@ export default class Board extends Component {
                     userNick={userNick}
                     userId={userId}
                     roomOwner={roomOwner}
+                    roomClosed={this.props.roomClosed}
                 />
             </View>
         )

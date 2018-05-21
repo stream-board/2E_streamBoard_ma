@@ -57,6 +57,7 @@ export default class BoardSocket extends Component {
     this.changeThickness = this.changeThickness.bind(this);
     this.clearBoard = this.clearBoard.bind(this);
     this.setType = this.setType.bind(this);
+    this.onClose = this.onClose.bind(this);
 
     this.$socket.on('connect', () => {
       console.log('Connected to board socket');
@@ -201,6 +202,10 @@ export default class BoardSocket extends Component {
         }
       ]
     )
+  }
+
+  onClose() {
+    this.$socket.close();
   }
 
   onDraw(data) {
@@ -381,6 +386,8 @@ export default class BoardSocket extends Component {
           admin={this.state.admin}
           resetPermissions={this.resetPermissions}
           changeThickness={this.changeThickness}
+          roomClosed={this.props.roomClosed}
+          onClose={this.onClose}
         />
       </View>
     );

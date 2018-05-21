@@ -30,6 +30,7 @@ import { ALL_ROOMS_QUERY } from './../TypesDef';
 import Store from "./../../reduxConfig";
 import RoomItem from './RoomsItem';
 import { ROOM_ADDED_S } from './../TypesDef';
+import RoomsList from './RoomsList';
 
 export default class RoomListQuery extends Component {
   constructor(props){
@@ -43,30 +44,37 @@ export default class RoomListQuery extends Component {
 
   render(){
     return(
-      <Content style={styles.roomsContainer}>
-        {this.props.data.allRooms.map((room, index) => (
-          <RoomItem 
-            room={room} 
-            joinRoom={this.props.joinRoom} 
-            key={index} 
-            navigation={this.props.navigation}
+      <Query query={ALL_ROOMS_QUERY}>
+        {({ subscribeToMore, loading, error, data }) => {
+          if (loading) return <Spinner />;
+          if (error) return <Text>{`Error: ${error}`}</Text>;
+          return (
+            <RoomsList
+              data={data}
+              joinRoom={this.props.joinRoom}
+              navigation={this.props.navigation}
+              subscribeToNewRooms={() => {
+                subscribeToMore({
+                  document: ROOM_ADDED_S,
+                  updateQuery: (prev, { subscriptionData }) => {
+                    if(!subscriptionData.data) return prev;
+                    const newFeedItem = subscriptionData.data.roomAdded;
+                    return Object.assign({}, prev , {
+                      entry: {
+                        rooms: [newFeedItem, ...prev.entry.rooms]
+                      }
+                    });
+                  }
+                })
+              }}
             />
-        ))}
-      </Content>
+          )
+        }
+      }
+      </Query>
     )
   };
 
-  componentDidMount() {
-    this.props.subscribeToNewRooms();
-  }
-  /*shouldComponentUpdate(nextProps, nextState) {
-    if(nextState.roomClicked && !nextState.joinedToRoom) {
-      console.log(nextState);
-      return false;
-    }
-    return true;
-  }*/
-  
   componentDidUpdate(prevProps, prevState) {
     if(this.state.joinedToRoom) {
       this.props.navigation.navigate('RoomsDetail', { roomId: this.state.roomSelected})
