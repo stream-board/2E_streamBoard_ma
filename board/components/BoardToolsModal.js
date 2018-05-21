@@ -21,7 +21,6 @@ export default class ModalTester extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
 
   componentWillUpdate(nextProps, nextState) {
-    console.log(nextProps);
       if(nextProps.roomClosed) {
         this.props.onClose();
       }

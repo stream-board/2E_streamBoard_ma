@@ -44,7 +44,7 @@ export default class RoomListQuery extends Component {
 
   render(){
     return(
-      <Query query={ALL_ROOMS_QUERY}>
+      <Query query={ALL_ROOMS_QUERY} fetchPolicy={'network-only'}>
         {({ subscribeToMore, loading, error, data }) => {
           if (loading) return <Spinner />;
           if (error) return <Text>{`Error: ${error}`}</Text>;
@@ -58,12 +58,11 @@ export default class RoomListQuery extends Component {
                   document: ROOM_ADDED_S,
                   updateQuery: (prev, { subscriptionData }) => {
                     if(!subscriptionData.data) return prev;
-                    const newFeedItem = subscriptionData.data.roomAdded;
-                    return Object.assign({}, prev , {
-                      entry: {
-                        rooms: [newFeedItem, ...prev.entry.rooms]
-                      }
-                    });
+                    console.log(`subs ${prev}`);
+                    let newList = prev.allRooms.slice(0);
+                    newList.push(subscriptionData.data.roomAdded);
+                    let result = { allRooms: newList };
+                    return result;
                   }
                 })
               }}

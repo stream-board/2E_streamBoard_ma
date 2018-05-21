@@ -25,6 +25,16 @@ const link = split(
     httpLink,
 );
 
+const defaultOptions = {
+    watchQuery: {
+        fetchPolicy: 'network-only',
+        errorPolicy: 'ignore',
+        },
+    query: {
+        fetchPolicy: 'network-only',
+        errorPolicy: 'all',
+    },
+}
 export default Client = new ApolloClient({
     link,
     onError: (e) => { console.log(e.graphQLErrors) },
@@ -36,5 +46,6 @@ export default Client = new ApolloClient({
                 default: return defaultDataIdFromObject(object);
             }
         }
-    })
+    }),
+    defaultOptions: defaultOptions,
 })
