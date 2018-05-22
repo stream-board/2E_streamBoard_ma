@@ -31,8 +31,9 @@ export class RoomsCreateRoom extends Component{
    this.onForm = this.onForm.bind(this);
    this.onCreateRoom = this.onCreateRoom.bind(this);
    this.state = {
-     selected1: "key1"
+     selected1: "programming"
    };
+   Store.dispatch(roomActionCreators.addRoomCategory("programming"));
  }
 
   onValueChange(value: string) {
