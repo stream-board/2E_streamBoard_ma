@@ -43,6 +43,17 @@ export const ROOM_BY_ID_QUERY = gql`
   }
 `;
 
+export const PARTICIPANTS_BY_ID_QUERY = gql`
+  query participantsById($id: Int!) {
+    participantsById (id: $id) {
+      id
+      name
+      nickname
+      image
+    }
+  }
+`;
+
 export const ROOMS_CREATE_ROOM_MUTATION = gql`
   mutation createRoom($room: CreateRoomInput!) {
     createRoom(room: $room) {
@@ -86,13 +97,13 @@ export const EXIT_ROOM_MUTATION = gql`
   }
 `;
 
-export const PARTICIPAN_JOINED = gql`
+export const PARTICIPANT_JOINED = gql`
   subscription participantJoined($roomId: Int!) {
     participantJoined(roomId: $roomId){
       id
+      name
       nickname
       image
-      name
     }
   }
 `;
