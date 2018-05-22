@@ -97,6 +97,12 @@ export const EXIT_ROOM_MUTATION = gql`
   }
 `;
 
+export const BAN_PARTICIPANT_MUTATION = gql`
+  mutation banParticipant($bannedParticipant: BannedParticipant){
+    banParticipant(bannedParticipant: $bannedParticipant)
+  }
+`;
+
 export const PARTICIPANT_JOINED = gql`
   subscription participantJoined($roomId: Int!) {
     participantJoined(roomId: $roomId){

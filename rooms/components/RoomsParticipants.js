@@ -23,6 +23,7 @@ import {
   Icon,
   Button
 } from 'native-base';
+import ParticipantItem from './ParticipantItem';
 
 
 export default class RoomsParticipants extends Component {
@@ -36,22 +37,7 @@ export default class RoomsParticipants extends Component {
     return (
       <Content>
         {this.props.data.participantsById.map((participant, index) => (
-        <Card key={this.props.index} style={styles.cardContainer}>
-          <CardItem button style={styles.cardItem} onPress={() => {
-              console.log('press participant');
-            }
-          } >
-          <Left>
-             <Thumbnail source={{uri: participant.image }} />
-            <Body>
-              <Text style={styles.subtitle}>{participant.name}</Text>
-              <Text style={styles.description}>
-              {participant.nickname}
-              </Text>
-            </Body>
-          </Left>
-          </CardItem>
-        </Card>
+          <ParticipantItem participant={participant} key={index} roomId={this.props.roomId}/>
         ))}
       </Content>
     )

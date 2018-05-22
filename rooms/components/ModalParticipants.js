@@ -25,52 +25,33 @@ export default class ParticipantsModal extends Component {
 
   render() {
     return (
-      
-      <View>
-        <Fab 
-            active={this.state.active}
-            direction='up'
-            containerStyle={{marginBottom: 10}}
-            style={styles.settingBtn}
-            potition='bottomRight'
-            onPress={()=>{ 
-                this.setState({ 'active': !this.state.active });
+      <Query query={PARTICIPANTS_BY_ID_QUERY} fetchPolicy={'network-only'} variables={{id: this.props.roomId}}>
+      {({ subscribeToMore, loading, error, data }) => {
+        if (loading) return <Spinner />;
+        if (error) return <Text>{`Error: ${error}`}</Text>;
+        return (
+          <RoomsParticipants
+            data={data}
+            navigation={this.props.navigation}
+            roomId={this.props.roomId}
+            subscribeToJoinedParticipants={() => {
+              subscribeToMore({
+                document: PARTICIPANT_JOINED,
+                updateQuery: (prev, { subscriptionData }) => {
+                  if(!subscriptionData.data) return prev;
+                  console.log(`subs ${prev}`);
+                  Store.dispatch(roomActionCreators.addRoomParticipant(subscriptionData.data.participantJoined));
+                  let newList = prev.participantsById.slice(0);
+                  newList.push(subscriptionData.data.participantJoined);
+                  let result = { participantsById: newList };
+                  return result;
+                }
+              })
             }}
-        >
-            <Icon type='FontAwesome' name='cogs'/>
-            <Button style={styles.toolBtn} onPress={this._toggleModal}>
-                <Icon type='MaterialIcons' name='face' style={{ color: '#FFF' }}/>
-            </Button>
-        </Fab>
-        <Modal isVisible={this.state.isModalVisible}>
-          <Query query={PARTICIPANTS_BY_ID_QUERY} fetchPolicy={'network-only'} variables={{id: this.props.roomId}}>
-          {({ subscribeToMore, loading, error, data }) => {
-            if (loading) return <Spinner />;
-            if (error) return <Text>{`Error: ${error}`}</Text>;
-            return (
-              <RoomsParticipants
-                data={data}
-                navigation={this.props.navigation}
-                subscribeToJoinedParticipants={() => {
-                  subscribeToMore({
-                    document: PARTICIPANT_JOINED,
-                    updateQuery: (prev, { subscriptionData }) => {
-                      if(!subscriptionData.data) return prev;
-                      console.log(`subs ${prev}`);
-                      Store.dispatch(roomActionCreators.addRoomParticipant(subscriptionData.data.participantJoined));
-                      let newList = prev.participantsById.slice(0);
-                      newList.push(subscriptionData.data.participantJoined);
-                      let result = { participantsById: newList };
-                      return result;
-                    }
-                  })
-                }}
-              />
-            )
-          }}
-          </Query>
-        </Modal>
-      </View>
+          />
+        )
+      }}
+      </Query>
     );
   }
 }
