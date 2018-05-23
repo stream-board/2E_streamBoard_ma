@@ -33,7 +33,7 @@ export default class BoardSocket extends Component {
     const { roomId, userNick, userId, roomOwner } = this.props;
     console.log(roomOwner);
     const admin = (userId === roomOwner) ? true: false;
-    const url = `http://${serverIp}:${port}?room=${roomId}&nick=${userNick}&id=${userId}`;
+    const url = `http://${serverIp}?room=${roomId}&nick=${userNick}&id=${userId}`;
     this.$socket = SocketIOClient(url);
     this.broadcastPath = this.broadcastPath.bind(this);
     this.broadcastErase = this.broadcastErase.bind(this);
@@ -205,7 +205,7 @@ export default class BoardSocket extends Component {
   }
 
   onClose() {
-    this.$socket.close();
+    this.$socket.disconnect();
   }
 
   onDraw(data) {
