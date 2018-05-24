@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo';
 import Store from './../../reduxConfig';
 import { connect } from 'react-redux';
 import { sessionActionCreators } from "./../sessionsRedux";
-import { AppRegistry, StyleSheet, View , Image, Platform, Alert, BackHandler, } from 'react-native';
+import { AppRegistry, StyleSheet, View , Image, Platform, Alert, BackHandler, ActivityIndicator, } from 'react-native';
 import {
   Spinner,
   Container,
@@ -36,7 +36,6 @@ export default class SignIn extends Component {
     }
     this.onForm = this.onForm.bind(this);
     this.onCreateSession = this.onCreateSession.bind(this);
-    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
 
   componentDidCatch(error, info) {
@@ -150,7 +149,10 @@ export default class SignIn extends Component {
   onCreateSession(data){
     Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
     return (
-      <Spinner />
+      <Container>
+        <Spinner />
+        <Text>AIUDDDAAAAA</Text>
+      </Container>
     )
   };
 
@@ -160,32 +162,44 @@ export default class SignIn extends Component {
     }
   }
 
-  componentWillMount(){
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
-  }
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
-  }
+  onLoadingSession(){
+    return (
+      <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}> 
+      <Grid style={{justifyContent: 'center',}}>
+        <Col size={1}></Col>
+        <Col size={20}>
+          {/*LOGO*/}
+          <Row size={4}>
+            <Image 
+              style = { styles.img }
+              source = { require('./logo-white.png' ) }
+            />
+          </Row>
+          {/*LOADING*/}
+          <Row size={2}>
+            <Col size={1}></Col>
+            <Col size={6} style={{justifyContent: 'center',}}>
+              {/*<Text style={{color:'white', fontSize:34, alignSelf:"center", fontFamily:"Roboto"}} > LOADING... </Text>*/}
+              <ActivityIndicator size={80} color="grey"/>
+            </Col>
+            <Col size={1}></Col>
+          </Row>
+          <Row size={1}></Row>
+          {/*BANNER*/}
+          <Row size={2}>
+            
+            <Image style={styles.img}
+                source = { require('./banner.png' ) }
+            />
 
-  handleBackButtonClick() {
-    this.props.navigation.goBack(null);
-    console.log("oprime back");
-    Alert.alert(
-      'Exit',
-      'Are you sure?',
-      [
-        {text: 'Nope', onPress: () => console.log('No me vy a salir')},
-        {text: 'OK', onPress: () => 
-          {
-            console.log('OK Pressed');
-            BackHandler.exitApp();
-          }
-        },
-      ],
-      { cancelable: false }
-    );
-    return true;
+          </Row>
+        </Col>
+        <Col size={1}></Col>
+      </Grid>
+
+      </Container>
+    )
   }
 
   render(){
@@ -199,7 +213,11 @@ export default class SignIn extends Component {
       >
         {(createSession, { loading, error, data }) => (
           <View style={styles.container}>
-          {(data ? this.onCreateSession(data) : this.onForm(createSession))}
+          {(data ? this.onCreateSession(data) : 
+            (loading ? this.onLoadingSession() : this.onForm(createSession) )
+            )
+          }
+          {error && <Text></Text>}
           </View>
         )}
       </Mutation>

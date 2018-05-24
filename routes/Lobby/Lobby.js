@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Platform, Image } from 'react-native';
+import { AppRegistry, StyleSheet, View, Platform, Image, BackHandler } from 'react-native';
 import { Container,
          Header,
          Content,
@@ -29,7 +29,7 @@ export default class LobbyPage extends Component {
       joinedToRoom: false,
       navigation: this.props.navigation,
     }
-
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     this.onLobby = this.onLobby.bind(this);
     this.onJoinRoom = this.onJoinRoom.bind(this);
   }
@@ -117,6 +117,37 @@ export default class LobbyPage extends Component {
         roomId: this.state.roomId,
       })
     }
+  }
+
+
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    console.log("oprime back");
+    /*
+    Alert.alert(
+      'Exit',
+      'Are you sure?',
+      [
+        {text: 'Nope', onPress: () => console.log('No me vy a salir')},
+        {text: 'OK', onPress: () => 
+          {
+            console.log('OK Pressed');
+            BackHandler.exitApp();
+          }
+        },
+      ],
+      { cancelable: false }
+    );
+    */
+    return true;
   }
 
   render() {
