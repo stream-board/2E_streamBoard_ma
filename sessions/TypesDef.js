@@ -8,7 +8,7 @@ export const UserInformationQuery = gql`
   }
 `;
 
-export const ValidateSessionQuery = gql`
+export const VALIDATE_SESSION_QUERY = gql`
   query validateSession($headersSession: Headers!) {
     validateSession(headersSession: $headersSession) {
       id,

@@ -12,7 +12,7 @@ import {
     Tabs,
     Tab,
   } from 'native-base';
-
+import { Col, Row, Grid } from "react-native-easy-grid";
 import Chat from './../../chat/components/Chat';
 import { Query } from 'react-apollo';
 import { ROOM_BY_ID_QUERY } from "./../TypesDef";
@@ -24,7 +24,7 @@ import RoomExit from "./RoomsExit";
 import RoomDelete from './RoomsDelete';
 import { Constants } from 'expo';
 import Board from './../../board/components/Board';
-
+import ParticipantsModal from './ModalParticipants';
 
 const RoomDetailQuery = ({ roomId, navigation, closeRoom, roomClosed, children }) => (
     <Query query={ROOM_BY_ID_QUERY} variables={{ id: roomId }}>
@@ -64,7 +64,10 @@ const RoomDetail = ({ loading, error, room, navigation, closeRoom, roomClosed })
                 )}
             </Tab>
             <Tab heading="Board" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-                    <Board roomId={room.idRoom} roomOwner={room.owner.id}/>
+                    <Board roomId={room.idRoom} roomOwner={room.owner.id} roomClosed={roomClosed}/>
+                </Tab>
+                <Tab heading="Participants" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+                    <ParticipantsModal roomId={room.idRoom}/>
                 </Tab>
             </Tabs>
             {currentOwner ? <RoomDelete roomObj={room} navigation={navigation} closeRoom={closeRoom}/>: <RoomExit roomObj={room} navigation={navigation} closeRoom={closeRoom} />}
@@ -92,9 +95,9 @@ export default class RoomsDetail extends Component {
         console.log("idroom ingresado en roomdetails");
         console.log(this.state.roomId);
         return (
-                <RoomDetailQuery roomId={this.state.roomId} navigation={this.props.navigation} closeRoom={this.closeRoom} roomClosed={this.state.close}>
-                    {result => <RoomDetail {...result} />}
-                </RoomDetailQuery>
+            <RoomDetailQuery roomId={this.state.roomId} navigation={this.props.navigation} closeRoom={this.closeRoom} roomClosed={this.state.close}>
+                {result => <RoomDetail {...result} />}
+            </RoomDetailQuery>
         );
     } 
 

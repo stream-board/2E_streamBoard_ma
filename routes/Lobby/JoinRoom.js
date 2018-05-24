@@ -3,6 +3,8 @@ import { AppRegistry, StyleSheet, View } from 'react-native';
 import { Container, Header, Content, Spinner, Button, Body, Left, Right, Tabs, Tab, Text, Title, Subtitle, Input, Form, Item, Label, Icon } from 'native-base';
 
 import RoomsList from '../../rooms/components/RoomsList.js';
+
+/*DEPRECATED*/
 export default class JoinRoomPage extends Component {
   constructor(...args){
     super(...args);

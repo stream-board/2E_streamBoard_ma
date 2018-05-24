@@ -5,6 +5,7 @@ import RoomsDetail from './rooms/components/RoomsDetail.js';
 import SignOutPage from './sessions/components/SignOut.js';
 import MainMenuPage from './routes/Lobby/MainMenu.js';
 import JoinRoomPage from './routes/Lobby/JoinRoom.js';
+import ValidateSessionPage from './sessions/components/ValidateSession';
 
 import { StackNavigator } from "react-navigation";
 
@@ -15,9 +16,10 @@ export const RootStack = StackNavigator(
     CreateRoom: { screen: CreateRoomPage },
     RoomsDetail: { screen: RoomsDetail},
     SignOut: { screen: SignOutPage},
+    ValidateSession: { screen: ValidateSessionPage }
   },
   {
-    initialRouteName: "SignIn",
+    initialRouteName: "ValidateSession",
     navigationOptions: {
       headerStyle: {
         height: 0,

@@ -10,7 +10,7 @@ import { Container,
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Constants } from 'expo';
 
-import RoomsList from './../../rooms/components/RoomsList';
+import RoomsListQuery from './../../rooms/components/RoomsListQuery';
 import SignOut from "./../../sessions/components/SignOut";
 
 import { Mutation } from 'react-apollo';
@@ -25,7 +25,6 @@ export default class LobbyPage extends Component {
   constructor(...args){
     super(...args)
     this.state = {
-      //variable to FAB
       active: 'true',
       joinedToRoom: false,
       navigation: this.props.navigation,
@@ -77,7 +76,7 @@ export default class LobbyPage extends Component {
 
       {/*LIST OF ROOMS*/}
       <Content style={{borderRadius: 8}}>
-        <RoomsList navigation={this.state.navigation} joinRoom={joinRoom}/>
+        <RoomsListQuery navigation={this.state.navigation} joinRoom={joinRoom}/>
       </Content>
       <Footer style={{marginTop:10, backgroundColor:'#174557'}}>
         <Grid style={{justifyContent: 'center',}}>

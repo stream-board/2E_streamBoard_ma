@@ -33,7 +33,7 @@ export default class BoardSocket extends Component {
     const { roomId, userNick, userId, roomOwner } = this.props;
     console.log(roomOwner);
     const admin = (userId === roomOwner) ? true: false;
-    const url = `http://${serverIp}:${port}?room=${roomId}&nick=${userNick}&id=${userId}`;
+    const url = `http://${serverIp}?room=${roomId}&nick=${userNick}&id=${userId}`;
     this.$socket = SocketIOClient(url);
     this.broadcastPath = this.broadcastPath.bind(this);
     this.broadcastErase = this.broadcastErase.bind(this);
@@ -57,6 +57,7 @@ export default class BoardSocket extends Component {
     this.changeThickness = this.changeThickness.bind(this);
     this.clearBoard = this.clearBoard.bind(this);
     this.setType = this.setType.bind(this);
+    this.onClose = this.onClose.bind(this);
 
     this.$socket.on('connect', () => {
       console.log('Connected to board socket');
@@ -201,6 +202,10 @@ export default class BoardSocket extends Component {
         }
       ]
     )
+  }
+
+  onClose() {
+    this.$socket.disconnect();
   }
 
   onDraw(data) {
@@ -381,6 +386,8 @@ export default class BoardSocket extends Component {
           admin={this.state.admin}
           resetPermissions={this.resetPermissions}
           changeThickness={this.changeThickness}
+          roomClosed={this.props.roomClosed}
+          onClose={this.onClose}
         />
       </View>
     );
