@@ -62,7 +62,7 @@ export default class ParticipantItem extends Component {
                   console.log('participant banned');
                 })
               }}
-            ><Text style={{ color: '#fff' }}>Bannear</Text>
+            ><Text style={{ color: '#fff' }}>Ban</Text>
             </Button>
           </Col>
           </Grid>
