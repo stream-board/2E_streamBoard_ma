@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Platform, Image } from 'react-native';
+import { AppRegistry, StyleSheet, View, Platform, Image, BackHandler } from 'react-native';
 import { Container,
          Header,
          Content,
@@ -29,7 +29,7 @@ export default class LobbyPage extends Component {
       joinedToRoom: false,
       navigation: this.props.navigation,
     }
-
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     this.onLobby = this.onLobby.bind(this);
     this.onJoinRoom = this.onJoinRoom.bind(this);
   }
@@ -37,8 +37,12 @@ export default class LobbyPage extends Component {
   onLobby(joinRoom) {
     return (
       <Container style={{flex: 1,paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight}}>
-        <View style={{alignItems: 'center', height: 80, margin:5}}>
-          <Thumbnail large source={{uri: Store.getState().currentUser.image}} />
+        <View style={{height: 100}}>
+          <Grid>
+            <Row size={1} style={{alignSelf: 'center', marginTop:20}}>
+              <Thumbnail large source={{uri: Store.getState().currentUser.image}} />
+            </Row>
+          </Grid>
         </View>
         <View style={{height:90}}>
         <Grid>
@@ -115,6 +119,37 @@ export default class LobbyPage extends Component {
     }
   }
 
+
+  componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    console.log("oprime back");
+    /*
+    Alert.alert(
+      'Exit',
+      'Are you sure?',
+      [
+        {text: 'Nope', onPress: () => console.log('No me vy a salir')},
+        {text: 'OK', onPress: () => 
+          {
+            console.log('OK Pressed');
+            BackHandler.exitApp();
+          }
+        },
+      ],
+      { cancelable: false }
+    );
+    */
+    return true;
+  }
+
   render() {
     return (
       <Mutation mutation={JOIN_ROOM_MUTATION}>
@@ -141,9 +176,11 @@ const styles = StyleSheet.create({
   },
 
   titleElement: {
-    margin: 20,
-    backgroundColor: 'skyblue',
+    fontSize: 30,
     alignSelf: 'center',
+    textAlign: 'left',
+    color: 'white',
+    fontWeight: 'bold',
 
   },
 

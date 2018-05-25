@@ -38,13 +38,16 @@ export default class ParticipantItem extends Component {
             console.log('press participant');
           }
         } >
-          <Left>
+          <Body>
+          <Grid>
+            <Col size={1}>
               <Thumbnail source={{uri: this.props.participant.image }} />
-            <Body>
+            </Col>
+            <Col size={3}>
               <Text style={styles.subtitle}>{this.props.participant.name}</Text>
-              <Text style={styles.description}>
-              {this.props.participant.nickname}
-              </Text>
+              <Text style={styles.description}>{this.props.participant.nickname}</Text>
+            </Col>
+            <Col size={1}>
               <Button style={styles.buttonStyle}
               onPress={() => {
                 let banParam = {
@@ -59,10 +62,12 @@ export default class ParticipantItem extends Component {
                   console.log('participant banned');
                 })
               }}
-            ><Text style={{ color: '#fff' }}>Bannear</Text>
+            ><Text style={{ color: '#fff' }}>Ban</Text>
             </Button>
-            </Body>
-          </Left>
+          </Col>
+          </Grid>
+          </Body>
+          
         </CardItem>
       </Card>
     )
@@ -138,8 +143,8 @@ const styles = StyleSheet.create({
     width: '75%'
   },
   buttonStyle:{
-    width: Dimensions.get('screen').width,
-    backgroundColor: '#26d3cd',
+    backgroundColor: '#f44336',
+    borderRadius: 8,
     justifyContent: 'center'
   }
 })

@@ -50,7 +50,7 @@ export default class ValidateSession extends Component {
       return (
         <Query query={VALIDATE_SESSION_QUERY} variables={this.state.headersSession}>
         {({ loading, error, data }) => {
-            if (loading) return <Spinner />;
+            if (loading) return <Text>Pensando</Text>;
             if (error) return <Text>{`Error: ${error}`}</Text>;
             if (data) {
               Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
