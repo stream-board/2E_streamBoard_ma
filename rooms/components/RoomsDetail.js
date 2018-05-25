@@ -68,8 +68,9 @@ const RoomDetail = ({ loading, error, room, navigation, closeRoom, roomClosed })
             </Tab>
             {
                 currentOwner 
-                && <Tab heading="Participants" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>  
-                <ParticipantsModal roomId={room.idRoom}/> </Tab> 
+                && <Tab heading="Participants" tabStyle={{backgroundColor: '#174557'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#174557'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+                    <ParticipantsModal roomId={room.idRoom}/> 
+                </Tab> 
             }
             </Tabs>
             {currentOwner ? <RoomDelete roomObj={room} navigation={navigation} closeRoom={closeRoom}/>: <RoomExit roomObj={room} navigation={navigation} closeRoom={closeRoom} />}

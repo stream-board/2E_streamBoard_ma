@@ -6,14 +6,14 @@ import { getMainDefinition } from 'apollo-utilities';
 import { split } from 'apollo-link';
 
 const wsLink = new WebSocketLink({
-    uri: `ws://35.190.138.158/subscriptions`,
+    uri: `ws://35.196.37.210/subscriptions`,
     options: {
         reconect: true
     }
 });
 
 const httpLink = new HttpLink({
-    uri: 'http://35.190.138.158/graphql'
+    uri: 'http://35.196.37.210/graphql'
 });
 
 const link = split(

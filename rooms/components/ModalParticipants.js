@@ -27,8 +27,8 @@ export default class ParticipantsModal extends Component {
     return (
       <Query query={PARTICIPANTS_BY_ID_QUERY} fetchPolicy={'network-only'} variables={{id: this.props.roomId}}>
       {({ subscribeToMore, loading, error, data }) => {
-        if (loading) return <Spinner />;
-        if (error) return <Text>{`Error: ${error}`}</Text>;
+        if (loading) return (<Spinner />);
+      if (error) return (<Text>{`Error: ${error}`}</Text>);
         return (
           <RoomsParticipants
             data={data}
@@ -37,11 +37,13 @@ export default class ParticipantsModal extends Component {
             subscribeToJoinedParticipants={() => {
               subscribeToMore({
                 document: PARTICIPANT_JOINED,
+                variables: { roomId: this.props.roomId },
                 updateQuery: (prev, { subscriptionData }) => {
                   if(!subscriptionData.data) return prev;
                   console.log(`subs ${prev}`);
                   Store.dispatch(roomActionCreators.addRoomParticipant(subscriptionData.data.participantJoined));
                   let newList = prev.participantsById.slice(0);
+                  console.log('hola');
                   newList.push(subscriptionData.data.participantJoined);
                   let result = { participantsById: newList };
                   return result;

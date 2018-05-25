@@ -72,21 +72,6 @@ export default class RoomDelele extends Component {
     return (
       <Mutation 
         mutation={DELETE_ROOM_MUTATION}
-        update={(cache, { data: data })=>{
-         let roomDeleted = data.deleteRoom;
-        
-         const dataList = cache.readQuery({
-           query: ALL_ROOMS_QUERY
-         });
-         const roomListCurrent = dataList.allRooms.filter((room)=> room.idRoom !== roomDeleted.idRoom);
-         
-         cache.writeQuery({
-           query: ALL_ROOMS_QUERY,
-           data: {
-             allRooms: roomListCurrent,
-           },
-         })
-       }}  
       >
         {(deleteRoom, { loading, error, data }) => (
           <View>

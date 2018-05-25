@@ -33,39 +33,40 @@ export default class ParticipantItem extends Component {
   }
   participant (banParticipant) {
     return (
-      <Card key={this.props.index} style={styles.cardContainer}>
+      <Card style={styles.cardContainer}>
         <CardItem button style={styles.cardItem} onPress={() => {
             console.log('press participant');
           }
         } >
           <Body>
-          <Grid>
-            <Col size={1}>
-              <Thumbnail source={{uri: this.props.participant.image }} />
-            </Col>
-            <Col size={3}>
-              <Text style={styles.subtitle}>{this.props.participant.name}</Text>
-              <Text style={styles.description}>{this.props.participant.nickname}</Text>
-            </Col>
-            <Col size={1}>
-              <Button style={styles.buttonStyle}
-              onPress={() => {
-                let banParam = {
-                  bannedParticipant: {
-                    idRoom : this.props.roomId,
-                    idParticipant : this.props.participant.id
-                  }
-                }
-                console.log(banParam);
-                asyncWrapFunction(banParticipant, banParam).then(() => {
-                  this.setState({exitRoom: true});
-                  console.log('participant banned');
-                })
-              }}
-            ><Text style={{ color: '#fff' }}>Ban</Text>
-            </Button>
-          </Col>
-          </Grid>
+            <Grid>
+                <Col size={1}>
+                  <Thumbnail source={{uri: this.props.participant.image }} />
+                </Col>
+                <Col size={3}>
+                  <Text style={styles.subtitle}>{this.props.participant.name}</Text>
+                  <Text style={styles.description}>{this.props.participant.nickname}</Text>
+                </Col>
+                <Col size={1}>
+                  <Button style={styles.buttonStyle}
+                    onPress={() => {
+                      let banParam = {
+                        bannedParticipant: {
+                          idRoom : this.props.roomId,
+                          idParticipant : this.props.participant.id
+                        }
+                      }
+                      console.log(banParam);
+                      asyncWrapFunction(banParticipant, banParam).then(() => {
+                        this.setState({exitRoom: true});
+                        console.log('participant banned');
+                      })
+                    }}
+                  >
+                    <Text style={{ color: '#fff' }}>Ban</Text>
+                  </Button>
+                </Col>
+            </Grid>
           </Body>
           
         </CardItem>
@@ -75,7 +76,7 @@ export default class ParticipantItem extends Component {
 
   banned(data) {
     return (
-      <Card key={this.props.index} style={styles.cardContainer}>
+      <Card style={styles.cardContainer}>
         <CardItem button style={styles.cardItem} onPress={() => {
             console.log('press participant');
           }
@@ -85,7 +86,7 @@ export default class ParticipantItem extends Component {
             <Body>
               <Text style={styles.subtitle}>{this.props.participant.name}</Text>
               <Text style={styles.description}>
-              {this.props.participant.nickname}
+                {this.props.participant.nickname}
               </Text>
             </Body>
           </Left>

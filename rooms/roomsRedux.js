@@ -89,7 +89,9 @@ export const roomParticipantsReducer = (state = roomParticipants, action) => {
             
         case types.ADD_ROOM_PARTICIPANT:
             const currentRoomParticipants = Object.assign({}, state);
-            currentRoomParticipants.payload.id = payload;
+            console.log(currentRoomParticipants);
+            console.log(payload);   
+            currentRoomParticipants[payload.id] = payload;
             return currentRoomParticipants;
     }
 

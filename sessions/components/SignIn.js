@@ -146,12 +146,12 @@ export default class SignIn extends Component {
     )
   };
 
+
   onCreateSession(data){
     Store.dispatch(sessionActionCreators.addCurrentUser(data.createSession));
     return (
       <Container>
         <Spinner />
-        <Text>AIUDDDAAAAA</Text>
       </Container>
     )
   };
@@ -203,10 +203,6 @@ export default class SignIn extends Component {
   }
 
   render(){
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
-    }
     return (
       <Mutation 
         mutation={SessionCreateMutation} 
@@ -217,7 +213,7 @@ export default class SignIn extends Component {
             (loading ? this.onLoadingSession() : this.onForm(createSession) )
             )
           }
-          {error && <Text></Text>}
+          {error && <Text>Error</Text>}
           </View>
         )}
       </Mutation>
